@@ -22,6 +22,7 @@
     <None Remove="Images\Icons\Face.png" />
     <None Remove="Images\Icons\Keyboard.png" />
     <None Remove="Images\Icons\Left_arrow.png" />
+    <None Remove="Images\Icons\New.png" />
     <None Remove="Images\Icons\Pause.png" />
     <None Remove="Images\Icons\Right_arrow.png" />
     <None Remove="Images\Icons\Save.png" />
@@ -48,6 +49,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\Icons\Disable.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Icons\New.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\Icons\Save.png">
