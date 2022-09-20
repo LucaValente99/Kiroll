@@ -35,6 +35,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Mediapipe.Net" Version="0.8.10" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\NeeqDMIs\NeeqDMIs.csproj" />
   </ItemGroup>
 

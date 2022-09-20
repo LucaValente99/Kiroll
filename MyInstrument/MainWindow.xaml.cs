@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MyInstrument.Surface;
 
 namespace MyInstrument
 {
@@ -55,6 +56,9 @@ namespace MyInstrument
 
             MyInstrumentSetup myInstrumentSetup = new MyInstrumentSetup(this);
             myInstrumentSetup.Setup();
+
+            MyInstrumentSurface surface = new MyInstrumentSurface(canvasMyInstrument, lstScaleChanger, lstCodeChanger, lstOctaveChanger);
+            surface.DrawOnCanvas();
         }
 
         #region TopBar (Row0)
@@ -71,9 +75,8 @@ namespace MyInstrument
             if (!myInstrumentStarted)
             {                             
 
-                temporaryNoteButtons.Visibility = Visibility.Visible;
                 btnStartImage.Source = pauseIcon;
-                btnStart.Background = ActiveBrush;
+                btnStart.Background = ActiveBrush; 
                 btnStartLabel.Content = "Running...";
 
                 /* MIDI */
@@ -85,7 +88,6 @@ namespace MyInstrument
             else
             {
                 myInstrumentStarted = false;
-                temporaryNoteButtons.Visibility = Visibility.Hidden;
                 btnStartImage.Source = startIcon;
                 btnStart.Background = DisableBrush;
                 btnStartLabel.Content = "Start";
@@ -235,33 +237,6 @@ namespace MyInstrument
         }
 
         #endregion MusicSheet (Row2)
-
-        #region Temporary
-        private void Button_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Space)
-            {
-                Rack.DMIBox.MidiModule.PlayNote(60, 80);
-                txtPitch.Text = "60";
-                txtNoteName.Text = "C4";
-                txtVelocityMouth.Text = "80";
-            }
-        }
-
-        private void Button_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Space)
-            {
-                Rack.DMIBox.MidiModule.StopNote(60);
-                txtPitch.Text = "_";
-                txtNoteName.Text = "_";
-                txtVelocityMouth.Text = "_";
-            }
-        }
-
-
-
-        #endregion temporary
 
     }
 

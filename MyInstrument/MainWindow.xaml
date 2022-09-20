@@ -12,7 +12,7 @@
         WindowState="Maximized"
         WindowStyle="None"
         mc:Ignorable="d">
-    
+
     <!--#region Styles-->
     <Window.Resources>
         <!--Button style-->
@@ -43,13 +43,13 @@
             <Setter Property="BorderThickness" Value="0,0,0,0"/>
             <Setter Property="BorderBrush" Value="#FFC5C5C5"/>
             <Setter Property="Margin" Value="0,0,0,0"/>
-            <Setter Property="Width" Value="240"/>
+            <Setter Property="Width" Value="280"/>
             <Setter Property="Height" Value="2"/>
             <Setter Property="Background" Value="Black"/>
             <Setter Property="Opacity" Value="0.5" />
         </Style>
         <!--End Separator (Horizontal Border) Style-->
-        
+
         <!--Combobox style-->
         <Style x:Key="ComboboxButtonStyle" TargetType="{x:Type ToggleButton}">
             <Setter Property="Template">
@@ -148,7 +148,7 @@
         <!--Combobox style-->
     </Window.Resources>
     <!--#endregion End Styles-->
-    
+
     <Grid>
         <Grid.Background>
             <ImageBrush ImageSource="/Images/Backgrounds/Main2.jpg" ></ImageBrush>
@@ -156,7 +156,7 @@
 
         <Grid.RowDefinitions>
             <RowDefinition Height="65"></RowDefinition>
-            <RowDefinition Height="600"></RowDefinition>
+            <RowDefinition Height="625"></RowDefinition>
             <RowDefinition Height="1*"></RowDefinition>
         </Grid.RowDefinitions>
 
@@ -284,7 +284,7 @@
                     </StackPanel>
                     <!--End Music Sheet Settings button-->
                 </Grid>
-                
+
             </Border>
             <!--Right Top Bar Embellishment-->
             <Image Source="Images/Embellishments/LeftRight_TopBar.png"
@@ -303,78 +303,28 @@
                 HorizontalAlignment="Stretch" Margin="5,5,5,0" 
                 Width="Auto" Height="Auto" BorderThickness="4" 
                 CornerRadius="8" BorderBrush="Black">
-            <!--Canvas allows to place elements by coordinates-->
-            <Canvas x:Name="canvasMyInstrument" VerticalAlignment="Stretch" 
-                                    HorizontalAlignment="Stretch" Margin="0,0,0,0" 
-                                    Width="auto" Height="auto" >
-                <Canvas.Background>
-                    <SolidColorBrush Color="Black" Opacity="0.7" />
-                </Canvas.Background>
-            </Canvas>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="12*" />
+                </Grid.RowDefinitions>
+                <ScrollViewer x:Name="scrlMyInstrument" VerticalAlignment="Stretch" 
+                                HorizontalAlignment="Stretch" Margin="0,0,0,0" 
+                                Width="Auto" Height="Auto" 
+                                HorizontalScrollBarVisibility="Disabled" 
+                                VerticalScrollBarVisibility="Disabled" Grid.Row="0">
+                    <!--Canvas allows to place elements by coordinates-->
+                    <Canvas x:Name="canvasMyInstrument" VerticalAlignment="Stretch" 
+                                        HorizontalAlignment="Center" Margin="0,0,0,0"
+                            Width="3000" Height="625">
+                        <Canvas.Background>
+                            <SolidColorBrush Color="Black" Opacity="0.7" />
+                        </Canvas.Background>
+                    </Canvas>
+                </ScrollViewer>
+            </Grid>
         </Border>
 
-        <!--Temporary Note Buttons-->
-        <StackPanel Name="temporaryNoteButtons"
-                    Grid.Row="1" Orientation="Horizontal" 
-                    HorizontalAlignment="Center" Visibility="Hidden">
-            <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-                <Button    Background="SkyBlue"
-                           Height="60" Width="120" Content="C"
-                           FontSize="30"
-                           FontWeight="Bold"
-                           KeyDown="Button_KeyDown"
-                           KeyUp="Button_KeyUp"/>
-                <Button    Background="SkyBlue"
-                           Height="60" Width="120"
-                           Margin="0,20,0,0" Content="D"
-                           FontSize="30" FontWeight="Bold"/>
-                <Button    Background="SkyBlue"
-                           Height="60" Width="120"
-                           Margin="0,20,0,0" Content="E"
-                           FontSize="30" FontWeight="Bold"/>
-                <Button    Background="SkyBlue"
-                           Height="60" Width="120"
-                           Margin="0,20,0,0" Content="F"
-                           FontSize="30" FontWeight="Bold"/>
-                <Button    Background="SkyBlue"
-                           Height="60" Width="120"
-                           Margin="0,20,0,0" Content="G"
-                           FontSize="30" FontWeight="Bold"/>
-                <Button    Background="SkyBlue"
-                           Height="60" Width="120"
-                           Margin="0,20,0,0" Content="A"
-                           FontSize="30" FontWeight="Bold"/>
-                <Button    Background="SkyBlue"
-                           Height="60" Width="120"
-                           Margin="0,20,0,0" Content="B"
-                           FontSize="30" FontWeight="Bold"/>
-            </StackPanel>
-            <StackPanel Orientation="Vertical" VerticalAlignment="Stretch">
-                <Button    Background="SkyBlue"
-                           Height="60" Width="120"
-                           Margin="20,80,0,0" Content="C#"
-                           FontSize="30" FontWeight="Bold"/>
-                <Button    Background="SkyBlue"
-                           Height="60" Width="120"
-                           Margin="20,20,0,0" Content="D#"
-                           FontSize="30" FontWeight="Bold"/>
-                <Button    Background="SkyBlue"
-                           Height="60" Width="120"
-                           Margin="20,90,0,0" Content="F#"
-                           FontSize="30" FontWeight="Bold"/>
-                <Button    Background="SkyBlue"
-                           Height="60" Width="120"
-                           Margin="20,20,0,0" Content="G#"
-                           FontSize="30" FontWeight="Bold"/>
-                <Button    Background="SkyBlue"
-                           Height="60" Width="120"
-                           Margin="20,20,0,0" Content="A#"
-                           FontSize="30" FontWeight="Bold"/>
-            </StackPanel>
-        </StackPanel>
-        <!--End Temporary Note Buttons-->
-
-        <!--Note Visualizer-->        
+        <!--Note Visualizer-->
         <StackPanel Margin="0,20,20,0" Orientation="Horizontal" 
                     Grid.Row="1" VerticalAlignment="Top"
                     HorizontalAlignment="Right">
@@ -443,16 +393,16 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             CornerRadius="8" 
-            Margin="20,20,0,0"
-            Width="300"  
+            Margin="20,40,0,0"
+            Width="350"  
             Height="550"
             BorderBrush="Black"
             BorderThickness="4"
             Visibility="Hidden">
 
-                <Border.Background>
-                    <ImageBrush ImageSource="/Images/Backgrounds/TopBar2.jpg" TileMode="Tile" />
-                </Border.Background>
+            <Border.Background>
+                <ImageBrush ImageSource="/Images/Backgrounds/TopBar2.jpg" TileMode="Tile" />
+            </Border.Background>
 
             <Grid>
 
@@ -464,34 +414,32 @@
                     <RowDefinition Height="1*"></RowDefinition>
                     <RowDefinition Height="1*"></RowDefinition>
                     <RowDefinition Height="1*"></RowDefinition>
-                    <RowDefinition Height="1*"></RowDefinition>
-                    <RowDefinition Height="1*"></RowDefinition>
                 </Grid.RowDefinitions>
 
                 <!--Title-->
-                <StackPanel Grid.Row="0"  Orientation="Vertical" HorizontalAlignment="Center">
+                <StackPanel Grid.Row="0"  Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Label
-                        Margin="5,5,0,5"
+                        Margin="0,5,0,0"
                         FontFamily="Papyrus"
                         FontWeight="Bold"
-                        FontSize="20"
+                        FontSize="25"
                         HorizontalAlignment="Center"
                         Foreground="White">Instrument Settings</Label>
                     <!--End Title-->
 
-                    <Border Style="{StaticResource SeparatorStyleHorizontal}"
-                            Grid.Row="0" VerticalAlignment="Bottom"/>
-
                 </StackPanel>
+
+                <Border Style="{StaticResource SeparatorStyleHorizontal}"
+                            Grid.Row="0" VerticalAlignment="Bottom"/>
                 <!--Keyboard and Face Buttons-->
 
-                <StackPanel Grid.Row="1"  Orientation="Horizontal" VerticalAlignment="Stretch" 
-                            Margin="5,5,0,5" HorizontalAlignment="Center">
+                <StackPanel Grid.Row="1"  Orientation="Horizontal" VerticalAlignment="Center" 
+                            HorizontalAlignment="Center">
                     <!--Keyboard Buttons-->
                     <Button Style="{DynamicResource RoundButton}"                      
                             Name="btnCtrlKeyboard"
-                            Width="30"
-                            Height="30"
+                            Width="35"
+                            Height="35"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Stretch"
                             BorderBrush="White"
@@ -506,7 +454,7 @@
                     </Button>
                     <Image Source="Images/Icons/Keyboard.png"
                                 Margin="10,0,35,0"
-                                Width="60"
+                                Width="65"
                                 Height="auto" 
                                 VerticalAlignment="Center"/>
                     <!--End Keyboard Buttons-->
@@ -514,8 +462,8 @@
                     <!--Face Buttons-->
                     <Button Style="{DynamicResource RoundButton}"                      
                             Name="btnCtrlFace"
-                            Width="30"
-                            Height="30"
+                            Width="35"
+                            Height="35"
                             Margin ="0,0,0,0"
                             VerticalAlignment="Stretch"
                             BorderBrush="White"
@@ -535,7 +483,7 @@
                                 VerticalAlignment="Center"/>
                     <!--End Face Buttons-->
                 </StackPanel>
-                    <!--end Keyboard and Face Buttons-->
+                <!--end Keyboard and Face Buttons-->
 
                 <Border Style="{StaticResource SeparatorStyleHorizontal}"
                             Grid.Row="1"
@@ -547,16 +495,15 @@
                         Margin="0,0,10,0"
                         FontFamily="Papyrus"
                         FontWeight="Bold"
-                        FontSize="16"
-                        HorizontalAlignment="Center"
-                        Foreground="White" Height="31">MIDI Port</Label>
+                        FontSize="18"
+                        Foreground="White" Height="35">MIDI Port</Label>
 
                     <StackPanel Margin="0,0,0,0" Orientation="Horizontal" VerticalAlignment="Center">
                         <Button Style="{StaticResource RoundButton}"
                             Name="btnMidiPortMinus"
                             Margin="0,0,5,0"
-                            Width="35"
-                            Height="35"
+                            Width="40"
+                            Height="40"
                             BorderBrush="Transparent"
                             BorderThickness="2"
                                 Click="btnMidiPortMinus_Click">
@@ -566,14 +513,14 @@
                                 Stretch="None"
                                 TileMode="Tile" />
                             </Button.Background>
-                            
+
                             <Image Source="Images/Icons/Left_arrow.png"
                                    Width="auto"
                                    Height="auto"/>
                         </Button>
                         <Border
-                            Width="80"
-                            Height="30"
+                            Width="90"
+                            Height="35"
                             Background="Black"
                             BorderBrush="WhiteSmoke"
                             BorderThickness="2"
@@ -582,16 +529,17 @@
                                 Name="txtMidiPort"
                                 Background="Black"
                                 FontFamily="Digital-7 Italic"
-                                FontSize="25"
+                                FontSize="27"
                                 Foreground="LightCoral"
                                 Text=""
+                                VerticalAlignment="Center"
                                 TextAlignment="Center" />
                         </Border>
                         <Button Style="{StaticResource RoundButton}"
                             Name="btnMidiPortPlus"
                             Margin="0,0,0,0"
-                            Width="35"
-                            Height="35"
+                            Width="40"
+                            Height="40"
                             BorderBrush="Transparent"
                             BorderThickness="2"
                                 Click="btnMidiPortPlus_Click">
@@ -609,7 +557,7 @@
                     </StackPanel>
                 </StackPanel>
                 <!--end MIDI Port-->
-                
+
                 <Border Style="{StaticResource SeparatorStyleHorizontal}"
                         Grid.Row="2"
                         VerticalAlignment="Bottom"/>
@@ -621,105 +569,80 @@
                         Margin="0,0,5,0"
                         FontFamily="Papyrus"
                         FontWeight="Bold"
-                        FontSize="16"
-                        HorizontalAlignment="Center"
-                        Foreground="White" Height="31">Maj</Label>
+                        FontSize="18"
+                        Foreground="White" Height="36">Scale</Label>
 
-                    <ComboBox x:Name="lstMajScaleChanger"
+                    <ComboBox x:Name="lstScaleChanger"
                                   Style="{StaticResource ComboboxStyle}" 
                                   Margin="0,0,10,0" BorderThickness="2" 
-                                  BorderBrush="WhiteSmoke" Width="60" Height="26" 
+                                  BorderBrush="WhiteSmoke" Width="60" Height="30" 
                                   Background="Black" Foreground="Black"
                                   FontWeight="Bold">
-                        <ComboBoxItem Name="C">
+                        <ComboBoxItem Name="C" IsSelected="True">
                             C
                         </ComboBoxItem>
-                        <ComboBoxItem>
-                            G
+                        <ComboBoxItem Name="sC">
+                            C#
                         </ComboBoxItem>
-                        <ComboBoxItem>
+                        <ComboBoxItem Name="D">
                             D
                         </ComboBoxItem>
-                        <ComboBoxItem>
-                            A
+                        <ComboBoxItem Name="sD">
+                            D#
                         </ComboBoxItem>
-                        <ComboBoxItem>
+                        <ComboBoxItem Name="E">
                             E
                         </ComboBoxItem>
-                        <ComboBoxItem>
-                            Cb/B
-                        </ComboBoxItem>
-                        <ComboBoxItem>
-                            Gb/F#
-                        </ComboBoxItem>
-                        <ComboBoxItem>
-                            Db/C#
-                        </ComboBoxItem>
-                        <ComboBoxItem>
-                            Ab
-                        </ComboBoxItem>
-                        <ComboBoxItem>
-                            Eb
-                        </ComboBoxItem>
-                        <ComboBoxItem>
-                            Bb
-                        </ComboBoxItem>
-                        <ComboBoxItem>
+                        <ComboBoxItem Name="F">
                             F
                         </ComboBoxItem>
+                        <ComboBoxItem Name="sF">
+                            F#
+                        </ComboBoxItem>
+                        <ComboBoxItem Name="G">
+                            G
+                        </ComboBoxItem>
+                        <ComboBoxItem Name="sG">
+                            G#
+                        </ComboBoxItem>
+                        <ComboBoxItem Name="A">
+                            A
+                        </ComboBoxItem>
+                        <ComboBoxItem Name="sA">
+                            A#
+                        </ComboBoxItem>
+                        <ComboBoxItem Name="B">
+                            B
+                        </ComboBoxItem>
                     </ComboBox>
+
+                    <!-- Maj & Min Scale Buttons -->
 
                     <Label
                         Margin="0,0,5,0"
                         FontFamily="Papyrus"
                         FontWeight="Bold"
-                        FontSize="16"
-                        HorizontalAlignment="Center"
-                        Foreground="White" Height="31">Min</Label>
+                        FontSize="18"
+                        Foreground="White" Height="34">Code</Label>
 
-                    <ComboBox x:Name="lstMinScaleChanger"
+                    <ComboBox x:Name="lstCodeChanger"
                                   Style="{StaticResource ComboboxStyle}" 
                                   Margin="0,0,10,0" BorderThickness="2" 
-                                  BorderBrush="WhiteSmoke" Width="60" Height="26" 
+                                  BorderBrush="WhiteSmoke" Width="60" Height="30" 
                                   Background="Black" Foreground="Black"
                                   FontWeight="Bold">
-                        <ComboBoxItem Name="A">
-                            A
+                        <ComboBoxItem Name="maj" IsSelected="True">
+                            maj
                         </ComboBoxItem>
-                        <ComboBoxItem>
-                            E
+                        <ComboBoxItem Name="min">
+                            min
                         </ComboBoxItem>
-                        <ComboBoxItem>
-                            B
-                        </ComboBoxItem>
-                        <ComboBoxItem>
-                            F#
-                        </ComboBoxItem>
-                        <ComboBoxItem>
-                            C#
-                        </ComboBoxItem>
-                        <ComboBoxItem>
-                            Ab/G#
-                        </ComboBoxItem>
-                        <ComboBoxItem>
-                            Eb/D#
-                        </ComboBoxItem>
-                        <ComboBoxItem>
-                            Bb/A#
-                        </ComboBoxItem>
-                        <ComboBoxItem>
-                            F
-                        </ComboBoxItem>
-                        <ComboBoxItem>
-                            C
-                        </ComboBoxItem>
-                        <ComboBoxItem>
-                            G
-                        </ComboBoxItem>
-                        <ComboBoxItem>
-                            D
+                        <ComboBoxItem Name="chrom">
+                            chrom
                         </ComboBoxItem>
                     </ComboBox>
+
+                    <!-- End Maj & Min Scale Buttons -->
 
                 </StackPanel>
                 <!--Combobox Scale-->
@@ -728,67 +651,162 @@
                             Grid.Row="3"
                             VerticalAlignment="Bottom"/>
 
+                <!--Combobox Octave and Sharp Notes button-->
+
                 <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center">
                     <Label
-                        Margin="0,0,5,0"
+                        Margin="25,0,5,0"
                         FontFamily="Papyrus"
                         FontWeight="Bold"
-                        FontSize="16"
-                        HorizontalAlignment="Center"
-                        Foreground="White" Height="31">Octave</Label>
+                        FontSize="18"
+                        Foreground="White" Height="39">Octave</Label>
 
                     <ComboBox x:Name="lstOctaveChanger" 
                                   Style="{StaticResource ComboboxStyle}"
                                   BorderThickness="2" BorderBrush="WhiteSmoke" 
-                                  Width="60" Height="26" Background="Black" 
+                                  Width="60" Height="30" Background="Black" 
                                   Foreground="Black" FontWeight="Bold">
-                        <ComboBoxItem Name="Octave_1">
-                            1
-                        </ComboBoxItem>
-                        <ComboBoxItem>
+                        <ComboBoxItem Name="_2">
                             2
                         </ComboBoxItem>
-                        <ComboBoxItem>
+                        <ComboBoxItem Name="_3">
                             3
                         </ComboBoxItem>
-                        <ComboBoxItem>
+                        <ComboBoxItem Name="_4" IsSelected="True">
                             4
                         </ComboBoxItem>
-                        <ComboBoxItem>
+                        <ComboBoxItem Name="_5">
                             5
                         </ComboBoxItem>
+                        <ComboBoxItem Name="_6">
+                            6
+                        </ComboBoxItem>
                     </ComboBox>
+
+                    <Button Style="{DynamicResource RoundButton}"                      
+                            Name="btnSharpNotes"
+                            Width="35"
+                            Height="35"
+                            Margin="17,0,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Stretch"
+                            BorderBrush="White"
+                            BorderThickness="2">
+                        <Button.Background>
+                            <ImageBrush
+                                ImageSource="Images/Backgrounds/Buttons.jpeg"
+                                Stretch="None"
+                                TileMode="Tile" />
+                        </Button.Background>
+                    </Button>
+
+                    <Label
+                        Margin="0,0,5,0"
+                        FontFamily="Papyrus"
+                        FontWeight="Bold"
+                        FontSize="18"
+                        Foreground="White" Height="37">Sharp Notes</Label>
+
                 </StackPanel>
-                
+
+                <!--End Combobox Octave and Sharp Notes button-->
+
                 <Border Style="{StaticResource SeparatorStyleHorizontal}"
                             Grid.Row="4"
                             VerticalAlignment="Bottom"/>
+
+                <!--Blink Scale and SLide Play buttons-->
+
+                <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Center">
+
+                    <Button Style="{DynamicResource RoundButton}"                      
+                            Name="btnBlinkScale"
+                            Margin="5,0,0,0"
+                            Width="35"
+                            Height="35"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Stretch"
+                            BorderBrush="White"
+                            BorderThickness="2">
+                        <Button.Background>
+                            <ImageBrush
+                                ImageSource="Images/Backgrounds/Buttons.jpeg"
+                                Stretch="None"
+                                TileMode="Tile" />
+                        </Button.Background>
+                    </Button>
+
+                    <Label
+                        Margin="0,0,5,0"
+                        FontFamily="Papyrus"
+                        FontWeight="Bold"
+                        FontSize="18"
+                        Foreground="White" Height="36">Blink Scale</Label>
+
+                    <Button Style="{DynamicResource RoundButton}"                      
+                            Name="btnSlidePlay"
+                            Width="35"
+                            Height="35"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Stretch"
+                            BorderBrush="White"
+                            BorderThickness="2">
+                        <Button.Background>
+                            <ImageBrush
+                                ImageSource="Images/Backgrounds/Buttons.jpeg"
+                                Stretch="None"
+                                TileMode="Tile" />
+                        </Button.Background>
+                    </Button>
+
+                    <Label
+                        Margin="0,0,5,0"
+                        FontFamily="Papyrus"
+                        FontWeight="Bold"
+                        FontSize="18"
+                        Foreground="White" Height="36">Slide Play</Label>
+
+                </StackPanel>
+
+                <!--End Blink Scale and Slide Play buttons-->
 
                 <Border Style="{StaticResource SeparatorStyleHorizontal}"
                             Grid.Row="5"
                             VerticalAlignment="Bottom"/>
 
-                <Border Style="{StaticResource SeparatorStyleHorizontal}"
-                            Grid.Row="6"
-                            VerticalAlignment="Bottom"/>
+                <StackPanel Grid.Row="6" Orientation="Vertical" HorizontalAlignment="Stretch">
+                    <Label
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Margin="0,0,0,0"
+                            FontFamily="Papyrus"
+                            FontWeight="Bold"
+                            FontSize="18"
+                            HorizontalAlignment="Center"
+                            Foreground="White">"Keys distance"</Label>
+                    <Slider
+                        Name="sldDistance"
+                        HorizontalAlignment="Stretch"
+                        Margin="40,0,40,0"
+                        Minimum="50"
+                        Maximum="400"/>
+                    <!-- .DragCompleted="sldDistance_DragCompleted" Height="18" Margin="0,0,-0.2,0" Grid.RowSpan="2" VerticalAlignment="Top" RenderTransformOrigin="0.501,0.5" /> -->
 
-                <Border Style="{StaticResource SeparatorStyleHorizontal}"
-                            Grid.Row="7"
-                            VerticalAlignment="Bottom"/>
+                </StackPanel>
 
             </Grid>
 
         </Border>
-            <!--End MyInstrument's Setting Window-->
-            
-            <!--MusicSheet's Setting Window-->
+        <!--End MyInstrument's Setting Window-->
+
+        <!--MusicSheet's Setting Window-->
         <Border Name="WindowMusicSheetSettings" 
             Grid.Row="1"
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
             CornerRadius="8" 
             Margin="0,20,20,0"
-            Width="300"  
+            Width="350"  
             Height="550"
             BorderBrush="Black"
             BorderThickness="4"
@@ -807,30 +825,23 @@
                     <RowDefinition Height="1*"></RowDefinition>
                     <RowDefinition Height="1*"></RowDefinition>
                     <RowDefinition Height="1*"></RowDefinition>
-                    <RowDefinition Height="1*"></RowDefinition>
-                    <RowDefinition Height="1*"></RowDefinition>
-                    <RowDefinition Height="1*"></RowDefinition>
                 </Grid.RowDefinitions>
 
                 <!--Title-->
-                <StackPanel Grid.Row="0"  Orientation="Vertical" HorizontalAlignment="Center">
+                <StackPanel Grid.Row="0"  Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Label
-                        Margin="5,5,0,5"
+                        Margin="0,5,0,0"
                         FontFamily="Papyrus"
                         FontWeight="Bold"
-                        FontSize="20"
+                        FontSize="25"
                         HorizontalAlignment="Center"
-                        Foreground="White">Music Sheet Settings</Label>
+                        Foreground="White">Instrument Settings</Label>
                     <!--End Title-->
-
-                    <Border Style="{StaticResource SeparatorStyleHorizontal}"
-                            Grid.Row="0" VerticalAlignment="Bottom"/>
 
                 </StackPanel>
 
                 <Border Style="{StaticResource SeparatorStyleHorizontal}"
-                            Grid.Row="1"
-                            VerticalAlignment="Bottom"/>
+                            Grid.Row="0" VerticalAlignment="Bottom"/>
 
                 <!--Music Sheet Rapid Settings-->
                 <StackPanel Grid.Row="1" Orientation="Horizontal" 
@@ -840,10 +851,9 @@
                         Margin="0,0,5,0"
                         FontFamily="Papyrus"
                         FontWeight="Bold"
-                        FontSize="16"
-                        HorizontalAlignment="Center"
-                        Foreground="White" Height="31">New</Label>
-                    
+                        FontSize="18"
+                        Foreground="White" Height="36">New</Label>
+
                     <Button Style="{StaticResource RoundButton}"
                             Name="btnNew"
                             Margin="0,0,20,0"
@@ -867,10 +877,9 @@
                         Margin="0,0,5,0"
                         FontFamily="Papyrus"
                         FontWeight="Bold"
-                        FontSize="16"
-                        HorizontalAlignment="Center"
-                        Foreground="White" Height="31">Save</Label>
-                    
+                        FontSize="18"
+                        Foreground="White" Height="35">Save</Label>
+
                     <Button Style="{StaticResource RoundButton}"
                             Name="btnSave"
                             Margin="0,0,5,0"
@@ -891,21 +900,24 @@
                     </Button>
                 </StackPanel>
 
+                <Border Style="{StaticResource SeparatorStyleHorizontal}"
+                            Grid.Row="1"
+                            VerticalAlignment="Bottom"/>
+
                 <StackPanel Grid.Row="2" Orientation="Horizontal" 
                             HorizontalAlignment="Center">
-                    
+
 
                     <Label
-                        Margin="0,0,5,0"
+                        Margin="0,0,10,0"
                         FontFamily="Papyrus"
                         FontWeight="Bold"
-                        FontSize="16"
-                        HorizontalAlignment="Center"
-                        Foreground="White" Height="31">Disable writing mode</Label>
-                    
+                        FontSize="18"
+                        Foreground="White" Height="36">Disable writing mode</Label>
+
                     <Button Style="{StaticResource RoundButton}"
                             Name="btnDisable"
-                            Margin="0,0,5,0"
+                            Margin="0,0,0,0"
                             Width="35"
                             Height="35"
                             BorderBrush="Black"
@@ -939,18 +951,6 @@
 
                 <Border Style="{StaticResource SeparatorStyleHorizontal}"
                             Grid.Row="5"
-                            VerticalAlignment="Bottom"/>
-
-                <Border Style="{StaticResource SeparatorStyleHorizontal}"
-                            Grid.Row="6"
-                            VerticalAlignment="Bottom"/>
-
-                <Border Style="{StaticResource SeparatorStyleHorizontal}"
-                            Grid.Row="7"
-                            VerticalAlignment="Bottom"/>
-
-                <Border Style="{StaticResource SeparatorStyleHorizontal}"
-                            Grid.Row="8"
                             VerticalAlignment="Bottom"/>
 
             </Grid>
@@ -1005,56 +1005,56 @@
                             Height="28"
                             BorderBrush="Black"
                             BorderThickness="3">
-                <Button.Background>
-                    <ImageBrush
+                    <Button.Background>
+                        <ImageBrush
                                 ImageSource="Images/Backgrounds/Buttons.jpeg"
                                 Stretch="None"
                                 TileMode="Tile" />
-                </Button.Background>
+                    </Button.Background>
 
-                <Image Source="Images/Icons/Clean.png"
+                    <Image Source="Images/Icons/Clean.png"
                                    Width="20"
                                    Height="20"/>
-            </Button>
+                </Button>
 
-            <Button Style="{StaticResource RoundButton}"
+                <Button Style="{StaticResource RoundButton}"
                             Name="btnUndo"
                             Margin="0,0,10,0"
                             Width="30"
                             Height="30"
                             BorderBrush="Transparent"
                             BorderThickness="0">
-                <Button.Background>
-                    <ImageBrush
+                    <Button.Background>
+                        <ImageBrush
                                 ImageSource="Images/Backgrounds/Buttons.jpeg"
                                 Stretch="None"
                                 TileMode="Tile" />
-                </Button.Background>
+                    </Button.Background>
 
-                <Image Source="Images/Icons/Left_arrow.png"
+                    <Image Source="Images/Icons/Left_arrow.png"
                                    Width="auto"
                                    Height="auto"/>
-            </Button>
+                </Button>
 
-            <Button Style="{StaticResource RoundButton}"
+                <Button Style="{StaticResource RoundButton}"
                             Name="btnRedo"
                             Width="30"
                             Height="30"
                             BorderBrush="Transparent"
                             BorderThickness="0">
-                <Button.Background>
-                    <ImageBrush
+                    <Button.Background>
+                        <ImageBrush
                                 ImageSource="Images/Backgrounds/Buttons.jpeg"
                                 Stretch="None"
                                 TileMode="Tile" />
-                </Button.Background>
+                    </Button.Background>
 
-                <Image Source="Images/Icons/Right_arrow.png"
+                    <Image Source="Images/Icons/Right_arrow.png"
                                    Width="auto"
                                    Height="auto"/>
-            </Button>
+                </Button>
 
-        </StackPanel>
+            </StackPanel>
         </Border>
         <!--End Fast Music Sheet Settings-->
 
@@ -1067,8 +1067,8 @@
                    Width="150"
                    Height="150"/>
         <!--End Logo-->
-        
-        <!--#endregion End Music Sheet (Row 2)-->  
+
+        <!--#endregion End Music Sheet (Row 2)-->
 
     </Grid>
 </Window>
