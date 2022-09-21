@@ -23,6 +23,10 @@ namespace MyInstrument
     public partial class MainWindow : Window
     {
 
+        //interfaccia strumento
+        private MyInstrumentSurface surface;
+
+        //controlli booleani per attivazione/disattivazione bottoni
         private bool myInstrumentStarted = false;
         private bool myInstrumentSettingsOpened = false;
         private bool musicSheetSettingsOpened = false;
@@ -47,7 +51,7 @@ namespace MyInstrument
         BitmapImage closeSettingsIcon = new BitmapImage(
                     new Uri(Environment.CurrentDirectory + @"\..\..\..\Images\Icons\CloseSettings_1.png"));
 
-        ImageBrush buttonBackground = new ImageBrush(  new BitmapImage(
+        ImageBrush buttonBackground = new ImageBrush(new BitmapImage(
                     new Uri(Environment.CurrentDirectory + @"\..\..\..\Images\Backgrounds\Buttons.jpeg")));
 
         public MainWindow()
@@ -57,8 +61,7 @@ namespace MyInstrument
             MyInstrumentSetup myInstrumentSetup = new MyInstrumentSetup(this);
             myInstrumentSetup.Setup();
 
-            MyInstrumentSurface surface = new MyInstrumentSurface(canvasMyInstrument, lstScaleChanger, lstCodeChanger, lstOctaveChanger);
-            surface.DrawOnCanvas();
+            surface = new MyInstrumentSurface(canvasMyInstrument);
         }
 
         #region TopBar (Row0)
@@ -73,11 +76,13 @@ namespace MyInstrument
         private void btnStart_Click(object sender, RoutedEventArgs e)
         {
             if (!myInstrumentStarted)
-            {                             
+            {
 
                 btnStartImage.Source = pauseIcon;
-                btnStart.Background = ActiveBrush; 
+                btnStart.Background = ActiveBrush;
                 btnStartLabel.Content = "Running...";
+
+                surface.DrawOnCanvas();
 
                 /* MIDI */
                 txtMidiPort.Text = "MP" + Rack.DMIBox.MidiModule.OutDevice.ToString();
@@ -92,6 +97,8 @@ namespace MyInstrument
                 btnStart.Background = DisableBrush;
                 btnStartLabel.Content = "Start";
                 txtMidiPort.Text = "";
+
+                surface.ClearSurface();
             }
         }
 
@@ -103,7 +110,7 @@ namespace MyInstrument
                 WindowInstrumentSettings.Visibility = Visibility.Visible;
                 btnInstrumentSettingImage.Source = closeSettingsIcon;
                 btnInstrumentSettings.Background = ActiveBrush;
-                btnInstrumentSettingLabel.Content = "Close Settings";         
+                btnInstrumentSettingLabel.Content = "Close Settings";
             }
             else
             {
@@ -138,6 +145,10 @@ namespace MyInstrument
 
         #endregion Start, Exit and Setting buttons
 
+        #endregion TopBar (Row0)
+
+        #region Instrument (Row1)
+
         #region Instrument Settings
 
         private void btnCtrlKeyboard_Click(object sender, RoutedEventArgs e)
@@ -162,6 +173,9 @@ namespace MyInstrument
                 btnKeyboardOn = false;
                 btnCtrlFace.IsEnabled = false;
                 btnCtrlKeyboard.IsEnabled = true;
+
+                Rack.UserSettings.MyInstrumentControlMode = _MyInstrumentControlModes.Face;
+                Rack.DMIBox.ResetModulationAndPressure();
             }
 
         }
@@ -207,15 +221,40 @@ namespace MyInstrument
             }
         }
 
-        #endregion Instrument Settings
+        private void lstScaleChanger_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+                     
+            if (myInstrumentStarted)
+            {
+                Rack.UserSettings.ScaleName = (e.AddedItems[0] as ComboBoxItem).Content as string;
+                surface.DrawOnCanvas();
+            }
+        }
+
+        private void lstCodeChanger_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            
+            if (myInstrumentStarted)
+            {
+                Rack.UserSettings.ScaleCode = (e.AddedItems[0] as ComboBoxItem).Content as string;
+                surface.DrawOnCanvas();
+            }
+        }
+
+        private void lstOctaveChanger_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            
+            if (myInstrumentStarted)
+            {
+                Rack.UserSettings.Octave = (e.AddedItems[0] as ComboBoxItem).Content as string;
+                surface.DrawOnCanvas();
+            }
+        }
+        #endregion Instrument Settings       
 
         #region Music Sheet Settings
 
         #endregion Music Sheet Settings
-
-        #endregion TopBar (Row0)
-
-        #region Instrument (Row1)
 
         #endregion Instrument (Row1)
 
@@ -237,7 +276,6 @@ namespace MyInstrument
         }
 
         #endregion MusicSheet (Row2)
-
+       
     }
-
 }

@@ -398,7 +398,7 @@
             Height="550"
             BorderBrush="Black"
             BorderThickness="4"
-            Visibility="Hidden">
+            Visibility="Visible">
 
             <Border.Background>
                 <ImageBrush ImageSource="/Images/Backgrounds/TopBar2.jpg" TileMode="Tile" />
@@ -577,7 +577,7 @@
                                   Margin="0,0,10,0" BorderThickness="2" 
                                   BorderBrush="WhiteSmoke" Width="60" Height="30" 
                                   Background="Black" Foreground="Black"
-                                  FontWeight="Bold">
+                                  FontWeight="Bold" SelectionChanged="lstScaleChanger_SelectionChanged">
                         <ComboBoxItem Name="C" IsSelected="True">
                             C
                         </ComboBoxItem>
@@ -630,7 +630,7 @@
                                   Margin="0,0,10,0" BorderThickness="2" 
                                   BorderBrush="WhiteSmoke" Width="60" Height="30" 
                                   Background="Black" Foreground="Black"
-                                  FontWeight="Bold">
+                                  FontWeight="Bold" SelectionChanged="lstCodeChanger_SelectionChanged">
                         <ComboBoxItem Name="maj" IsSelected="True">
                             maj
                         </ComboBoxItem>
@@ -665,7 +665,7 @@
                                   Style="{StaticResource ComboboxStyle}"
                                   BorderThickness="2" BorderBrush="WhiteSmoke" 
                                   Width="60" Height="30" Background="Black" 
-                                  Foreground="Black" FontWeight="Bold">
+                                  Foreground="Black" FontWeight="Bold" SelectionChanged="lstOctaveChanger_SelectionChanged">
                         <ComboBoxItem Name="_2">
                             2
                         </ComboBoxItem>

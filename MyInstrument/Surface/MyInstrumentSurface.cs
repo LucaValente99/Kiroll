@@ -1,10 +1,12 @@
-﻿using NeeqDMIs.Music;
+﻿using MyInstrument.DMIbox;
+using NeeqDMIs.Music;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Threading;
@@ -26,96 +28,79 @@ namespace MyInstrument.Surface
 
         private DispatcherTimer buttonsMovement = new DispatcherTimer();
 
-        private List<StackPanel> threeStackPanel;
+        private List<StackPanel> threeMusicKeyboards = new List<StackPanel>();
 
         private Canvas canvas;
-        private ComboBox comboScale;
-        private ComboBox comboCode;
-        private ComboBox comboOctave;
-
-        public MyInstrumentSurface(Canvas canvas, ComboBox comboScale, ComboBox comboCode, ComboBox comboOctave)
+        public MyInstrumentSurface(Canvas canvas)
         {
             this.canvas = canvas;
-            this.comboScale = comboScale;
-            this.comboCode = comboCode;
-            this.comboOctave = comboOctave;
-            threeStackPanel = createStackPanelList();
-        }
-
-
-        public void DrawOnCanvas()
-        {
-
-            int distance = 0;
-
-            for (int i = 0; i < threeStackPanel.Count; i++)
-            {
-                canvas.Children.Add(threeStackPanel[i]);
-                Canvas.SetLeft(threeStackPanel[i], (canvas.Width - threeStackPanel[i].Width) / 2 + distance);
-                Canvas.SetTop(threeStackPanel[i], (canvas.Height - threeStackPanel[i].Height - 10) / 2);
-                distance += 400;
-            }
-
-            buttonsMovement.Tick += buttonsMovementEvent;
+            buttonsMovement.Tick += InstrumentKeyboardMovement;
             buttonsMovement.Interval = TimeSpan.FromMilliseconds(10);
-            buttonsMovement.Start();          
-        }
+        }   
 
-        public List<Button> createButtons()
+        //creo una lista di 3 stack panel da mostrare nella sezione MyInstrument (canvas)
+        public List<StackPanel> CreateMusicKeyboards()
         {
-            List<Button> rectangleButtons = new List<Button>();
-            Scale scale = new Scale(AbsNotesMethods.ToAbsNote(comboScale.Text), ScaleCodesMethods.toScaleCode(comboCode.Text));
-            List<AbsNotes> noteList = scale.NotesInScale;
-
-            for (int i = 0; i < 7; i++)
-            {
-                SolidColorBrush brush = new SolidColorBrush(KeysColorCode[i]);
-                Button button = new Button() { Width = 150, Height = 84.2, Background = brush, BorderThickness = new System.Windows.Thickness(3), BorderBrush = Brushes.Black};
-                TextBlock textBlock = new TextBlock() { Text = noteList[i].ToStandardString(), Foreground = Brushes.Black, FontSize = 30};
-
-                button.Content = textBlock;
-                rectangleButtons.Add(button);
-            }                                
-
-            return rectangleButtons;
-
-        }
-
-        public List<StackPanel> createStackPanelList()
-        {
-            List<StackPanel> threeStackPanel = new List<StackPanel> ();
+            List<StackPanel> threeMusicKeyboards = new List<StackPanel> ();
 
             for (int i = 0; i < 3; i++)
             {
-                StackPanel buttonsStackPanel = new StackPanel() { Orientation = Orientation.Vertical, Background = Brushes.Black, Width = 150, Height = 590 };
-                fillStackPanel(buttonsStackPanel);
-                threeStackPanel.Add(buttonsStackPanel);
+                MyInstrumentKeyboard instrumentKeyboard = new MyInstrumentKeyboard();
+                threeMusicKeyboards.Add(instrumentKeyboard.MusicKeyboard);
             }
 
-            return threeStackPanel;
+            return threeMusicKeyboards;
 
-        }
+        }     
 
-        private void fillStackPanel(StackPanel sp)
-        {
-            
-            foreach (Button button in createButtons())
-            {                
-                sp.Children.Add(button);
-
-            }
-        }
-
-        private void buttonsMovementEvent(object? sender, EventArgs e)
+        // disegno a schermo gli stack panel con associata la relativa scala e genero il movimento da sx verso dx
+        public void DrawOnCanvas()
         {
 
-            foreach(StackPanel sp in threeStackPanel)
+            if (threeMusicKeyboards.Count != 0)
             {
-                Canvas.SetLeft(sp, Canvas.GetLeft(sp) - 5);
+                ClearSurface();
+                threeMusicKeyboards = CreateMusicKeyboards();
+            }
+            else
+            {
+                threeMusicKeyboards = CreateMusicKeyboards();
+            }
+            int distance = 0;
 
-                if (Canvas.GetLeft(sp) < (canvas.Width / 2 - canvas.Width / 4) - sp.Width)
+            for (int i = 0; i < threeMusicKeyboards.Count; i++)
+            {
+                canvas.Children.Add(threeMusicKeyboards[i]);
+                Canvas.SetLeft(threeMusicKeyboards[i], (canvas.Width - threeMusicKeyboards[i].Width) / 2 + distance);
+                Canvas.SetTop(threeMusicKeyboards[i], (canvas.Height - threeMusicKeyboards[i].Height - 10) / 2);
+                distance += 400;
+            }
+            
+            buttonsMovement.Start();
+        }
+
+        //pulisco il canvas
+        public void ClearSurface()
+        {
+            foreach (StackPanel instrumentKeyboard in threeMusicKeyboards)
+            {
+                canvas.Children.Remove(instrumentKeyboard);
+            }
+
+            threeMusicKeyboards.Clear();
+        }
+
+        // moviemnto tastiere
+        private void InstrumentKeyboardMovement(object? sender, EventArgs e)
+        {
+
+            foreach(StackPanel instrumentKeyboard in threeMusicKeyboards)
+            {
+                Canvas.SetLeft(instrumentKeyboard, Canvas.GetLeft(instrumentKeyboard) - 5);
+
+                if (Canvas.GetLeft(instrumentKeyboard) < (canvas.Width / 2 - canvas.Width / 4) - instrumentKeyboard.Width)
                 {
-                    Canvas.SetLeft(sp, (canvas.Width - sp.Width) / 2 + 800);
+                    Canvas.SetLeft(instrumentKeyboard, (canvas.Width - instrumentKeyboard.Width) / 2 + 800);
                 }
             }
         }
