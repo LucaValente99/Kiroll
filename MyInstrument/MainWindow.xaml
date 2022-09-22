@@ -56,7 +56,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ToggleButton}">
                         <Border   
-                             Background="White"   
+                             Background="White"
                              x:Name="border"   
                              CornerRadius="0,5,5,0"   
                              BorderThickness="0,2,2,2"  
@@ -576,9 +576,9 @@
                                   Style="{StaticResource ComboboxStyle}" 
                                   Margin="0,0,10,0" BorderThickness="2" 
                                   BorderBrush="WhiteSmoke" Width="60" Height="30" 
-                                  Background="Black" Foreground="Black"
+                                  Foreground="Black" IsEnabled="False"
                                   FontWeight="Bold" SelectionChanged="lstScaleChanger_SelectionChanged">
-                        <ComboBoxItem Name="C" IsSelected="True">
+                        <ComboBoxItem Name="C">
                             C
                         </ComboBoxItem>
                         <ComboBoxItem Name="sC">
@@ -614,6 +614,9 @@
                         <ComboBoxItem Name="B">
                             B
                         </ComboBoxItem>
+                        <ComboBoxItem Name="_" Visibility="Collapsed" IsEnabled="False" IsSelected="True">
+                            _
+                        </ComboBoxItem>
                     </ComboBox>
 
                     <!-- Maj & Min Scale Buttons -->
@@ -628,8 +631,9 @@
                     <ComboBox x:Name="lstCodeChanger"
                                   Style="{StaticResource ComboboxStyle}" 
                                   Margin="0,0,10,0" BorderThickness="2" 
-                                  BorderBrush="WhiteSmoke" Width="60" Height="30" 
+                                  BorderBrush="WhiteSmoke" Width="62" Height="30" 
                                   Background="Black" Foreground="Black"
+                                  IsEnabled="False"
                                   FontWeight="Bold" SelectionChanged="lstCodeChanger_SelectionChanged">
                         <ComboBoxItem Name="maj" IsSelected="True">
                             maj
@@ -639,6 +643,9 @@
                         </ComboBoxItem>
                         <ComboBoxItem Name="chrom">
                             chrom
+                        </ComboBoxItem>
+                        <ComboBoxItem Name="__" Visibility="Collapsed" IsEnabled="False" IsSelected="True">
+                            _
                         </ComboBoxItem>
                     </ComboBox>
 
@@ -665,6 +672,7 @@
                                   Style="{StaticResource ComboboxStyle}"
                                   BorderThickness="2" BorderBrush="WhiteSmoke" 
                                   Width="60" Height="30" Background="Black" 
+                                  IsEnabled="False"
                                   Foreground="Black" FontWeight="Bold" SelectionChanged="lstOctaveChanger_SelectionChanged">
                         <ComboBoxItem Name="_2">
                             2
@@ -672,7 +680,7 @@
                         <ComboBoxItem Name="_3">
                             3
                         </ComboBoxItem>
-                        <ComboBoxItem Name="_4" IsSelected="True">
+                        <ComboBoxItem Name="_4">
                             4
                         </ComboBoxItem>
                         <ComboBoxItem Name="_5">
@@ -680,6 +688,9 @@
                         </ComboBoxItem>
                         <ComboBoxItem Name="_6">
                             6
+                        </ComboBoxItem>
+                        <ComboBoxItem Name="___" Visibility="Collapsed" IsSelected="True" IsEnabled="False">
+                            _
                         </ComboBoxItem>
                     </ComboBox>
 

@@ -35,6 +35,20 @@ namespace MyInstrument
         private bool btnFaceOn = false;
         private bool btnDisableWritingMode = false;
 
+        // utilizzati per la selezione dell'indice dei combobox nelle fasi di Start and Stop
+        private Dictionary<string, int> comboScale = new Dictionary<string, int>()
+        {
+            {"C", 0 }, { "C#", 1 }, { "D", 2 }, { "D#", 3 }, { "E", 4 }, { "F", 5 }, { "F#", 6 }, {"G", 7 }, { "G#", 8 }, { "A", 9 }, { "A#", 10 }, { "B", 11}, { "_", 12}
+        };
+        private Dictionary<string, int> comboCode = new Dictionary<string, int>()
+        {
+            {"maj", 0}, {"min", 1}, {"chrom", 2}, { "_", 3}
+        };
+        private Dictionary<string, int> comboOctave = new Dictionary<string, int>()
+        {
+            {"2", 0 }, {"3", 1 }, {"4", 2 }, {"5", 3}, {"6", 4}, { "_", 5}
+        };
+
         private readonly SolidColorBrush ActiveBrush = new SolidColorBrush(Colors.LightYellow);
         private readonly SolidColorBrush WarningBrush = new SolidColorBrush(Colors.DarkRed);
         private readonly SolidColorBrush DisableBrush = new SolidColorBrush(Colors.Transparent);
@@ -94,10 +108,18 @@ namespace MyInstrument
             {
 
                 btnStartImage.Source = pauseIcon;
-                btnStart.Background = ActiveBrush;
+                btnStart.Background = ActiveBrush;                
                 btnStartLabel.Content = "Running...";
 
                 surface.DrawOnCanvas();
+            
+                lstScaleChanger.IsEnabled = true;
+                lstScaleChanger.SelectedIndex = comboScale[Rack.UserSettings.ScaleName];
+                lstCodeChanger.IsEnabled = true;
+                lstCodeChanger.SelectedIndex = comboCode[Rack.UserSettings.ScaleCode];
+                lstOctaveChanger.IsEnabled = true;
+                lstOctaveChanger.SelectedIndex = comboOctave[Rack.UserSettings.Octave];
+
 
                 /* MIDI */
                 txtMidiPort.Text = "MP" + Rack.DMIBox.MidiModule.OutDevice.ToString();
@@ -112,6 +134,13 @@ namespace MyInstrument
                 btnStart.Background = DisableBrush;
                 btnStartLabel.Content = "Start";
                 txtMidiPort.Text = "";
+
+                lstScaleChanger.IsEnabled = false;
+                lstScaleChanger.SelectedIndex = comboScale["_"];
+                lstCodeChanger.IsEnabled = false;
+                lstCodeChanger.SelectedIndex = comboCode["_"];
+                lstOctaveChanger.IsEnabled = false;
+                lstOctaveChanger.SelectedIndex = comboOctave["_"];
 
                 surface.ClearSurface();
             }
