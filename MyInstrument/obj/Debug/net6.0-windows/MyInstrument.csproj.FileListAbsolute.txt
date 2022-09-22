@@ -35,3 +35,4 @@ D:\Universita\Tirocinio_tesi\1_Tirocinio\MyInstrument\MyInstrument\obj\Debug\net
 D:\Universita\Tirocinio_tesi\1_Tirocinio\MyInstrument\MyInstrument\bin\Debug\net6.0-windows\Google.Protobuf.dll
 D:\Universita\Tirocinio_tesi\1_Tirocinio\MyInstrument\MyInstrument\bin\Debug\net6.0-windows\Mediapipe.Net.dll
 D:\Universita\Tirocinio_tesi\1_Tirocinio\MyInstrument\MyInstrument\bin\Debug\net6.0-windows\Mediapipe.Net.Framework.Protobuf.dll
+D:\Universita\Tirocinio_tesi\1_Tirocinio\MyInstrument\MyInstrument\obj\Debug\net6.0-windows\MyInstrument.csproj.ResolveComReference.cache

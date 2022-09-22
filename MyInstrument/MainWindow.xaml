@@ -398,7 +398,7 @@
             Height="550"
             BorderBrush="Black"
             BorderThickness="4"
-            Visibility="Visible">
+            Visibility="Hidden">
 
             <Border.Background>
                 <ImageBrush ImageSource="/Images/Backgrounds/TopBar2.jpg" TileMode="Tile" />

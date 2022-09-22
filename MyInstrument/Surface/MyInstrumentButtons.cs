@@ -26,6 +26,7 @@ namespace MyInstrument.Surface
 
         private TextBlock content;
         private int octave;
+        private string key;
 
         public MyInstrumentButtons( string key, int octave,  SolidColorBrush brush) : base()
         {
@@ -40,7 +41,7 @@ namespace MyInstrument.Surface
             toolKey.Width = 150;
             toolKey.Height = 84.2;
             toolKey.Background = brush;
-            toolKey.BorderThickness = new System.Windows.Thickness(3);
+            toolKey.BorderThickness = new Thickness(3);
             toolKey.BorderBrush = Brushes.Black;
             toolKey.Content = content;
 
@@ -48,6 +49,7 @@ namespace MyInstrument.Surface
             toolKey.MouseLeave += Stop;
 
             this.octave = octave;
+            this.key = key;
         }
 
         private void Stop(object sender, MouseEventArgs e)
@@ -56,6 +58,9 @@ namespace MyInstrument.Surface
             {
                 MidiNotes md = AbsNotesMethods.ToMidiNote(AbsNotesMethods.ToAbsNote(toolKey.Name), octave);
                 Rack.DMIBox.MidiModule.StopNote(MidiNotesMethods.ToPitchValue(md));
+                Rack.UserSettings.NoteName = "_";
+                Rack.UserSettings.NotePitch = "_";
+                Rack.UserSettings.NoteVelocity = "_";
             }            
         }
 
@@ -65,6 +70,9 @@ namespace MyInstrument.Surface
             {
                 MidiNotes md = AbsNotesMethods.ToMidiNote(AbsNotesMethods.ToAbsNote(toolKey.Name), octave);
                 Rack.DMIBox.MidiModule.PlayNote(MidiNotesMethods.ToPitchValue(md), 127);
+                Rack.UserSettings.NoteName = content.Text + octave.ToString();
+                Rack.UserSettings.NotePitch = md.ToPitchValue().ToString();
+                Rack.UserSettings.NoteVelocity = "127";
             }           
         }
     }

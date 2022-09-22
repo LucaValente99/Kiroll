@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MyInstrument.Surface;
+using System.Windows.Threading;
 
 namespace MyInstrument
 {
@@ -54,6 +55,7 @@ namespace MyInstrument
         ImageBrush buttonBackground = new ImageBrush(new BitmapImage(
                     new Uri(Environment.CurrentDirectory + @"\..\..\..\Images\Backgrounds\Buttons.jpeg")));
 
+        private DispatcherTimer updater;
         public MainWindow()
         {
             InitializeComponent();
@@ -61,7 +63,20 @@ namespace MyInstrument
             MyInstrumentSetup myInstrumentSetup = new MyInstrumentSetup(this);
             myInstrumentSetup.Setup();
 
+            updater = new DispatcherTimer();
+            updater.Interval = TimeSpan.FromMilliseconds(10);
+            updater.Tick += UpdateWindow;
+            updater.Start();
+
             surface = new MyInstrumentSurface(canvasMyInstrument);
+        }
+
+        private void UpdateWindow(object? sender, EventArgs e)
+        {
+            txtPitch.Text = Rack.UserSettings.NotePitch;
+            txtNoteName.Text = Rack.UserSettings.NoteName;
+            txtVelocityMouth.Text = Rack.UserSettings.NoteVelocity;
+
         }
 
         #region TopBar (Row0)

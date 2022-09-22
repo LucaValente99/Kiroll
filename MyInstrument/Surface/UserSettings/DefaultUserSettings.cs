@@ -14,6 +14,9 @@ namespace MyInstrument.Surface.UserSettings
         public string ScaleName { get; set; } = "C";
         public string ScaleCode { get; set; } = "maj";
         public string Octave { get; set; } = "4";
+        public string NoteName { get; set; } = "_";
+        public string NotePitch { get; set; } = "_";
+        public string NoteVelocity { get; set; } = "_";
         public _MyInstrumentControlModes MyInstrumentControlMode { get; set; } = _MyInstrumentControlModes.Face;
         public _SlidePlayModes SlidePlayMode { get; set; } = _SlidePlayModes.On;
     }
