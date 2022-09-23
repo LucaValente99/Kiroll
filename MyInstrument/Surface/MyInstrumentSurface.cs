@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -31,6 +32,8 @@ namespace MyInstrument.Surface
         private List<StackPanel> threeMusicKeyboards = new List<StackPanel>();
 
         private Canvas canvas;
+
+        private double distance = Rack.UserSettings.keyDistance;
         public MyInstrumentSurface(Canvas canvas)
         {
             this.canvas = canvas;
@@ -46,9 +49,9 @@ namespace MyInstrument.Surface
             for (int i = 0; i < 3; i++)
             {
                 MyInstrumentKeyboard instrumentKeyboard = new MyInstrumentKeyboard();
-                threeMusicKeyboards.Add(instrumentKeyboard.MusicKeyboard);
+                threeMusicKeyboards.Add(instrumentKeyboard.MusicKeyboard);              
             }
-
+            
             return threeMusicKeyboards;
 
         }     
@@ -61,10 +64,12 @@ namespace MyInstrument.Surface
             {
                 ClearSurface();
                 threeMusicKeyboards = CreateMusicKeyboards();
+                SetDistance(Rack.UserSettings.keyDistance);
             }
             else
             {
                 threeMusicKeyboards = CreateMusicKeyboards();
+                SetDistance(Rack.UserSettings.keyDistance);
             }
             int distance = 0;
 
@@ -87,7 +92,40 @@ namespace MyInstrument.Surface
                 canvas.Children.Remove(instrumentKeyboard);
             }
 
+            this.distance = Rack.UserSettings.keyDistance;
+
             threeMusicKeyboards.Clear();
+        }
+
+        public void SetDistance(double distance)
+        {
+            foreach (StackPanel instrumentKeyboard in threeMusicKeyboards)
+            {
+                if (this.distance > distance)
+                {
+                    instrumentKeyboard.Height += (distance * 7) - this.distance;
+                    Rack.UserSettings.keyboardHeight = instrumentKeyboard.Height;
+
+                }
+                else if (this.distance < distance)
+                {
+                    instrumentKeyboard.Height -= this.distance - (distance * 7);
+                    Rack.UserSettings.keyboardHeight = instrumentKeyboard.Height;
+                }
+                else
+                {
+                    instrumentKeyboard.Height = Rack.UserSettings.keyboardHeight;
+                }           
+
+                foreach (Button key in instrumentKeyboard.Children)
+                {
+                    key.Margin = new Thickness(0,0,0, Rack.UserSettings.keyDistance);
+                }
+            }
+
+            canvas.Height = Rack.UserSettings.keyboardHeight + 22;
+            this.distance = distance * 7;             
+            
         }
 
         // moviemnto tastiere

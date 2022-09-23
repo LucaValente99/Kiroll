@@ -311,11 +311,11 @@
                                 HorizontalAlignment="Stretch" Margin="0,0,0,0" 
                                 Width="Auto" Height="Auto" 
                                 HorizontalScrollBarVisibility="Disabled" 
-                                VerticalScrollBarVisibility="Disabled" Grid.Row="0">
+                                VerticalScrollBarVisibility="Visible" Grid.Row="0">
                     <!--Canvas allows to place elements by coordinates-->
                     <Canvas x:Name="canvasMyInstrument" VerticalAlignment="Stretch" 
-                                        HorizontalAlignment="Center" Margin="0,0,0,0"
-                            Width="3000" Height="625">
+                            HorizontalAlignment="Center" Margin="0,0,0,0"
+                            Width="3000" Height="612">
                         <Canvas.Background>
                             <SolidColorBrush Color="Black" Opacity="0.7" />
                         </Canvas.Background>
@@ -799,8 +799,15 @@
                         Name="sldDistance"
                         HorizontalAlignment="Stretch"
                         Margin="40,0,40,0"
-                        Minimum="50"
-                        Maximum="400"/>
+                        TickPlacement="BottomRight"
+                        TickFrequency="2"
+                        IsSnapToTickEnabled="True"
+                        LargeChange="0"
+                        Focusable="False"
+                        Minimum="0"
+                        Maximum="30"      
+                        Thumb.DragCompleted="sldDistance_DragCompleted"
+                        />
                     <!-- .DragCompleted="sldDistance_DragCompleted" Height="18" Margin="0,0,-0.2,0" Grid.RowSpan="2" VerticalAlignment="Top" RenderTransformOrigin="0.501,0.5" /> -->
 
                 </StackPanel>

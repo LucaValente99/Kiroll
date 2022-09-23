@@ -294,6 +294,15 @@ namespace MyInstrument
                 surface.DrawOnCanvas();
             }
         }
+
+        private void sldDistance_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        {
+            if (myInstrumentStarted)
+            {
+                Rack.UserSettings.keyDistance = sldDistance.Value;
+                surface.SetDistance(sldDistance.Value);
+            }
+        }
         #endregion Instrument Settings       
 
         #region Music Sheet Settings
@@ -320,6 +329,6 @@ namespace MyInstrument
         }
 
         #endregion MusicSheet (Row2)
-       
+
     }
 }

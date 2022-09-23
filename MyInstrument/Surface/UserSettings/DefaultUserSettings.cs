@@ -17,6 +17,8 @@ namespace MyInstrument.Surface.UserSettings
         public string NoteName { get; set; } = "_";
         public string NotePitch { get; set; } = "_";
         public string NoteVelocity { get; set; } = "_";
+        public double keyDistance { get; set; } = 0;
+        public double keyboardHeight { get; set; } = 590;
         public _MyInstrumentControlModes MyInstrumentControlMode { get; set; } = _MyInstrumentControlModes.Face;
         public _SlidePlayModes SlidePlayMode { get; set; } = _SlidePlayModes.On;
     }
