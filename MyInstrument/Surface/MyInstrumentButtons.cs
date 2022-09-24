@@ -26,8 +26,9 @@ namespace MyInstrument.Surface
 
         private TextBlock content;
         private int octave;
-        private string key;
+        private readonly string key;
 
+        private static MidiNotes oldMidiNote = MidiNotes.NaN; // aiuta a gestire la SlidePlayMode
         public MyInstrumentButtons( string key, int octave,  SolidColorBrush brush) : base()
         {
             content = new TextBlock();
@@ -46,21 +47,25 @@ namespace MyInstrument.Surface
             toolKey.Content = content;
 
             toolKey.MouseEnter += Play;
-            toolKey.MouseLeave += Stop;
+            toolKey.MouseLeave += Stop;                  
 
             this.octave = octave;
             this.key = key;
         }
 
         private void Stop(object sender, MouseEventArgs e)
-        {
+        {         
             if (Rack.UserSettings.MyInstrumentControlMode == _MyInstrumentControlModes.Keyboard)
             {
                 MidiNotes md = AbsNotesMethods.ToMidiNote(AbsNotesMethods.ToAbsNote(toolKey.Name), octave);
-                Rack.DMIBox.MidiModule.StopNote(MidiNotesMethods.ToPitchValue(md));
-                Rack.UserSettings.NoteName = "_";
-                Rack.UserSettings.NotePitch = "_";
-                Rack.UserSettings.NoteVelocity = "_";
+                if (Rack.UserSettings.SlidePlayMode != _SlidePlayModes.On)
+                {                                       
+                    Rack.DMIBox.MidiModule.StopNote(MidiNotesMethods.ToPitchValue(md));
+                    Rack.UserSettings.NoteName = "_";
+                    Rack.UserSettings.NotePitch = "_";
+                    Rack.UserSettings.NoteVelocity = "_";                    
+                }     
+                oldMidiNote = md;
             }            
         }
 
@@ -69,11 +74,20 @@ namespace MyInstrument.Surface
             if (Rack.UserSettings.MyInstrumentControlMode == _MyInstrumentControlModes.Keyboard)
             {
                 MidiNotes md = AbsNotesMethods.ToMidiNote(AbsNotesMethods.ToAbsNote(toolKey.Name), octave);
+                if (oldMidiNote != MidiNotes.NaN && Rack.UserSettings.SlidePlayMode == _SlidePlayModes.On)
+                {
+                    Rack.DMIBox.MidiModule.StopNote(MidiNotesMethods.ToPitchValue(oldMidiNote));
+                }                   
                 Rack.DMIBox.MidiModule.PlayNote(MidiNotesMethods.ToPitchValue(md), 127);
                 Rack.UserSettings.NoteName = content.Text + octave.ToString();
                 Rack.UserSettings.NotePitch = md.ToPitchValue().ToString();
-                Rack.UserSettings.NoteVelocity = "127";
+                Rack.UserSettings.NoteVelocity = "127";                              
             }           
+        }
+
+        public static void resetSlidePlay()
+        {
+            oldMidiNote = MidiNotes.NaN;
         }
     }
 }

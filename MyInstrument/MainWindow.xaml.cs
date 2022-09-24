@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MyInstrument.Surface;
 using System.Windows.Threading;
+using NeeqDMIs.Eyetracking.PointFilters;
 
 namespace MyInstrument
 {
@@ -34,6 +35,7 @@ namespace MyInstrument
         private bool btnKeyboardOn = false;
         private bool btnFaceOn = false;
         private bool btnDisableWritingMode = false;
+        private bool btnSlidePlayOn = false;
 
         // utilizzati per la selezione dell'indice dei combobox nelle fasi di Start and Stop
         private Dictionary<string, int> comboScale = new Dictionary<string, int>()
@@ -303,6 +305,28 @@ namespace MyInstrument
                 surface.SetDistance(sldDistance.Value);
             }
         }
+
+        private void btnSlidePlay_Click(object sender, RoutedEventArgs e)
+        {
+            if (myInstrumentStarted)
+            {
+                if (!btnSlidePlayOn)
+                {
+                    btnSlidePlayOn = true;
+                    btnSlidePlay.Background = ActiveBrush;
+                    Rack.UserSettings.SlidePlayMode = _SlidePlayModes.On;
+                    MyInstrumentButtons.resetSlidePlay();
+                }
+                else
+                {
+                    btnSlidePlayOn = false;
+                    btnSlidePlay.Background = buttonBackground;
+                    Rack.UserSettings.SlidePlayMode = _SlidePlayModes.Off;
+
+                }
+            }
+        }
+
         #endregion Instrument Settings       
 
         #region Music Sheet Settings
@@ -329,6 +353,6 @@ namespace MyInstrument
         }
 
         #endregion MusicSheet (Row2)
-
+        
     }
 }

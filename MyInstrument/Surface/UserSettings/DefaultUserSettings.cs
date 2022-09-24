@@ -20,6 +20,6 @@ namespace MyInstrument.Surface.UserSettings
         public double keyDistance { get; set; } = 0;
         public double keyboardHeight { get; set; } = 590;
         public _MyInstrumentControlModes MyInstrumentControlMode { get; set; } = _MyInstrumentControlModes.Face;
-        public _SlidePlayModes SlidePlayMode { get; set; } = _SlidePlayModes.On;
+        public _SlidePlayModes SlidePlayMode { get; set; } = _SlidePlayModes.Off;
     }
 }

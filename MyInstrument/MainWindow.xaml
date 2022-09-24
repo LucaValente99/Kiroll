@@ -311,7 +311,7 @@
                                 HorizontalAlignment="Stretch" Margin="0,0,0,0" 
                                 Width="Auto" Height="Auto" 
                                 HorizontalScrollBarVisibility="Disabled" 
-                                VerticalScrollBarVisibility="Visible" Grid.Row="0">
+                                VerticalScrollBarVisibility="Hidden" Grid.Row="0">
                     <!--Canvas allows to place elements by coordinates-->
                     <Canvas x:Name="canvasMyInstrument" VerticalAlignment="Stretch" 
                             HorizontalAlignment="Center" Margin="0,0,0,0"
@@ -761,7 +761,8 @@
                             HorizontalAlignment="Left"
                             VerticalAlignment="Stretch"
                             BorderBrush="White"
-                            BorderThickness="2">
+                            BorderThickness="2"
+                            Click="btnSlidePlay_Click">
                         <Button.Background>
                             <ImageBrush
                                 ImageSource="Images/Backgrounds/Buttons.jpeg"
@@ -861,7 +862,6 @@
                 <Border Style="{StaticResource SeparatorStyleHorizontal}"
                             Grid.Row="0" VerticalAlignment="Bottom"/>
 
-                <!--Music Sheet Rapid Settings-->
                 <StackPanel Grid.Row="1" Orientation="Horizontal" 
                             HorizontalAlignment="Center">
 
@@ -925,7 +925,6 @@
                 <StackPanel Grid.Row="2" Orientation="Horizontal" 
                             HorizontalAlignment="Center">
 
-
                     <Label
                         Margin="0,0,10,0"
                         FontFamily="Papyrus"
@@ -953,7 +952,6 @@
                                    Height="20"/>
                     </Button>
                 </StackPanel>
-                <!--End Music Sheet Rapid Settings-->
 
                 <Border Style="{StaticResource SeparatorStyleHorizontal}"
                         Grid.Row="2"
