@@ -38,7 +38,7 @@ namespace MyInstrument.Surface
         {
             this.canvas = canvas;
             buttonsMovement.Tick += InstrumentKeyboardMovement;
-            buttonsMovement.Interval = TimeSpan.FromMilliseconds(10);
+            buttonsMovement.Interval = TimeSpan.FromMilliseconds(15);
         }   
 
         //creo una lista di 3 stack panel da mostrare nella sezione MyInstrument (canvas)
