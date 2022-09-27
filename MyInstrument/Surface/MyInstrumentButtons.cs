@@ -32,7 +32,7 @@ namespace MyInstrument.Surface
         public MyInstrumentButtons( string key, int octave,  SolidColorBrush brush) : base()
         {
             content = new TextBlock();
-            content.Text = AbsNotesMethods.ToStandardString(AbsNotesMethods.ToAbsNote(key));
+            content.Text = MusicConversions.ToAbsNote(key).ToStandardString();
             content.Foreground = Brushes.Black;
             content.FontSize = 30;
             content.FontWeight = FontWeights.Bold;
@@ -57,7 +57,7 @@ namespace MyInstrument.Surface
         {         
             if (Rack.UserSettings.MyInstrumentControlMode == _MyInstrumentControlModes.Keyboard)
             {
-                MidiNotes md = AbsNotesMethods.ToMidiNote(AbsNotesMethods.ToAbsNote(key), octave);
+                MidiNotes md = MusicConversions.ToAbsNote(key).ToMidiNote(octave);
                 if (Rack.UserSettings.SlidePlayMode != _SlidePlayModes.On)
                 {                                       
                     Rack.DMIBox.MidiModule.StopNote(MidiNotesMethods.ToPitchValue(md));
@@ -73,7 +73,7 @@ namespace MyInstrument.Surface
         {
             if (Rack.UserSettings.MyInstrumentControlMode == _MyInstrumentControlModes.Keyboard)
             {
-                MidiNotes md = AbsNotesMethods.ToMidiNote(AbsNotesMethods.ToAbsNote(key), octave);
+                MidiNotes md = MusicConversions.ToAbsNote(key).ToMidiNote(octave);
                 if (oldMidiNote != MidiNotes.NaN && Rack.UserSettings.SlidePlayMode == _SlidePlayModes.On)
                 {
                     Rack.DMIBox.MidiModule.StopNote(MidiNotesMethods.ToPitchValue(oldMidiNote));

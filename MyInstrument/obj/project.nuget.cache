@@ -1,12 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "lb5lCRm6JiX/tUw9x0f59s7Og6bkHhOmMgJF8WIwokUskML96NsHN0knxj7Nq5bxOOoRZafIyYhQaVuapfD4AQ==",
+  "dgSpecHash": "XFCk0KdoOiELN2qxgW/KR9MLd0dzRtcDzuFF6Mn/ZoSO6nqlyEWtTnol6O2oYSmzz5yZzrcbAy1qJ4NikQ/2ZQ==",
   "success": true,
-  "projectFilePath": "D:\\Universita\\Tirocinio_tesi\\1_Tirocinio\\MyInstrument\\MyInstrument\\MyInstrument.csproj",
+  "projectFilePath": "C:\\Users\\neequ\\OneDrive\\Documenti\\GitHub\\eye-tracking-musical-instrument-for-performance-and-composition\\MyInstrument\\MyInstrument.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\User\\.nuget\\packages\\google.protobuf\\3.19.4\\google.protobuf.3.19.4.nupkg.sha512",
-    "C:\\Users\\User\\.nuget\\packages\\mediapipe.net\\0.8.10\\mediapipe.net.0.8.10.nupkg.sha512",
-    "C:\\Users\\User\\.nuget\\packages\\mediapipe.net.framework.protobuf\\0.8.9\\mediapipe.net.framework.protobuf.0.8.9.nupkg.sha512"
+    "C:\\Users\\neequ\\.nuget\\packages\\google.protobuf\\3.19.4\\google.protobuf.3.19.4.nupkg.sha512",
+    "C:\\Users\\neequ\\.nuget\\packages\\mediapipe.net\\0.8.10\\mediapipe.net.0.8.10.nupkg.sha512",
+    "C:\\Users\\neequ\\.nuget\\packages\\mediapipe.net.framework.protobuf\\0.8.9\\mediapipe.net.framework.protobuf.0.8.9.nupkg.sha512"
   ],
   "logs": []
 }

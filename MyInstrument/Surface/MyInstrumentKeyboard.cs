@@ -84,7 +84,7 @@ namespace MyInstrument.Surface
         public List<Button> CreateKeys()
         {
             List<Button> toolKeys = new List<Button>();
-            Scale scale = new Scale(AbsNotesMethods.ToAbsNote(ComboScale), ScaleCodesMethods.toScaleCode(ComboCode));
+            Scale scale = new Scale(MusicConversions.ToAbsNote(ComboScale), MusicConversions.ToScaleCode(ComboCode));
             List<AbsNotes> noteList = scale.NotesInScale;
             int deviation_maj = deviationMaj[noteList[0].ToStandardString()];
             int deviation_min = deviationMin[noteList[0].ToStandardString()];

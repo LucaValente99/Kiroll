@@ -111,19 +111,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\User\\.nuget\\packages\\": {}
+    "C:\\Users\\neequ\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Universita\\Tirocinio_tesi\\1_Tirocinio\\MyInstrument\\MyInstrument\\MyInstrument.csproj",
+      "projectUniqueName": "C:\\Users\\neequ\\OneDrive\\Documenti\\GitHub\\eye-tracking-musical-instrument-for-performance-and-composition\\MyInstrument\\MyInstrument.csproj",
       "projectName": "MyInstrument",
-      "projectPath": "D:\\Universita\\Tirocinio_tesi\\1_Tirocinio\\MyInstrument\\MyInstrument\\MyInstrument.csproj",
-      "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "D:\\Universita\\Tirocinio_tesi\\1_Tirocinio\\MyInstrument\\MyInstrument\\obj\\",
+      "projectPath": "C:\\Users\\neequ\\OneDrive\\Documenti\\GitHub\\eye-tracking-musical-instrument-for-performance-and-composition\\MyInstrument\\MyInstrument.csproj",
+      "packagesPath": "C:\\Users\\neequ\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\neequ\\OneDrive\\Documenti\\GitHub\\eye-tracking-musical-instrument-for-performance-and-composition\\MyInstrument\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\neequ\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -131,14 +131,15 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "D:\\root_c87\\Frammenti Software\\NugetPackages": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net6.0-windows7.0": {
           "targetAlias": "net6.0-windows",
           "projectReferences": {
-            "D:\\Universita\\Tirocinio_tesi\\1_Tirocinio\\NeeqDMIs\\NeeqDMIs.csproj": {
-              "projectPath": "D:\\Universita\\Tirocinio_tesi\\1_Tirocinio\\NeeqDMIs\\NeeqDMIs.csproj"
+            "C:\\Users\\neequ\\OneDrive\\Documenti\\GitHub\\NeeqDMIs\\NeeqDMIs.csproj": {
+              "projectPath": "C:\\Users\\neequ\\OneDrive\\Documenti\\GitHub\\NeeqDMIs\\NeeqDMIs.csproj"
             }
           }
         }
@@ -176,7 +177,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.301\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
       }
     }
   }
