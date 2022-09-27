@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MyInstrument.Surface;
 using NeeqDMIs;
+using NeeqDMIs.Keyboard;
 using NeeqDMIs.Music;
 
 namespace MyInstrument.DMIbox
@@ -13,11 +15,9 @@ namespace MyInstrument.DMIbox
         private const _ModulationControlModes DEFAULT_MODULATIONCONTROLMODE = _ModulationControlModes.On;
         private const _MouthControlModes DEFAULT_MOUTHCONTROLMODE = _MouthControlModes.Dynamic;
 
-
-
+        
         private _ModulationControlModes modulationControlMode = DEFAULT_MODULATIONCONTROLMODE;
         private _MouthControlModes mouthControlMode = DEFAULT_MOUTHCONTROLMODE;
-
         public _ModulationControlModes ModulationControlMode { get => modulationControlMode; set { modulationControlMode = value; ResetModulationAndPressure(); } }
         public _MouthControlModes MouthControlMode { get => mouthControlMode; set { mouthControlMode = value; ResetModulationAndPressure(); } }
 
@@ -30,6 +30,16 @@ namespace MyInstrument.DMIbox
         private MidiNotes nextNote = MidiNotes.C5;
 
         public MainWindow MyInstrumentMainWindow { get; set; }
+        public KeyboardModule KeyboardModule { get; set; }
+
+        #region Graphic components
+
+        private AutoScroller autoScroller;
+        private MyInstrumentSurface myInstrumentSurface;
+        public AutoScroller AutoScroller { get => autoScroller; set => autoScroller = value; }
+        public MyInstrumentSurface MyInstrumentSurface { get => myInstrumentSurface; set => myInstrumentSurface = value; }
+
+        #endregion Graphic components      
 
         public bool MouthOpened
         {
@@ -184,7 +194,7 @@ namespace MyInstrument.DMIbox
         private void SetPressure()
         {
             MidiModule.SetPressure(pressure);
-        }
+        }      
 
     }
 }

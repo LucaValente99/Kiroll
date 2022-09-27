@@ -26,7 +26,7 @@ namespace MyInstrument.Surface
 
         private TextBlock content;
         private int octave;
-        private readonly string key;
+        private string key;
 
         private static MidiNotes oldMidiNote = MidiNotes.NaN; // aiuta a gestire la SlidePlayMode
         public MyInstrumentButtons( string key, int octave,  SolidColorBrush brush) : base()
@@ -57,7 +57,7 @@ namespace MyInstrument.Surface
         {         
             if (Rack.UserSettings.MyInstrumentControlMode == _MyInstrumentControlModes.Keyboard)
             {
-                MidiNotes md = AbsNotesMethods.ToMidiNote(AbsNotesMethods.ToAbsNote(toolKey.Name), octave);
+                MidiNotes md = AbsNotesMethods.ToMidiNote(AbsNotesMethods.ToAbsNote(key), octave);
                 if (Rack.UserSettings.SlidePlayMode != _SlidePlayModes.On)
                 {                                       
                     Rack.DMIBox.MidiModule.StopNote(MidiNotesMethods.ToPitchValue(md));
@@ -73,7 +73,7 @@ namespace MyInstrument.Surface
         {
             if (Rack.UserSettings.MyInstrumentControlMode == _MyInstrumentControlModes.Keyboard)
             {
-                MidiNotes md = AbsNotesMethods.ToMidiNote(AbsNotesMethods.ToAbsNote(toolKey.Name), octave);
+                MidiNotes md = AbsNotesMethods.ToMidiNote(AbsNotesMethods.ToAbsNote(key), octave);
                 if (oldMidiNote != MidiNotes.NaN && Rack.UserSettings.SlidePlayMode == _SlidePlayModes.On)
                 {
                     Rack.DMIBox.MidiModule.StopNote(MidiNotesMethods.ToPitchValue(oldMidiNote));

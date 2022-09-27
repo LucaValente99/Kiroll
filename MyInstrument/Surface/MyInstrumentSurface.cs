@@ -23,11 +23,9 @@ namespace MyInstrument.Surface
             Colors.Blue,
             Colors.Orange,
             Colors.Purple,
-            Colors.Green,                     
+            Colors.Green,
             Colors.Coral
         };
-
-        private DispatcherTimer buttonsMovement = new DispatcherTimer();
 
         private List<StackPanel> threeMusicKeyboards = new List<StackPanel>();
 
@@ -37,24 +35,22 @@ namespace MyInstrument.Surface
         public MyInstrumentSurface(Canvas canvas)
         {
             this.canvas = canvas;
-            buttonsMovement.Tick += InstrumentKeyboardMovement;
-            buttonsMovement.Interval = TimeSpan.FromMilliseconds(15);
-        }   
+        }
 
         //creo una lista di 3 stack panel da mostrare nella sezione MyInstrument (canvas)
         public List<StackPanel> CreateMusicKeyboards()
         {
-            List<StackPanel> threeMusicKeyboards = new List<StackPanel> ();
+            List<StackPanel> threeMusicKeyboards = new List<StackPanel>();
 
             for (int i = 0; i < 3; i++)
             {
                 MyInstrumentKeyboard instrumentKeyboard = new MyInstrumentKeyboard();
-                threeMusicKeyboards.Add(instrumentKeyboard.MusicKeyboard);              
+                threeMusicKeyboards.Add(instrumentKeyboard.MusicKeyboard);
             }
-            
+
             return threeMusicKeyboards;
 
-        }     
+        }
 
         // disegno a schermo gli stack panel con associata la relativa scala e genero il movimento da sx verso dx
         public void DrawOnCanvas()
@@ -76,12 +72,10 @@ namespace MyInstrument.Surface
             for (int i = 0; i < threeMusicKeyboards.Count; i++)
             {
                 canvas.Children.Add(threeMusicKeyboards[i]);
-                Canvas.SetLeft(threeMusicKeyboards[i], (canvas.Width - threeMusicKeyboards[i].Width) / 2 + distance);
+                Canvas.SetLeft(threeMusicKeyboards[i], (canvas.Width - threeMusicKeyboards[i].Width) / 3 + distance);
                 Canvas.SetTop(threeMusicKeyboards[i], (canvas.Height - threeMusicKeyboards[i].Height - 10) / 2);
                 distance += 400;
             }
-            
-            buttonsMovement.Start();
         }
 
         //pulisco il canvas
@@ -115,32 +109,17 @@ namespace MyInstrument.Surface
                 else
                 {
                     instrumentKeyboard.Height = Rack.UserSettings.keyboardHeight;
-                }           
+                }
 
                 foreach (Button key in instrumentKeyboard.Children)
                 {
-                    key.Margin = new Thickness(0,0,0, Rack.UserSettings.keyDistance);
+                    key.Margin = new Thickness(0, 0, 0, Rack.UserSettings.keyDistance);
                 }
             }
 
             canvas.Height = Rack.UserSettings.keyboardHeight + 22;
-            this.distance = distance * 7;             
-            
+            this.distance = distance * 7;
         }
 
-        // moviemnto tastiere
-        private void InstrumentKeyboardMovement(object? sender, EventArgs e)
-        {
-
-            foreach(StackPanel instrumentKeyboard in threeMusicKeyboards)
-            {
-                Canvas.SetLeft(instrumentKeyboard, Canvas.GetLeft(instrumentKeyboard) - 5);
-
-                if (Canvas.GetLeft(instrumentKeyboard) < (canvas.Width / 2 - canvas.Width / 4) - instrumentKeyboard.Width)
-                {
-                    Canvas.SetLeft(instrumentKeyboard, (canvas.Width - instrumentKeyboard.Width) / 2 + 800);
-                }
-            }
-        }
     }
 }

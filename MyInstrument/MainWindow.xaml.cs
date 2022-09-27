@@ -24,10 +24,6 @@ namespace MyInstrument
     /// </summary>
     public partial class MainWindow : Window
     {
-
-        //interfaccia strumento
-        private MyInstrumentSurface surface;
-
         //controlli booleani per attivazione/disattivazione bottoni
         private bool myInstrumentStarted = false;
         private bool myInstrumentSettingsOpened = false;
@@ -74,17 +70,12 @@ namespace MyInstrument
         private DispatcherTimer updater;
         public MainWindow()
         {
-            InitializeComponent();
-
-            MyInstrumentSetup myInstrumentSetup = new MyInstrumentSetup(this);
-            myInstrumentSetup.Setup();
+            InitializeComponent();           
 
             updater = new DispatcherTimer();
             updater.Interval = TimeSpan.FromMilliseconds(10);
             updater.Tick += UpdateWindow;
-            updater.Start();
-
-            surface = new MyInstrumentSurface(canvasMyInstrument);
+            updater.Start();                       
         }
 
         private void UpdateWindow(object? sender, EventArgs e)
@@ -109,11 +100,12 @@ namespace MyInstrument
             if (!myInstrumentStarted)
             {
 
+                MyInstrumentSetup myInstrumentSetup = new MyInstrumentSetup(this);
+                myInstrumentSetup.Setup();
+
                 btnStartImage.Source = pauseIcon;
                 btnStart.Background = ActiveBrush;                
                 btnStartLabel.Content = "Running...";
-
-                surface.DrawOnCanvas();
             
                 lstScaleChanger.IsEnabled = true;
                 lstScaleChanger.SelectedIndex = comboScale[Rack.UserSettings.ScaleName];
@@ -125,7 +117,7 @@ namespace MyInstrument
 
                 /* MIDI */
                 txtMidiPort.Text = "MP" + Rack.DMIBox.MidiModule.OutDevice.ToString();
-                CheckMidiPort();
+                CheckMidiPort();               
 
                 myInstrumentStarted = true;
             }
@@ -144,7 +136,7 @@ namespace MyInstrument
                 lstOctaveChanger.IsEnabled = false;
                 lstOctaveChanger.SelectedIndex = comboOctave["_"];
 
-                surface.ClearSurface();
+                Rack.DMIBox.MyInstrumentSurface.ClearSurface();
             }
         }
 
@@ -232,10 +224,7 @@ namespace MyInstrument
             {
                 Rack.UserSettings.MIDIPort--;
                 Rack.DMIBox.MidiModule.OutDevice = Rack.UserSettings.MIDIPort;
-                //lblMIDIch.Text = "MP" + Rack.DMIBox.MidiModule.OutDevice.ToString();
 
-                //CheckMidiPort();
-                /* MIDI */
                 txtMidiPort.Text = "MP" + Rack.DMIBox.MidiModule.OutDevice.ToString();
                 CheckMidiPort();
             }
@@ -247,10 +236,7 @@ namespace MyInstrument
             {
                 Rack.UserSettings.MIDIPort++;
                 Rack.DMIBox.MidiModule.OutDevice = Rack.UserSettings.MIDIPort;
-                //lblMIDIch.Text = "MP" + Rack.DMIBox.MidiModule.OutDevice.ToString();
 
-                //CheckMidiPort();
-                /* MIDI */
                 txtMidiPort.Text = "MP" + Rack.DMIBox.MidiModule.OutDevice.ToString();
                 CheckMidiPort();
             }
@@ -273,7 +259,7 @@ namespace MyInstrument
             if (myInstrumentStarted)
             {
                 Rack.UserSettings.ScaleName = (e.AddedItems[0] as ComboBoxItem).Content as string;
-                surface.DrawOnCanvas();
+                Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
             }
         }
 
@@ -283,7 +269,7 @@ namespace MyInstrument
             if (myInstrumentStarted)
             {
                 Rack.UserSettings.ScaleCode = (e.AddedItems[0] as ComboBoxItem).Content as string;
-                surface.DrawOnCanvas();
+                Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
             }
         }
 
@@ -293,7 +279,7 @@ namespace MyInstrument
             if (myInstrumentStarted)
             {
                 Rack.UserSettings.Octave = (e.AddedItems[0] as ComboBoxItem).Content as string;
-                surface.DrawOnCanvas();
+                Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
             }
         }
 
@@ -302,7 +288,7 @@ namespace MyInstrument
             if (myInstrumentStarted)
             {
                 Rack.UserSettings.keyDistance = sldDistance.Value;
-                surface.SetDistance(sldDistance.Value);
+                Rack.DMIBox.MyInstrumentSurface.SetDistance(sldDistance.Value);
             }
         }
 

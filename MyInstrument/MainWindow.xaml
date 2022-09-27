@@ -308,14 +308,14 @@
                     <RowDefinition Height="12*" />
                 </Grid.RowDefinitions>
                 <ScrollViewer x:Name="scrlMyInstrument" VerticalAlignment="Stretch" 
-                                HorizontalAlignment="Stretch" Margin="0,0,0,0" 
-                                Width="Auto" Height="Auto" 
-                                HorizontalScrollBarVisibility="Disabled" 
-                                VerticalScrollBarVisibility="Hidden" Grid.Row="0">
+                                        HorizontalAlignment="Stretch" Margin="0,0,0,0" 
+                                        Width="Auto" Height="Auto" Grid.Row="0"
+                                        HorizontalScrollBarVisibility="Hidden" 
+                                        VerticalScrollBarVisibility="Hidden">
                     <!--Canvas allows to place elements by coordinates-->
                     <Canvas x:Name="canvasMyInstrument" VerticalAlignment="Stretch" 
-                            HorizontalAlignment="Center" Margin="0,0,0,0"
-                            Width="3000" Height="612">
+                                    HorizontalAlignment="Stretch" Margin="0,0,0,0"
+                                    Width="3000" Height="612">
                         <Canvas.Background>
                             <SolidColorBrush Color="Black" Opacity="0.7" />
                         </Canvas.Background>
