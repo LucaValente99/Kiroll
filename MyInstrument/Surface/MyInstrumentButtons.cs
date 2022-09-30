@@ -5,6 +5,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Drawing;
+using System.Windows.Documents;
 
 namespace MyInstrument.Surface
 {
@@ -55,7 +57,7 @@ namespace MyInstrument.Surface
 
         private void Stop(object sender, MouseEventArgs e)
         {         
-            if (Rack.UserSettings.MyInstrumentControlMode == _MyInstrumentControlModes.Keyboard)
+            if (Rack.UserSettings.MyInstrumentControlMode == _MyInstrumentControlModes.Keyboard && Rack.DMIBox.MidiModule.IsMidiOk())
             {
                 MidiNotes md = MusicConversions.ToAbsNote(key).ToMidiNote(octave);
                 if (Rack.UserSettings.SlidePlayMode != _SlidePlayModes.On)
@@ -66,13 +68,14 @@ namespace MyInstrument.Surface
                     Rack.UserSettings.NoteVelocity = "_";                    
                 }     
                 oldMidiNote = md;
+                Rack.DMIBox.AutoScroller.NotePlayed = false;
             }            
         }
 
         private void Play(object sender, MouseEventArgs e)
         {
-            if (Rack.UserSettings.MyInstrumentControlMode == _MyInstrumentControlModes.Keyboard)
-            {
+            if (Rack.UserSettings.MyInstrumentControlMode == _MyInstrumentControlModes.Keyboard && Rack.DMIBox.MidiModule.IsMidiOk())
+            {         
                 MidiNotes md = MusicConversions.ToAbsNote(key).ToMidiNote(octave);
                 if (oldMidiNote != MidiNotes.NaN && Rack.UserSettings.SlidePlayMode == _SlidePlayModes.On)
                 {
@@ -81,7 +84,11 @@ namespace MyInstrument.Surface
                 Rack.DMIBox.MidiModule.PlayNote(MidiNotesMethods.ToPitchValue(md), 127);
                 Rack.UserSettings.NoteName = content.Text + octave.ToString();
                 Rack.UserSettings.NotePitch = md.ToPitchValue().ToString();
-                Rack.UserSettings.NoteVelocity = "127";                              
+                Rack.UserSettings.NoteVelocity = "127";
+
+                Rack.DMIBox.AutoScroller.LastKeyboardPlayed = new System.Drawing.Point((int)Canvas.GetLeft(Rack.DMIBox.MyInstrumentSurface.ThreeMusicKeyboards[1]), (int)Canvas.GetTop(Rack.DMIBox.MyInstrumentSurface.ThreeMusicKeyboards[1]));
+                Rack.DMIBox.AutoScroller.NotePlayed = true;
+                
             }           
         }
 

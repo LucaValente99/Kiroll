@@ -1,0 +1,21 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v5.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v5.0": {
+      "Mediapipe.Net/0.8.10": {}
+    }
+  },
+  "libraries": {
+    "Mediapipe.Net/0.8.10": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-25axT8Ej9KSXEHbQb702EMs5rxO1vwmaOftwFvYEA9ciXqKhF66kddUbslYtgJuSy7YBRvokL9IQCa3uEDgrtw==",
+      "path": "mediapipe.net/0.8.10",
+      "hashPath": "mediapipe.net.0.8.10.nupkg.sha512"
+    }
+  }
+}

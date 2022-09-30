@@ -29,9 +29,15 @@ namespace MyInstrument.Surface
 
         private List<StackPanel> threeMusicKeyboards = new List<StackPanel>();
 
+        public List<StackPanel> ThreeMusicKeyboards
+        {
+            get { return threeMusicKeyboards; }
+            set { threeMusicKeyboards = value; }
+        }
+
         private Canvas canvas;
 
-        private double distance = Rack.UserSettings.keyDistance;
+        private double distance = 0;
         public MyInstrumentSurface(Canvas canvas)
         {
             this.canvas = canvas;
@@ -67,14 +73,14 @@ namespace MyInstrument.Surface
                 threeMusicKeyboards = CreateMusicKeyboards();
                 SetDistance(Rack.UserSettings.keyDistance);
             }
-            int distance = 0;
+            int horizontalDistance = 0;
 
             for (int i = 0; i < threeMusicKeyboards.Count; i++)
             {
                 canvas.Children.Add(threeMusicKeyboards[i]);
-                Canvas.SetLeft(threeMusicKeyboards[i], (canvas.Width - threeMusicKeyboards[i].Width) / 3 + distance);
-                Canvas.SetTop(threeMusicKeyboards[i], (canvas.Height - threeMusicKeyboards[i].Height - 10) / 2);
-                distance += 400;
+                Canvas.SetLeft(threeMusicKeyboards[i], (canvas.Width - threeMusicKeyboards[i].Width) / 4 + horizontalDistance);
+                Canvas.SetTop(threeMusicKeyboards[i], (canvas.Height - threeMusicKeyboards[i].Height) / 2);
+                horizontalDistance += 600;
             }
         }
 
@@ -97,29 +103,70 @@ namespace MyInstrument.Surface
             {
                 if (this.distance > distance)
                 {
-                    instrumentKeyboard.Height += (distance * 7) - this.distance;
+                    instrumentKeyboard.Height += (distance * 6) - this.distance;
                     Rack.UserSettings.keyboardHeight = instrumentKeyboard.Height;
+                    Canvas.SetTop(instrumentKeyboard, (canvas.Height - instrumentKeyboard.Height) / 2);
 
                 }
                 else if (this.distance < distance)
                 {
-                    instrumentKeyboard.Height -= this.distance - (distance * 7);
+                    instrumentKeyboard.Height -= this.distance - (distance * 6);
                     Rack.UserSettings.keyboardHeight = instrumentKeyboard.Height;
+                    Canvas.SetTop(instrumentKeyboard, (canvas.Height - instrumentKeyboard.Height) / 2);
                 }
                 else
                 {
                     instrumentKeyboard.Height = Rack.UserSettings.keyboardHeight;
+                    Canvas.SetTop(instrumentKeyboard, (canvas.Height - instrumentKeyboard.Height) / 2);
                 }
 
+                int i = 0;
                 foreach (Button key in instrumentKeyboard.Children)
                 {
-                    key.Margin = new Thickness(0, 0, 0, Rack.UserSettings.keyDistance);
+                    if (i != 6)
+                    {
+                        key.Margin = new Thickness(0, 0, 0, Rack.UserSettings.keyDistance);
+                    }
+                    
+                    i++;
                 }
             }
 
-            canvas.Height = Rack.UserSettings.keyboardHeight + 22;
-            this.distance = distance * 7;
+            //canvas.Height = Rack.UserSettings.keyboardHeight + 22;
+            this.distance = distance * 6;
         }
+
+        //public void SetDistance(double distance)
+        //{
+        //    foreach (StackPanel instrumentKeyboard in threeMusicKeyboards)
+        //    {
+        //        if (this.distance > distance)
+        //        {
+        //            instrumentKeyboard.Height += (distance * 7) - this.distance;
+        //            Rack.UserSettings.keyboardHeight = instrumentKeyboard.Height;
+        //            Canvas.SetTop(instrumentKeyboard, ((canvas.Height / 2) - (instrumentKeyboard.Height / 2 - 75)) - distance);
+
+        //        }
+        //        else if (this.distance < distance)
+        //        {
+        //            instrumentKeyboard.Height -= this.distance - (distance * 7);
+        //            Rack.UserSettings.keyboardHeight = instrumentKeyboard.Height;
+        //            Canvas.SetTop(instrumentKeyboard, ((canvas.Height / 2) - (instrumentKeyboard.Height / 2 - 75)) + distance);
+        //        }
+        //        else
+        //        {
+        //            instrumentKeyboard.Height = Rack.UserSettings.keyboardHeight;
+        //        }
+
+        //        foreach (Button key in instrumentKeyboard.Children)
+        //        {
+        //            key.Margin = new Thickness(0, 0, 0, Rack.UserSettings.keyDistance);
+        //        }
+        //    }
+
+        //    //canvas.Height = Rack.UserSettings.keyboardHeight + 22;
+        //    this.distance = distance * 7;
+        //}
 
     }
 }

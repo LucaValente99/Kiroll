@@ -156,8 +156,8 @@
 
         <Grid.RowDefinitions>
             <RowDefinition Height="65"></RowDefinition>
-            <RowDefinition Height="625"></RowDefinition>
             <RowDefinition Height="1*"></RowDefinition>
+            <!--<RowDefinition Height="1*"></RowDefinition>-->
         </Grid.RowDefinitions>
 
         <!--#region Top Bar (Row 0)-->
@@ -300,7 +300,7 @@
 
         <!--#region MyInstrument (Row 1)-->
         <Border Grid.Row="1" VerticalAlignment="Stretch" 
-                HorizontalAlignment="Stretch" Margin="5,5,5,0" 
+                HorizontalAlignment="Stretch" Margin="5,5,5,5" 
                 Width="Auto" Height="Auto" BorderThickness="4" 
                 CornerRadius="8" BorderBrush="Black">
             <Grid>
@@ -313,9 +313,10 @@
                                         HorizontalScrollBarVisibility="Hidden" 
                                         VerticalScrollBarVisibility="Hidden">
                     <!--Canvas allows to place elements by coordinates-->
+
                     <Canvas x:Name="canvasMyInstrument" VerticalAlignment="Stretch" 
                                     HorizontalAlignment="Stretch" Margin="0,0,0,0"
-                                    Width="3000" Height="612">
+                                    Width="3000" Height="781">
                         <Canvas.Background>
                             <SolidColorBrush Color="Black" Opacity="0.7" />
                         </Canvas.Background>
@@ -324,78 +325,15 @@
             </Grid>
         </Border>
 
-        <!--Note Visualizer-->
-        <StackPanel Margin="0,20,20,0" Orientation="Horizontal" 
-                    Grid.Row="1" VerticalAlignment="Top"
-                    HorizontalAlignment="Right">
-            <Border
-                Width="60"
-                Height="Auto"
-                BorderBrush="Black"
-                BorderThickness="4,4,2,4"
-                CornerRadius="5,0,0,5">
-                <Border.Background>
-                    <ImageBrush ImageSource="Images/Backgrounds/Buttons.jpeg"></ImageBrush>
-                </Border.Background>
-                <TextBlock
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    x:Name="txtPitch"
-                    FontFamily="Digital-7 Italic"
-                    FontSize="25"
-                    Text="_"
-                    Foreground="White"
-                    TextAlignment="Center" />
-            </Border>
-            <Border
-                Width="60"
-                Height="Auto"
-                BorderBrush="Black"
-                BorderThickness="2,4,2,4">
-                <Border.Background>
-                    <ImageBrush ImageSource="Images/Backgrounds/Buttons.jpeg"></ImageBrush>
-                </Border.Background>
-                <TextBlock
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    x:Name="txtNoteName"
-                    FontFamily="Digital-7 Italic"
-                    FontSize="25"
-                    Text="_"
-                    Foreground="White"
-                    TextAlignment="Center" />
-            </Border>
-            <Border
-                Width="60"
-                Height="Auto"
-                BorderBrush="Black"
-                BorderThickness="2,4,4,4" 
-                CornerRadius="0,5,5,0">
-                <Border.Background>
-                    <ImageBrush ImageSource="Images/Backgrounds/Buttons.jpeg"></ImageBrush>
-                </Border.Background>
-                <TextBlock
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    x:Name="txtVelocityMouth"
-                    FontFamily="Digital-7 Italic"
-                    FontSize="25"
-                    Foreground="White"
-                    Text="_"
-                    TextAlignment="Center" />
-            </Border>
-        </StackPanel>
-        <!--End Note Visualizer-->
-
         <!--MyInstrument's Setting Window-->
         <Border Name="WindowInstrumentSettings" 
             Grid.Row="1"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             CornerRadius="8" 
-            Margin="20,40,0,0"
+            Margin="20,20,0,0"
             Width="350"  
-            Height="550"
+            Height="600"
             BorderBrush="Black"
             BorderThickness="4"
             Visibility="Hidden">
@@ -407,6 +345,7 @@
             <Grid>
 
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"></RowDefinition>
                     <RowDefinition Height="1*"></RowDefinition>
                     <RowDefinition Height="1*"></RowDefinition>
                     <RowDefinition Height="1*"></RowDefinition>
@@ -802,6 +741,7 @@
                         Margin="40,0,40,0"
                         TickPlacement="BottomRight"
                         TickFrequency="2"
+                        Value="14"
                         IsSnapToTickEnabled="True"
                         LargeChange="0"
                         Focusable="False"
@@ -813,7 +753,77 @@
 
                 </StackPanel>
 
-            </Grid>
+                <Border Style="{StaticResource SeparatorStyleHorizontal}"
+                            Grid.Row="6"
+                            VerticalAlignment="Bottom"/>
+                
+                <StackPanel Grid.Row="7" Orientation="Vertical" HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center">
+                    <!--Note Visualizer-->
+                    <StackPanel Margin="0,0,0,0" Orientation="Horizontal" 
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center">
+                        <Border
+                            Width="90"
+                            Height="40"
+                            BorderBrush="Black"
+                            BorderThickness="4,4,2,4"
+                            CornerRadius="5,0,0,5">
+                            <Border.Background>
+                                <ImageBrush ImageSource="Images/Backgrounds/Buttons.jpeg"></ImageBrush>
+                            </Border.Background>
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                x:Name="txtPitch"
+                                FontFamily="Digital-7 Italic"
+                                FontSize="25"
+                                Text="_"
+                                Foreground="White"
+                                TextAlignment="Center" />
+                        </Border>
+                        <Border
+                            Width="90"
+                            Height="40"
+                            BorderBrush="Black"
+                            BorderThickness="2,4,2,4">
+                            <Border.Background>
+                                <ImageBrush ImageSource="Images/Backgrounds/Buttons.jpeg"></ImageBrush>
+                            </Border.Background>
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                x:Name="txtNoteName"
+                                FontFamily="Digital-7 Italic"
+                                FontSize="25"
+                                Text="_"
+                                Foreground="White"
+                                TextAlignment="Center" />
+                            </Border>
+                            <Border
+                                Width="90"
+                                Height="40"
+                                BorderBrush="Black"
+                                BorderThickness="2,4,4,4" 
+                                CornerRadius="0,5,5,0">
+                                <Border.Background>
+                                    <ImageBrush ImageSource="Images/Backgrounds/Buttons.jpeg"></ImageBrush>
+                                </Border.Background>
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    x:Name="txtVelocityMouth"
+                                    FontFamily="Digital-7 Italic"
+                                    FontSize="25"
+                                    Foreground="White"
+                                    Text="_"
+                                    TextAlignment="Center" />
+                            </Border>
+                        </StackPanel>
+                    <!--End Note Visualizer-->
+                    </StackPanel>
+
+                </Grid>
 
         </Border>
         <!--End MyInstrument's Setting Window-->
@@ -826,7 +836,7 @@
             CornerRadius="8" 
             Margin="0,20,20,0"
             Width="350"  
-            Height="550"
+            Height="600"
             BorderBrush="Black"
             BorderThickness="4"
             Visibility="Hidden">
@@ -976,7 +986,7 @@
 
         <!--#endregion End MyInstrument (Row 1)-->
 
-        <!--#region Music Sheet (Row 2)-->
+        <!--#region Music Sheet (Row 2)--><!--
         <Border Grid.Row="2" VerticalAlignment="Stretch" 
                 HorizontalAlignment="Stretch" Margin="5,5,5,5" 
                 Width="Auto" Height="Auto" BorderThickness="4" 
@@ -1012,7 +1022,7 @@
             <Border.Background>
                 <ImageBrush ImageSource="Images/Backgrounds/TopBar2.jpg"></ImageBrush>
             </Border.Background>
-            <!--Fast Music Sheet Settings-->
+            --><!--Fast Music Sheet Settings--><!--
             <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button Style="{StaticResource RoundButton}"
                             Name="btnClear"
@@ -1072,9 +1082,9 @@
 
             </StackPanel>
         </Border>
-        <!--End Fast Music Sheet Settings-->
+        --><!--End Fast Music Sheet Settings-->
 
-        <!--Logo-->
+        <!--Logo--><!--
         <Image Source="Images/Logo/Logo1.png"  
                Grid.Row="2"
                    HorizontalAlignment="Right"
@@ -1082,7 +1092,7 @@
                    Margin="0,0,30,10"
                    Width="150"
                    Height="150"/>
-        <!--End Logo-->
+        --><!--End Logo-->
 
         <!--#endregion End Music Sheet (Row 2)-->
 

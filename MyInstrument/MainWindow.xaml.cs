@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using MyInstrument.Surface;
 using System.Windows.Threading;
 using NeeqDMIs.Eyetracking.PointFilters;
+using NeeqDMIs.MIDI;
 
 namespace MyInstrument
 {
@@ -70,12 +71,12 @@ namespace MyInstrument
         private DispatcherTimer updater;
         public MainWindow()
         {
-            InitializeComponent();           
+            InitializeComponent();
 
             updater = new DispatcherTimer();
             updater.Interval = TimeSpan.FromMilliseconds(10);
             updater.Tick += UpdateWindow;
-            updater.Start();                       
+            updater.Start();           
         }
 
         private void UpdateWindow(object? sender, EventArgs e)
@@ -104,9 +105,9 @@ namespace MyInstrument
                 myInstrumentSetup.Setup();
 
                 btnStartImage.Source = pauseIcon;
-                btnStart.Background = ActiveBrush;                
+                btnStart.Background = ActiveBrush;
                 btnStartLabel.Content = "Running...";
-            
+
                 lstScaleChanger.IsEnabled = true;
                 lstScaleChanger.SelectedIndex = comboScale[Rack.UserSettings.ScaleName];
                 lstCodeChanger.IsEnabled = true;
@@ -117,7 +118,7 @@ namespace MyInstrument
 
                 /* MIDI */
                 txtMidiPort.Text = "MP" + Rack.DMIBox.MidiModule.OutDevice.ToString();
-                CheckMidiPort();               
+                CheckMidiPort();
 
                 myInstrumentStarted = true;
             }
@@ -255,7 +256,7 @@ namespace MyInstrument
 
         private void lstScaleChanger_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-                     
+
             if (myInstrumentStarted)
             {
                 Rack.UserSettings.ScaleName = (e.AddedItems[0] as ComboBoxItem).Content as string;
@@ -265,7 +266,7 @@ namespace MyInstrument
 
         private void lstCodeChanger_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+
             if (myInstrumentStarted)
             {
                 Rack.UserSettings.ScaleCode = (e.AddedItems[0] as ComboBoxItem).Content as string;
@@ -275,7 +276,7 @@ namespace MyInstrument
 
         private void lstOctaveChanger_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+
             if (myInstrumentStarted)
             {
                 Rack.UserSettings.Octave = (e.AddedItems[0] as ComboBoxItem).Content as string;
@@ -321,6 +322,7 @@ namespace MyInstrument
 
         #endregion Instrument (Row1)
 
+        
         #region MusicSheet (Row2)
 
         private void btnDisable_Click(object sender, RoutedEventArgs e)
@@ -341,4 +343,5 @@ namespace MyInstrument
         #endregion MusicSheet (Row2)
         
     }
+        
 }

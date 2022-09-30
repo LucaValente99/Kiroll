@@ -9,6 +9,7 @@
       "MyInstrument/1.0.0": {
         "dependencies": {
           "Mediapipe.Net": "0.8.10",
+          "Microsoft.Toolkit.Uwp.UI.Controls": "7.1.2",
           "NeeqDMIs": "1.0.0"
         },
         "runtime": {
@@ -46,6 +47,7 @@
           }
         }
       },
+      "Microsoft.Toolkit.Uwp.UI.Controls/7.1.2": {},
       "NeeqDMIs/1.0.0": {
         "runtime": {
           "NeeqDMIs.dll": {}
@@ -135,6 +137,13 @@
       "sha512": "sha512-OcgUflvCx2zpjfTEB8qTnnBJrQhlqnmYNT5G8vrBTTN1XyKRmALHESbYsHIjjsM/0i7CRiFyBxv4O5J5Z/PDow==",
       "path": "mediapipe.net.framework.protobuf/0.8.9",
       "hashPath": "mediapipe.net.framework.protobuf.0.8.9.nupkg.sha512"
+    },
+    "Microsoft.Toolkit.Uwp.UI.Controls/7.1.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-lZNwaqa8j0fCf7Pf4UX074YXPrcizxbyyfoTIlOp99dyInDsptyNNovwMK4U0/2TRo38g5df+cgfBzdpKKGTig==",
+      "path": "microsoft.toolkit.uwp.ui.controls/7.1.2",
+      "hashPath": "microsoft.toolkit.uwp.ui.controls.7.1.2.nupkg.sha512"
     },
     "NeeqDMIs/1.0.0": {
       "type": "project",

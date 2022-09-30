@@ -5,10 +5,14 @@
       "Google.Protobuf/3.19.4": {
         "type": "package",
         "compile": {
-          "lib/net5.0/Google.Protobuf.dll": {}
+          "lib/net5.0/Google.Protobuf.dll": {
+            "related": ".pdb;.xml"
+          }
         },
         "runtime": {
-          "lib/net5.0/Google.Protobuf.dll": {}
+          "lib/net5.0/Google.Protobuf.dll": {
+            "related": ".pdb;.xml"
+          }
         }
       },
       "Mediapipe.Net/0.8.10": {
@@ -35,6 +39,9 @@
         "runtime": {
           "lib/net6.0/Mediapipe.Net.Framework.Protobuf.dll": {}
         }
+      },
+      "Microsoft.Toolkit.Uwp.UI.Controls/7.1.2": {
+        "type": "package"
       },
       "NeeqDMIs/1.0.0": {
         "type": "project",
@@ -98,6 +105,21 @@
         "mediapipe.net.framework.protobuf.nuspec"
       ]
     },
+    "Microsoft.Toolkit.Uwp.UI.Controls/7.1.2": {
+      "sha512": "lZNwaqa8j0fCf7Pf4UX074YXPrcizxbyyfoTIlOp99dyInDsptyNNovwMK4U0/2TRo38g5df+cgfBzdpKKGTig==",
+      "type": "package",
+      "path": "microsoft.toolkit.uwp.ui.controls/7.1.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "License.md",
+        "ReadMe.txt",
+        "ThirdPartyNotices.txt",
+        "microsoft.toolkit.uwp.ui.controls.7.1.2.nupkg.sha512",
+        "microsoft.toolkit.uwp.ui.controls.nuspec"
+      ]
+    },
     "NeeqDMIs/1.0.0": {
       "type": "project",
       "path": "../../NeeqDMIs/NeeqDMIs.csproj",
@@ -107,39 +129,39 @@
   "projectFileDependencyGroups": {
     "net6.0-windows7.0": [
       "Mediapipe.Net >= 0.8.10",
+      "Microsoft.Toolkit.Uwp.UI.Controls >= 7.1.2",
       "NeeqDMIs >= 1.0.0"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\neequ\\.nuget\\packages\\": {}
+    "C:\\Users\\User\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\neequ\\OneDrive\\Documenti\\GitHub\\eye-tracking-musical-instrument-for-performance-and-composition\\MyInstrument\\MyInstrument.csproj",
+      "projectUniqueName": "D:\\Universita\\Tirocinio_tesi\\1_Tirocinio\\MyInstrument\\MyInstrument\\MyInstrument.csproj",
       "projectName": "MyInstrument",
-      "projectPath": "C:\\Users\\neequ\\OneDrive\\Documenti\\GitHub\\eye-tracking-musical-instrument-for-performance-and-composition\\MyInstrument\\MyInstrument.csproj",
-      "packagesPath": "C:\\Users\\neequ\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\neequ\\OneDrive\\Documenti\\GitHub\\eye-tracking-musical-instrument-for-performance-and-composition\\MyInstrument\\obj\\",
+      "projectPath": "D:\\Universita\\Tirocinio_tesi\\1_Tirocinio\\MyInstrument\\MyInstrument\\MyInstrument.csproj",
+      "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+      "outputPath": "D:\\Universita\\Tirocinio_tesi\\1_Tirocinio\\MyInstrument\\MyInstrument\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\neequ\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
-        "net6.0-windows7.0"
+        "net6.0-windows"
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "D:\\root_c87\\Frammenti Software\\NugetPackages": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net6.0-windows7.0": {
           "targetAlias": "net6.0-windows",
           "projectReferences": {
-            "C:\\Users\\neequ\\OneDrive\\Documenti\\GitHub\\NeeqDMIs\\NeeqDMIs.csproj": {
-              "projectPath": "C:\\Users\\neequ\\OneDrive\\Documenti\\GitHub\\NeeqDMIs\\NeeqDMIs.csproj"
+            "D:\\Universita\\Tirocinio_tesi\\1_Tirocinio\\NeeqDMIs\\NeeqDMIs.csproj": {
+              "projectPath": "D:\\Universita\\Tirocinio_tesi\\1_Tirocinio\\NeeqDMIs\\NeeqDMIs.csproj"
             }
           }
         }
@@ -157,6 +179,10 @@
           "Mediapipe.Net": {
             "target": "Package",
             "version": "[0.8.10, )"
+          },
+          "Microsoft.Toolkit.Uwp.UI.Controls": {
+            "target": "Package",
+            "version": "[7.1.2, )"
           }
         },
         "imports": [
@@ -165,7 +191,8 @@
           "net47",
           "net471",
           "net472",
-          "net48"
+          "net48",
+          "net481"
         ],
         "assetTargetFallback": true,
         "warn": true,
@@ -177,7 +204,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.401\\RuntimeIdentifierGraph.json"
       }
     }
   }

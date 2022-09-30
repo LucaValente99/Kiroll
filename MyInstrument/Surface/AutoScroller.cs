@@ -28,6 +28,8 @@ namespace MyInstrument.Surface
         private System.Windows.Point basePosition;
 
         private DispatcherTimer samplerTimer = new DispatcherTimer(DispatcherPriority.Render);
+        public Point LastKeyboardPlayed { get; set; }
+        public bool NotePlayed { get; set; } = false;
 
         private Point lastSampledPoint;
         private Point lastMean;
@@ -58,14 +60,17 @@ namespace MyInstrument.Surface
             //samplerTimer.MicroTimerElapsed += SamplerTimer_MicroTimerElapsed;
             samplerTimer.Tick += ListenMouse;
             samplerTimer.Start();
+
         }
 
+         
+        //Canvas.SetLeft(keyboard, Canvas.GetLeft(keyboard) - 0.5)        
+        
         private void ListenMouse(object sender, EventArgs e)
         {
             if (enabled)
-            {            
+            {               
                 lastSampledPoint.X = GetMousePos().X - (int)basePosition.X;
-
                 lastSampledPoint.Y = GetMousePos().Y - (int)basePosition.Y;
 
                 filter.Push(lastSampledPoint);
@@ -80,7 +85,7 @@ namespace MyInstrument.Surface
             Xdifference = (scrollCenter.X - lastMean.X);
             Ydifference = (scrollCenter.Y - lastMean.Y);
             if (Math.Abs(scrollCenter.Y - lastMean.Y) > radiusThreshold && Math.Abs(scrollCenter.X - lastMean.X) > radiusThreshold)
-            {
+            {              
                 scrollViewer.ScrollToHorizontalOffset(scrollViewer.HorizontalOffset - Math.Pow((Xdifference / proportional), 2) * Math.Sign(Xdifference));
                 scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - Math.Pow((Ydifference / proportional), 2) * Math.Sign(Ydifference));
             }

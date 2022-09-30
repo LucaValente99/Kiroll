@@ -61,7 +61,6 @@ namespace MyInstrument.Surface
         {
             musicKeyboard = new StackPanel();
             musicKeyboard.Orientation = Orientation.Vertical;
-            musicKeyboard.VerticalAlignment = System.Windows.VerticalAlignment.Center;
             musicKeyboard.Background = Brushes.Transparent;
             musicKeyboard.Width = 150;
             musicKeyboard.Height = 590;
