@@ -33,6 +33,7 @@ namespace MyInstrument
         private bool btnFaceOn = false;
         private bool btnDisableWritingMode = false;
         private bool btnSlidePlayOn = false;
+        private bool btnSharpNotesOn = false;
 
         // utilizzati per la selezione dell'indice dei combobox nelle fasi di Start and Stop
         private Dictionary<string, int> comboScale = new Dictionary<string, int>()
@@ -104,16 +105,19 @@ namespace MyInstrument
                 MyInstrumentSetup myInstrumentSetup = new MyInstrumentSetup(this);
                 myInstrumentSetup.Setup();
 
+                // cambiamenti grafici
                 btnStartImage.Source = pauseIcon;
                 btnStart.Background = ActiveBrush;
                 btnStartLabel.Content = "Running...";
 
+                // abilitazione ComboBox & slider
                 lstScaleChanger.IsEnabled = true;
                 lstScaleChanger.SelectedIndex = comboScale[Rack.UserSettings.ScaleName];
                 lstCodeChanger.IsEnabled = true;
                 lstCodeChanger.SelectedIndex = comboCode[Rack.UserSettings.ScaleCode];
                 lstOctaveChanger.IsEnabled = true;
                 lstOctaveChanger.SelectedIndex = comboOctave[Rack.UserSettings.Octave];
+                sldDistance.IsEnabled = true;
 
 
                 /* MIDI */
@@ -124,19 +128,23 @@ namespace MyInstrument
             }
             else
             {
+                // cambiamenti grafici
                 myInstrumentStarted = false;
                 btnStartImage.Source = startIcon;
                 btnStart.Background = DisableBrush;
                 btnStartLabel.Content = "Start";
                 txtMidiPort.Text = "";
 
+                // disabilitazione ComboBox & slider
                 lstScaleChanger.IsEnabled = false;
                 lstScaleChanger.SelectedIndex = comboScale["_"];
                 lstCodeChanger.IsEnabled = false;
                 lstCodeChanger.SelectedIndex = comboCode["_"];
                 lstOctaveChanger.IsEnabled = false;
                 lstOctaveChanger.SelectedIndex = comboOctave["_"];
+                sldDistance.IsEnabled = false;
 
+                // resetto la surface
                 Rack.DMIBox.MyInstrumentSurface.ClearSurface();
             }
         }
@@ -146,6 +154,8 @@ namespace MyInstrument
             if (!myInstrumentSettingsOpened)
             {
                 myInstrumentSettingsOpened = true;
+
+                // cambiamenti grafici
                 WindowInstrumentSettings.Visibility = Visibility.Visible;
                 btnInstrumentSettingImage.Source = closeSettingsIcon;
                 btnInstrumentSettings.Background = ActiveBrush;
@@ -154,6 +164,8 @@ namespace MyInstrument
             else
             {
                 myInstrumentSettingsOpened = false;
+
+                // cambiamenti grafici
                 WindowInstrumentSettings.Visibility = Visibility.Hidden;
                 btnInstrumentSettingImage.Source = settingsIcon;
                 btnInstrumentSettings.Background = DisableBrush;
@@ -166,6 +178,8 @@ namespace MyInstrument
             if (!musicSheetSettingsOpened)
             {
                 musicSheetSettingsOpened = true;
+
+                // cambiamenti grafici
                 WindowMusicSheetSettings.Visibility = Visibility.Visible;
                 btnMusicSheetSettingsImage.Source = closeSettingsIcon;
                 btnMusicSheetSettings.Background = ActiveBrush;
@@ -175,6 +189,8 @@ namespace MyInstrument
             else
             {
                 musicSheetSettingsOpened = false;
+
+                // cambiamenti grafici
                 WindowMusicSheetSettings.Visibility = Visibility.Hidden;
                 btnMusicSheetSettingsImage.Source = settingsIcon;
                 btnMusicSheetSettings.Background = DisableBrush;
@@ -192,29 +208,34 @@ namespace MyInstrument
 
         private void btnCtrlKeyboard_Click(object sender, RoutedEventArgs e)
         {
-            if (!btnKeyboardOn)
+            if (myInstrumentStarted)
             {
-                btnKeyboardOn = true;
-                btnFaceOn = false;
-                btnCtrlKeyboard.IsEnabled = false;
-                btnCtrlFace.IsEnabled = true;
+                if (!btnKeyboardOn)
+                {
+                    btnKeyboardOn = true;
+                    btnFaceOn = false;
+                    btnCtrlKeyboard.IsEnabled = false;
+                    btnCtrlFace.IsEnabled = true;
 
-                Rack.UserSettings.MyInstrumentControlMode = _MyInstrumentControlModes.Keyboard;
-                Rack.DMIBox.ResetModulationAndPressure();
-            }
-
+                    Rack.UserSettings.MyInstrumentControlMode = _MyInstrumentControlModes.Keyboard;
+                    Rack.DMIBox.ResetModulationAndPressure();
+                }
+            }           
         }
         private void btnCtrlFace_Click(object sender, RoutedEventArgs e)
         {
-            if (!btnFaceOn)
+            if (myInstrumentStarted)
             {
-                btnFaceOn = true;
-                btnKeyboardOn = false;
-                btnCtrlFace.IsEnabled = false;
-                btnCtrlKeyboard.IsEnabled = true;
+                if (!btnFaceOn)
+                {
+                    btnFaceOn = true;
+                    btnKeyboardOn = false;
+                    btnCtrlFace.IsEnabled = false;
+                    btnCtrlKeyboard.IsEnabled = true;
 
-                Rack.UserSettings.MyInstrumentControlMode = _MyInstrumentControlModes.Face;
-                Rack.DMIBox.ResetModulationAndPressure();
+                    Rack.UserSettings.MyInstrumentControlMode = _MyInstrumentControlModes.Face;
+                    Rack.DMIBox.ResetModulationAndPressure();
+                }
             }
 
         }
@@ -226,6 +247,7 @@ namespace MyInstrument
                 Rack.UserSettings.MIDIPort--;
                 Rack.DMIBox.MidiModule.OutDevice = Rack.UserSettings.MIDIPort;
 
+                // cambiamenti grafici
                 txtMidiPort.Text = "MP" + Rack.DMIBox.MidiModule.OutDevice.ToString();
                 CheckMidiPort();
             }
@@ -300,6 +322,7 @@ namespace MyInstrument
                 if (!btnSlidePlayOn)
                 {
                     btnSlidePlayOn = true;
+
                     btnSlidePlay.Background = ActiveBrush;
                     Rack.UserSettings.SlidePlayMode = _SlidePlayModes.On;
                     MyInstrumentButtons.resetSlidePlay();
@@ -307,8 +330,33 @@ namespace MyInstrument
                 else
                 {
                     btnSlidePlayOn = false;
+
                     btnSlidePlay.Background = buttonBackground;
                     Rack.UserSettings.SlidePlayMode = _SlidePlayModes.Off;
+
+                }
+            }
+        }
+
+        private void btnSharpNotes_Click(object sender, RoutedEventArgs e)
+        {
+            if (myInstrumentStarted)
+            {
+                if (!btnSharpNotesOn)
+                {
+                    btnSharpNotesOn = true;
+
+                    btnSharpNotes.Background = ActiveBrush;
+                    Rack.UserSettings.SharpNotesMode = _SharpNotesModes.On;
+                    Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+                }
+                else
+                {
+                    btnSharpNotesOn = false;
+
+                    btnSharpNotes.Background = buttonBackground;
+                    Rack.UserSettings.SharpNotesMode = _SharpNotesModes.Off;
+                    Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
 
                 }
             }
@@ -322,7 +370,6 @@ namespace MyInstrument
 
         #endregion Instrument (Row1)
 
-        
         #region MusicSheet (Row2)
 
         private void btnDisable_Click(object sender, RoutedEventArgs e)
@@ -341,7 +388,7 @@ namespace MyInstrument
         }
 
         #endregion MusicSheet (Row2)
-        
+
     }
         
 }

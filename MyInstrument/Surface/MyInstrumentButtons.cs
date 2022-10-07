@@ -29,9 +29,10 @@ namespace MyInstrument.Surface
         private TextBlock content;
         private int octave;
         private string key;
+        private int keyboardID;
 
         private static MidiNotes oldMidiNote = MidiNotes.NaN; // aiuta a gestire la SlidePlayMode
-        public MyInstrumentButtons( string key, int octave,  SolidColorBrush brush) : base()
+        public MyInstrumentButtons(string key, int octave,  SolidColorBrush brush, int keyboardID) : base()
         {
             content = new TextBlock();
             content.Text = MusicConversions.ToAbsNote(key).ToStandardString();
@@ -53,6 +54,7 @@ namespace MyInstrument.Surface
 
             this.octave = octave;
             this.key = key;
+            this.keyboardID = keyboardID;
         }
 
         private void Stop(object sender, MouseEventArgs e)
@@ -68,7 +70,9 @@ namespace MyInstrument.Surface
                     Rack.UserSettings.NoteVelocity = "_";                    
                 }     
                 oldMidiNote = md;
-                Rack.DMIBox.AutoScroller.NotePlayed = false;
+
+                Rack.DMIBox.MyInstrumentSurface.LastKeyboardPlayed = "_" + keyboardID;
+                Rack.DMIBox.MyInstrumentSurface.MoveKeyboard();
             }            
         }
 
@@ -85,10 +89,6 @@ namespace MyInstrument.Surface
                 Rack.UserSettings.NoteName = content.Text + octave.ToString();
                 Rack.UserSettings.NotePitch = md.ToPitchValue().ToString();
                 Rack.UserSettings.NoteVelocity = "127";
-
-                Rack.DMIBox.AutoScroller.LastKeyboardPlayed = new System.Drawing.Point((int)Canvas.GetLeft(Rack.DMIBox.MyInstrumentSurface.ThreeMusicKeyboards[1]), (int)Canvas.GetTop(Rack.DMIBox.MyInstrumentSurface.ThreeMusicKeyboards[1]));
-                Rack.DMIBox.AutoScroller.NotePlayed = true;
-                
             }           
         }
 

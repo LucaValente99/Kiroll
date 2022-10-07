@@ -204,6 +204,7 @@
                                 Width="40"/>
                         </Button>
                         <Label
+                            Name="btnExitLabel"
                             FontFamily="Papyrus"
                             FontWeight="Bold"
                             FontSize="28"
@@ -316,7 +317,7 @@
 
                     <Canvas x:Name="canvasMyInstrument" VerticalAlignment="Stretch" 
                                     HorizontalAlignment="Stretch" Margin="0,0,0,0"
-                                    Width="3000" Height="781">
+                                    Width="1518" Height="781">
                         <Canvas.Background>
                             <SolidColorBrush Color="Black" Opacity="0.7" />
                         </Canvas.Background>
@@ -641,7 +642,8 @@
                             HorizontalAlignment="Left"
                             VerticalAlignment="Stretch"
                             BorderBrush="White"
-                            BorderThickness="2">
+                            BorderThickness="2"
+                            Click="btnSharpNotes_Click">
                         <Button.Background>
                             <ImageBrush
                                 ImageSource="Images/Backgrounds/Buttons.jpeg"
@@ -746,7 +748,8 @@
                         LargeChange="0"
                         Focusable="False"
                         Minimum="0"
-                        Maximum="30"      
+                        Maximum="30"   
+                        IsEnabled="false"
                         Thumb.DragCompleted="sldDistance_DragCompleted"
                         />
                     <!-- .DragCompleted="sldDistance_DragCompleted" Height="18" Margin="0,0,-0.2,0" Grid.RowSpan="2" VerticalAlignment="Top" RenderTransformOrigin="0.501,0.5" /> -->

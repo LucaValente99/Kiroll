@@ -2,17 +2,19 @@
 using NeeqDMIs.Music;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Color = System.Windows.Media.Color;
 
 namespace MyInstrument.Surface
 {
     public class MyInstrumentKeyboard : StackPanel
     {
-        public List<Color> KeysColorCode = new List<Color>()
+        public static List<Color> KeysColorCode = new List<Color>()
         {
             Colors.Red,
             Colors.Yellow,
@@ -20,7 +22,12 @@ namespace MyInstrument.Surface
             Colors.Orange,
             Colors.Purple,
             Colors.Green,
-            Colors.Coral
+            Colors.Coral,
+            Colors.DarkGray,
+            Colors.White,
+            Colors.DeepPink,
+            Colors.Gold,
+            Colors.LightCyan
         };
 
         // utili per andare incontro allo scostamento in termini di ottava nelle varie scale:
@@ -32,8 +39,11 @@ namespace MyInstrument.Surface
         private Dictionary<string, int> deviationMin = new Dictionary<string, int>() {
             {"C", 0 }, { "C#", 0 }, { "D", 1 }, { "D#", 1 }, { "E", 2 }, { "F", 3 }, { "F#", 3 }, {"G", 4 }, { "G#", 4 }, { "A", 5 }, { "A#", 6 }, { "B", 6 }
             };
-        private Dictionary<string, int> deviationChrom = new Dictionary<string, int>() {
+        private Dictionary<string, int> deviationChrom_7 = new Dictionary<string, int>() {
             {"C", 0 }, { "C#", 0 }, { "D", 0 }, { "D#", 0 }, { "E", 0 }, { "F", 0 }, { "F#", 1 }, {"G", 2 }, { "G#", 3 }, { "A", 4 }, { "A#", 5 }, { "B", 6 }
+            };
+        private Dictionary<string, int> deviationChrom_12 = new Dictionary<string, int>() {
+            {"C", 0 }, { "C#", 1 }, { "D", 2 }, { "D#", 3 }, { "E", 4 }, { "F", 5 }, { "F#", 6 }, {"G", 7 }, { "G#", 8 }, { "A", 9 }, { "A#", 10 }, { "B", 11 }
             };
 
         private string comboScale = Rack.UserSettings.ScaleName;
@@ -42,6 +52,8 @@ namespace MyInstrument.Surface
         public string ComboScale { get => comboScale; set { comboScale = value; } }
         public string ComboCode { get => comboCode; set { comboCode = value; } }
         public string ComboOctave { get => comboOctave; set { comboOctave = value; } }
+
+        public static int id = 0;
 
         private StackPanel musicKeyboard;
         public StackPanel MusicKeyboard
@@ -63,7 +75,19 @@ namespace MyInstrument.Surface
             musicKeyboard.Orientation = Orientation.Vertical;
             musicKeyboard.Background = Brushes.Transparent;
             musicKeyboard.Width = 150;
-            musicKeyboard.Height = 590;
+            if (Rack.UserSettings.SharpNotesMode == _SharpNotesModes.On)
+            {
+                Rack.UserSettings.keyboardHeight = 1011;
+                musicKeyboard.Height = Rack.UserSettings.keyboardHeight;
+                Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Height = 1338;
+            }
+            else
+            {
+                Rack.UserSettings.keyboardHeight = 590;
+                musicKeyboard.Height = Rack.UserSettings.keyboardHeight;
+                Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Height = 781;
+            }          
+            musicKeyboard.Name = "_" + id.ToString();
 
             FillStackPanel();
         }
@@ -75,73 +99,148 @@ namespace MyInstrument.Surface
             foreach (Button toolKey in CreateKeys())
             {
                 musicKeyboard.Children.Add(toolKey);
-
             }
         }
 
         //creo il tasto e lo associo alla rispettiva nota della scala per aggiungerlo alla tastiera
-        public List<Button> CreateKeys()
+        private List<Button> CreateKeys()
         {
             List<Button> toolKeys = new List<Button>();
-            Scale scale = new Scale(MusicConversions.ToAbsNote(ComboScale), MusicConversions.ToScaleCode(ComboCode));
-            List<AbsNotes> noteList = scale.NotesInScale;
-            int deviation_maj = deviationMaj[noteList[0].ToStandardString()];
-            int deviation_min = deviationMin[noteList[0].ToStandardString()];
-            int deviation_chrom = deviationChrom[noteList[0].ToStandardString()];
+            Scale scale;
+            List<AbsNotes> noteList;
 
-            for (int i = 0; i < 7; i++)
+            int deviation_maj;
+            int deviation_min;
+            int deviation_chrom_7;
+            int deviation_chrom_12;
+
+            if (Rack.UserSettings.SharpNotesMode == _SharpNotesModes.Off)
             {
-                SolidColorBrush brush = new SolidColorBrush(KeysColorCode[i]);
-                if (ComboCode == "maj")
-                {
-                    if (i >= 7 - deviation_maj)
+                scale = new Scale(MusicConversions.ToAbsNote(ComboScale), MusicConversions.ToScaleCode(ComboCode));
+                noteList = scale.NotesInScale;
+
+                deviation_maj = deviationMaj[noteList[0].ToStandardString()];
+                deviation_min = deviationMin[noteList[0].ToStandardString()];
+                deviation_chrom_7 = deviationChrom_7[noteList[0].ToStandardString()];                
+
+                for (int i = 0; i < 7; i++)
+                {                    
+                    SolidColorBrush brush = new SolidColorBrush(KeysColorCode[i]);
+                    if (ComboCode == "maj")
                     {
-                        MyInstrumentButtons toolKey = new MyInstrumentButtons(noteList[i].ToString(), int.Parse(ComboOctave) + 1, brush);
-                        toolKeys.Add(toolKey.ToolKey);
+                        if (i >= 7 - deviation_maj)
+                        {
+                            MyInstrumentButtons toolKey = new MyInstrumentButtons(noteList[i].ToString(), int.Parse(ComboOctave) + 1, brush, id);
+                            toolKeys.Add(toolKey.ToolKey);
+                        }
+                        else
+                        {
+                            MyInstrumentButtons toolKey = new MyInstrumentButtons(noteList[i].ToString(), int.Parse(ComboOctave), brush, id);
+                            toolKeys.Add(toolKey.ToolKey);
+                        }
+
                     }
-                    else
+
+                    if (ComboCode == "min")
                     {
-                        MyInstrumentButtons toolKey = new MyInstrumentButtons(noteList[i].ToString(), int.Parse(ComboOctave), brush);
-                        toolKeys.Add(toolKey.ToolKey);
+                        if (i >= 7 - deviation_min)
+                        {
+                            MyInstrumentButtons toolKey = new MyInstrumentButtons(noteList[i].ToString(), int.Parse(ComboOctave) + 1, brush, id);
+                            toolKeys.Add(toolKey.ToolKey);
+                        }
+                        else
+                        {
+                            MyInstrumentButtons toolKey = new MyInstrumentButtons(noteList[i].ToString(), int.Parse(ComboOctave), brush, id);
+                            toolKeys.Add(toolKey.ToolKey);
+                        }
                     }
-                    
+
+                    if (ComboCode == "chrom")
+                    {
+                        if (i >= 7 - deviation_chrom_7)
+                        {
+                            MyInstrumentButtons toolKey = new MyInstrumentButtons(noteList[i].ToString(), int.Parse(ComboOctave) + 1, brush, id);
+                            toolKeys.Add(toolKey.ToolKey);
+                        }
+                        else
+                        {
+                            MyInstrumentButtons toolKey = new MyInstrumentButtons(noteList[i].ToString(), int.Parse(ComboOctave), brush, id);
+                            toolKeys.Add(toolKey.ToolKey);
+                        }
+                    }
                 }
-
-                if (ComboCode == "min")
-                {
-                    if (i >= 7 - deviation_min)
-                    {
-                        MyInstrumentButtons toolKey = new MyInstrumentButtons(noteList[i].ToString(), int.Parse(ComboOctave) + 1, brush);
-                        toolKeys.Add(toolKey.ToolKey);
-                    }
-                    else
-                    {
-                        MyInstrumentButtons toolKey = new MyInstrumentButtons(noteList[i].ToString(), int.Parse(ComboOctave), brush);
-                        toolKeys.Add(toolKey.ToolKey);
-                    }
-
-                }
-
-                if (ComboCode == "chrom")
-                {
-                    if (i >= 7 - deviation_chrom)
-                    {
-                        MyInstrumentButtons toolKey = new MyInstrumentButtons(noteList[i].ToString(), int.Parse(ComboOctave) + 1, brush);
-                        toolKeys.Add(toolKey.ToolKey);
-                    }
-                    else
-                    {
-                        MyInstrumentButtons toolKey = new MyInstrumentButtons(noteList[i].ToString(), int.Parse(ComboOctave), brush);
-                        toolKeys.Add(toolKey.ToolKey);
-                    }
-
-                }
-
             }
-            
-            return toolKeys;
+            else
+            {
+                scale = new Scale(MusicConversions.ToAbsNote(ComboScale), MusicConversions.ToScaleCode("chrom"));
+                noteList = scale.NotesInScale;
+                deviation_chrom_12 = deviationChrom_12[noteList[0].ToStandardString()];
 
+                for (int i = 0; i < 12; i++)
+                {
+                    if (i >= 12 - deviation_chrom_12)
+                    {
+                        SolidColorBrush brush = new SolidColorBrush(KeysColorCode[i]);
+                        MyInstrumentButtons toolKey = new MyInstrumentButtons(noteList[i].ToString(), int.Parse(ComboOctave) + 1, brush, id);
+                        toolKeys.Add(toolKey.ToolKey);
+                    }
+                    else
+                    {
+                        SolidColorBrush brush = new SolidColorBrush(KeysColorCode[i]);
+                        MyInstrumentButtons toolKey = new MyInstrumentButtons(noteList[i].ToString(), int.Parse(ComboOctave), brush, id);
+                        toolKeys.Add(toolKey.ToolKey);
+                    }                  
+                }
+            }            
+
+            id++;
+            return toolKeys;
         }
-        
+
+        public static Point GetPosition(string id)
+        {
+            foreach (StackPanel keyboard in Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Children)
+            {
+                if ("_" + keyboard.Name == "_" + id.ToString())
+                {
+                    int x = (int) Canvas.GetLeft(keyboard);
+                    int y = (int) Canvas.GetTop(keyboard);
+                    return new Point(x, y);
+                }
+            }
+
+            return new Point(0, 0);
+        }
+
+        public static StackPanel getKeyboard(string id)
+        {
+            foreach (StackPanel keyboard in Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Children)
+            {
+                if ("_" + keyboard.Name == "_" + id.ToString())
+                {
+                    return keyboard;
+                }
+            }
+
+            return new StackPanel();
+        }
+
+        public static void resetColors(string id)
+        {
+            foreach (StackPanel keyboard in Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Children)
+            {
+                if ("_" + keyboard.Name == "_" + id.ToString())
+                {
+                    int i = 0;
+                    foreach (Button key in keyboard.Children)
+                    {
+                        key.Background = new SolidColorBrush(KeysColorCode[i]);
+                        i++;
+                    }
+                }             
+            }
+        }
+
     }
+
 }

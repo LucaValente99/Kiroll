@@ -28,8 +28,6 @@ namespace MyInstrument.Surface
         private System.Windows.Point basePosition;
 
         private DispatcherTimer samplerTimer = new DispatcherTimer(DispatcherPriority.Render);
-        public Point LastKeyboardPlayed { get; set; }
-        public bool NotePlayed { get; set; } = false;
 
         private Point lastSampledPoint;
         private Point lastMean;
@@ -57,20 +55,20 @@ namespace MyInstrument.Surface
 
             // Setting sampling timer
             samplerTimer.Interval = TimeSpan.FromMilliseconds(15);//1000; //1;
-            //samplerTimer.MicroTimerElapsed += SamplerTimer_MicroTimerElapsed;
             samplerTimer.Tick += ListenMouse;
             samplerTimer.Start();
 
         }
-
-         
-        //Canvas.SetLeft(keyboard, Canvas.GetLeft(keyboard) - 0.5)        
-        
+       
         private void ListenMouse(object sender, EventArgs e)
         {
             if (enabled)
-            {               
-                lastSampledPoint.X = GetMousePos().X - (int)basePosition.X;
+            {
+                if (GetMousePos().X > scrollCenter.X)
+                {
+                    lastSampledPoint.X = GetMousePos().X - (int)basePosition.X;
+                }
+               
                 lastSampledPoint.Y = GetMousePos().Y - (int)basePosition.Y;
 
                 filter.Push(lastSampledPoint);
@@ -79,7 +77,6 @@ namespace MyInstrument.Surface
                 Scroll();
             }
         }
-
         private void Scroll()
         {
             Xdifference = (scrollCenter.X - lastMean.X);

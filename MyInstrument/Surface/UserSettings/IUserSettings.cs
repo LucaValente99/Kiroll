@@ -19,8 +19,10 @@ namespace MyInstrument.Surface.UserSettings
         string NoteVelocity { get; set; }
         double keyDistance { get; set; }
         double keyboardHeight { get; set; }
+        int canvasWidth { get; set; }
         _MyInstrumentControlModes MyInstrumentControlMode { get; set; }
         _SlidePlayModes SlidePlayMode { get; set; }
+        _SharpNotesModes SharpNotesMode { get; set; }
 
     }
 }

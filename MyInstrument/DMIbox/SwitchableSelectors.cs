@@ -30,4 +30,9 @@ namespace MyInstrument.DMIbox
         Dynamic,
         Switch
     }
+
+    public enum _SharpNotesModes {
+        On,
+        Off
+    }
 }
