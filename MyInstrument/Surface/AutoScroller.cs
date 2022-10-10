@@ -33,14 +33,6 @@ namespace MyInstrument.Surface
         private Point lastMean;
         private double Xdifference;
         private double Ydifference;
-
-        private bool enabled = true;
-        public bool Enabled
-        {
-            get { return enabled; }
-            set { enabled = value; }
-        }
-
         public AutoScroller(ScrollViewer scrollViewer, int radiusThreshold, int proportional, IPointFilter filter)
         {
             this.radiusThreshold = radiusThreshold;
@@ -61,21 +53,18 @@ namespace MyInstrument.Surface
         }
        
         private void ListenMouse(object sender, EventArgs e)
-        {
-            if (enabled)
+        {           
+            if (GetMousePos().X > scrollCenter.X)
             {
-                if (GetMousePos().X > scrollCenter.X)
-                {
-                    lastSampledPoint.X = GetMousePos().X - (int)basePosition.X;
-                }
-               
-                lastSampledPoint.Y = GetMousePos().Y - (int)basePosition.Y;
-
-                filter.Push(lastSampledPoint);
-                lastMean = filter.GetOutput();               
-
-                Scroll();
+                lastSampledPoint.X = GetMousePos().X - (int)basePosition.X;
             }
+               
+            lastSampledPoint.Y = GetMousePos().Y - (int)basePosition.Y;
+
+            filter.Push(lastSampledPoint);
+            lastMean = filter.GetOutput();               
+
+            Scroll();           
         }
         private void Scroll()
         {

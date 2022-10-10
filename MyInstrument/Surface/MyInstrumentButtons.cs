@@ -31,7 +31,7 @@ namespace MyInstrument.Surface
         private string key;
         private int keyboardID;
 
-        private static MidiNotes oldMidiNote = MidiNotes.NaN; // aiuta a gestire la SlidePlayMode
+        private static MidiNotes oldMidiNote = MidiNotes.NaN; // Used to memorize the old note played, it helps to manage the Slide Play mode
         public MyInstrumentButtons(string key, int octave,  SolidColorBrush brush, int keyboardID) : base()
         {
             content = new TextBlock();
@@ -72,7 +72,7 @@ namespace MyInstrument.Surface
                 oldMidiNote = md;
 
                 Rack.DMIBox.MyInstrumentSurface.LastKeyboardPlayed = "_" + keyboardID;
-                Rack.DMIBox.MyInstrumentSurface.MoveKeyboard();
+                Rack.DMIBox.MyInstrumentSurface.MoveKeyboards(Rack.UserSettings.keyHorizontalDistance);
             }            
         }
 
@@ -81,10 +81,13 @@ namespace MyInstrument.Surface
             if (Rack.UserSettings.MyInstrumentControlMode == _MyInstrumentControlModes.Keyboard && Rack.DMIBox.MidiModule.IsMidiOk())
             {         
                 MidiNotes md = MusicConversions.ToAbsNote(key).ToMidiNote(octave);
+
+                //Check for slideplay - if it is on Stop the old note to start the new one
                 if (oldMidiNote != MidiNotes.NaN && Rack.UserSettings.SlidePlayMode == _SlidePlayModes.On)
                 {
                     Rack.DMIBox.MidiModule.StopNote(MidiNotesMethods.ToPitchValue(oldMidiNote));
-                }                   
+                }        
+                
                 Rack.DMIBox.MidiModule.PlayNote(MidiNotesMethods.ToPitchValue(md), 127);
                 Rack.UserSettings.NoteName = content.Text + octave.ToString();
                 Rack.UserSettings.NotePitch = md.ToPitchValue().ToString();
@@ -92,6 +95,7 @@ namespace MyInstrument.Surface
             }           
         }
 
+        //Resettting the oldNote for SlidePlay
         public static void resetSlidePlay()
         {
             oldMidiNote = MidiNotes.NaN;

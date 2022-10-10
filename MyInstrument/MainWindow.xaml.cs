@@ -25,7 +25,7 @@ namespace MyInstrument
     /// </summary>
     public partial class MainWindow : Window
     {
-        //controlli booleani per attivazione/disattivazione bottoni
+        //Bool variables for checking activation and deactivation of buttons
         private bool myInstrumentStarted = false;
         private bool myInstrumentSettingsOpened = false;
         private bool musicSheetSettingsOpened = false;
@@ -35,7 +35,7 @@ namespace MyInstrument
         private bool btnSlidePlayOn = false;
         private bool btnSharpNotesOn = false;
 
-        // utilizzati per la selezione dell'indice dei combobox nelle fasi di Start and Stop
+        //Dictionaries used to select index into combobox for Start and Stop phases
         private Dictionary<string, int> comboScale = new Dictionary<string, int>()
         {
             {"C", 0 }, { "C#", 1 }, { "D", 2 }, { "D#", 3 }, { "E", 4 }, { "F", 5 }, { "F#", 6 }, {"G", 7 }, { "G#", 8 }, { "A", 9 }, { "A#", 10 }, { "B", 11}, { "_", 12}
@@ -105,22 +105,23 @@ namespace MyInstrument
                 MyInstrumentSetup myInstrumentSetup = new MyInstrumentSetup(this);
                 myInstrumentSetup.Setup();
 
-                // cambiamenti grafici
+                // Graphic changes
                 btnStartImage.Source = pauseIcon;
                 btnStart.Background = ActiveBrush;
                 btnStartLabel.Content = "Running...";
 
-                // abilitazione ComboBox & slider
+                // Enabling ComboBox & slider
                 lstScaleChanger.IsEnabled = true;
                 lstScaleChanger.SelectedIndex = comboScale[Rack.UserSettings.ScaleName];
                 lstCodeChanger.IsEnabled = true;
                 lstCodeChanger.SelectedIndex = comboCode[Rack.UserSettings.ScaleCode];
                 lstOctaveChanger.IsEnabled = true;
                 lstOctaveChanger.SelectedIndex = comboOctave[Rack.UserSettings.Octave];
-                sldDistance.IsEnabled = true;
+                sldVerticalDistance.IsEnabled = true;
+                sldHorizontalDistance.IsEnabled = true;
 
 
-                /* MIDI */
+                // MIDI
                 txtMidiPort.Text = "MP" + Rack.DMIBox.MidiModule.OutDevice.ToString();
                 CheckMidiPort();
 
@@ -128,23 +129,24 @@ namespace MyInstrument
             }
             else
             {
-                // cambiamenti grafici
+                // Graphic changes
                 myInstrumentStarted = false;
                 btnStartImage.Source = startIcon;
                 btnStart.Background = DisableBrush;
                 btnStartLabel.Content = "Start";
                 txtMidiPort.Text = "";
 
-                // disabilitazione ComboBox & slider
+                // Disabling ComboBox & slider
                 lstScaleChanger.IsEnabled = false;
                 lstScaleChanger.SelectedIndex = comboScale["_"];
                 lstCodeChanger.IsEnabled = false;
                 lstCodeChanger.SelectedIndex = comboCode["_"];
                 lstOctaveChanger.IsEnabled = false;
                 lstOctaveChanger.SelectedIndex = comboOctave["_"];
-                sldDistance.IsEnabled = false;
+                sldVerticalDistance.IsEnabled = false;
+                sldHorizontalDistance.IsEnabled = false;
 
-                // resetto la surface
+                // Resetting surface
                 Rack.DMIBox.MyInstrumentSurface.ClearSurface();
             }
         }
@@ -155,7 +157,7 @@ namespace MyInstrument
             {
                 myInstrumentSettingsOpened = true;
 
-                // cambiamenti grafici
+                // Graphic changes
                 WindowInstrumentSettings.Visibility = Visibility.Visible;
                 btnInstrumentSettingImage.Source = closeSettingsIcon;
                 btnInstrumentSettings.Background = ActiveBrush;
@@ -165,7 +167,7 @@ namespace MyInstrument
             {
                 myInstrumentSettingsOpened = false;
 
-                // cambiamenti grafici
+                // Graphic changes
                 WindowInstrumentSettings.Visibility = Visibility.Hidden;
                 btnInstrumentSettingImage.Source = settingsIcon;
                 btnInstrumentSettings.Background = DisableBrush;
@@ -179,7 +181,7 @@ namespace MyInstrument
             {
                 musicSheetSettingsOpened = true;
 
-                // cambiamenti grafici
+                // Graphic changes
                 WindowMusicSheetSettings.Visibility = Visibility.Visible;
                 btnMusicSheetSettingsImage.Source = closeSettingsIcon;
                 btnMusicSheetSettings.Background = ActiveBrush;
@@ -190,7 +192,7 @@ namespace MyInstrument
             {
                 musicSheetSettingsOpened = false;
 
-                // cambiamenti grafici
+                // Graphic changes
                 WindowMusicSheetSettings.Visibility = Visibility.Hidden;
                 btnMusicSheetSettingsImage.Source = settingsIcon;
                 btnMusicSheetSettings.Background = DisableBrush;
@@ -247,7 +249,7 @@ namespace MyInstrument
                 Rack.UserSettings.MIDIPort--;
                 Rack.DMIBox.MidiModule.OutDevice = Rack.UserSettings.MIDIPort;
 
-                // cambiamenti grafici
+                // Graphic changes
                 txtMidiPort.Text = "MP" + Rack.DMIBox.MidiModule.OutDevice.ToString();
                 CheckMidiPort();
             }
@@ -260,6 +262,7 @@ namespace MyInstrument
                 Rack.UserSettings.MIDIPort++;
                 Rack.DMIBox.MidiModule.OutDevice = Rack.UserSettings.MIDIPort;
 
+                // graphic changes
                 txtMidiPort.Text = "MP" + Rack.DMIBox.MidiModule.OutDevice.ToString();
                 CheckMidiPort();
             }
@@ -306,12 +309,23 @@ namespace MyInstrument
             }
         }
 
-        private void sldDistance_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        // Setting vertical distance between keys in keyboards
+        private void sldVerticalDistance_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
         {
             if (myInstrumentStarted)
             {
-                Rack.UserSettings.keyDistance = sldDistance.Value;
-                Rack.DMIBox.MyInstrumentSurface.SetDistance(sldDistance.Value);
+                Rack.UserSettings.keyVerticaDistance = sldVerticalDistance.Value;
+                Rack.DMIBox.MyInstrumentSurface.SetVerticalDistance(sldVerticalDistance.Value);
+            }
+        }
+
+        // Setting horizontal distance between keyboards
+        private void sldHorizontalDistance_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        {
+            if (myInstrumentStarted)
+            {
+                Rack.UserSettings.keyHorizontalDistance = sldHorizontalDistance.Value;
+                Rack.DMIBox.MyInstrumentSurface.SetHorizontalDistance(sldHorizontalDistance.Value);
             }
         }
 
@@ -389,6 +403,7 @@ namespace MyInstrument
 
         #endregion MusicSheet (Row2)
 
+        
     }
         
 }

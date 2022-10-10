@@ -30,9 +30,9 @@ namespace MyInstrument.Surface
             Colors.LightCyan
         };
 
-        // utili per andare incontro allo scostamento in termini di ottava nelle varie scale:
-        // es. scala maj C# sulla 4a ottava -> C#4, D#4, F4, F#4, G#4, A#4, C5. L'ultimo C sarà sull'ottava superiore, da qui { "C#", 1 }, o meglio "nella scala C# maj c'è una sola nota
-        // che necessita di essere aumnetata di un ottava".
+        // Useful for meeting the deviation in terms of octave in scales:
+        // es. maj C# scale on 4th octave -> C#4, D#4, F4, F#4, G#4, A#4, C5. The last C in the scale will be in the superior octave, so { "C#", 1 }, that means "into the C# maj scale there is just one note
+        // that needs to be increased about one octave".
         private Dictionary<string, int> deviationMaj = new Dictionary<string, int>() {
             {"C", 0 }, { "C#", 1 }, { "D", 1 }, { "D#", 2 }, { "E", 2 }, { "F", 3 }, { "F#", 3 }, {"G", 4 }, { "G#", 4 }, { "A", 5 }, { "A#", 5 }, { "B", 6 }
             };
@@ -92,7 +92,7 @@ namespace MyInstrument.Surface
             FillStackPanel();
         }
 
-        //riempo gli stack panel coi i tasti associati ognuno alla rispettiva nota della scala
+        //Filling stack panels with associated keys 
         private void FillStackPanel()
         {
 
@@ -102,7 +102,7 @@ namespace MyInstrument.Surface
             }
         }
 
-        //creo il tasto e lo associo alla rispettiva nota della scala per aggiungerlo alla tastiera
+        //Creating key, giving it the note of the scale, then add it to the keyboard
         private List<Button> CreateKeys()
         {
             List<Button> toolKeys = new List<Button>();
@@ -212,6 +212,7 @@ namespace MyInstrument.Surface
             return new Point(0, 0);
         }
 
+        // Getting the keyboard as child of the Canvas
         public static StackPanel getKeyboard(string id)
         {
             foreach (StackPanel keyboard in Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Children)

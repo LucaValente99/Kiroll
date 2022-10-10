@@ -334,7 +334,7 @@
             CornerRadius="8" 
             Margin="20,20,0,0"
             Width="350"  
-            Height="600"
+            Height="680"
             BorderBrush="Black"
             BorderThickness="4"
             Visibility="Hidden">
@@ -346,6 +346,7 @@
             <Grid>
 
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"></RowDefinition>
                     <RowDefinition Height="1*"></RowDefinition>
                     <RowDefinition Height="1*"></RowDefinition>
                     <RowDefinition Height="1*"></RowDefinition>
@@ -723,6 +724,7 @@
 
                 <!--End Blink Scale and Slide Play buttons-->
 
+                <!-- Key Vertical Distance Slider-->
                 <Border Style="{StaticResource SeparatorStyleHorizontal}"
                             Grid.Row="5"
                             VerticalAlignment="Bottom"/>
@@ -736,9 +738,9 @@
                             FontWeight="Bold"
                             FontSize="18"
                             HorizontalAlignment="Center"
-                            Foreground="White">"Keys distance"</Label>
+                            Foreground="White">"Keys vertical distance"</Label>
                     <Slider
-                        Name="sldDistance"
+                        Name="sldVerticalDistance"
                         HorizontalAlignment="Stretch"
                         Margin="40,0,40,0"
                         TickPlacement="BottomRight"
@@ -750,7 +752,7 @@
                         Minimum="0"
                         Maximum="30"   
                         IsEnabled="false"
-                        Thumb.DragCompleted="sldDistance_DragCompleted"
+                        Thumb.DragCompleted="sldVerticalDistance_DragCompleted"
                         />
                     <!-- .DragCompleted="sldDistance_DragCompleted" Height="18" Margin="0,0,-0.2,0" Grid.RowSpan="2" VerticalAlignment="Top" RenderTransformOrigin="0.501,0.5" /> -->
 
@@ -759,10 +761,42 @@
                 <Border Style="{StaticResource SeparatorStyleHorizontal}"
                             Grid.Row="6"
                             VerticalAlignment="Bottom"/>
-                
-                <StackPanel Grid.Row="7" Orientation="Vertical" HorizontalAlignment="Stretch"
+
+                <StackPanel Grid.Row="7" Orientation="Vertical" HorizontalAlignment="Stretch">
+                    <Label
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Margin="0,0,0,0"
+                            FontFamily="Papyrus"
+                            FontWeight="Bold"
+                            FontSize="18"
+                            HorizontalAlignment="Center"
+                            Foreground="White">"Keys horizontal distance"</Label>
+                    <Slider
+                        Name="sldHorizontalDistance"
+                        HorizontalAlignment="Stretch"
+                        Margin="40,0,40,0"
+                        TickPlacement="BottomRight"
+                        TickFrequency="100"
+                        Value="550"
+                        IsSnapToTickEnabled="True"
+                        LargeChange="0"
+                        Focusable="False"
+                        Minimum="250"
+                        Maximum="650"   
+                        IsEnabled="false"
+                        Thumb.DragCompleted="sldHorizontalDistance_DragCompleted"
+                        />
+                    <!-- .DragCompleted="sldDistance_DragCompleted" Height="18" Margin="0,0,-0.2,0" Grid.RowSpan="2" VerticalAlignment="Top" RenderTransformOrigin="0.501,0.5" /> -->
+
+                </StackPanel>
+
+                <Border Style="{StaticResource SeparatorStyleHorizontal}"
+                            Grid.Row="7"
+                            VerticalAlignment="Bottom"/>
+                <!--Note Visualizer-->
+                <StackPanel Grid.Row="8" Orientation="Vertical" HorizontalAlignment="Stretch"
                             VerticalAlignment="Center">
-                    <!--Note Visualizer-->
                     <StackPanel Margin="0,0,0,0" Orientation="Horizontal" 
                         VerticalAlignment="Center"
                         HorizontalAlignment="Center">
