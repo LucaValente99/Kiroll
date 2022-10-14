@@ -1,4 +1,5 @@
-﻿using NeeqDMIs.Eyetracking.PointFilters;
+﻿using NeeqDMIs.Eyetracking.MouseEmulator;
+using NeeqDMIs.Eyetracking.PointFilters;
 using NeeqDMIs.Keyboard;
 using RawInputProcessor;
 using System;
@@ -26,7 +27,7 @@ namespace MyInstrument.DMIbox.Behaviors
                 Rack.DMIBox.TobiiModule.MouseEmulator.EyetrackerToMouse = false;
                 Rack.DMIBox.TobiiModule.MouseEmulator.CursorVisible = true;
             }
-                return 1;
+            return 1;
         }
     }
 }
