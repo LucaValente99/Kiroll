@@ -35,8 +35,7 @@ namespace MyInstrument.DMIbox
                 firstTime = false;
             }
 
-            IntPtr windowHandle = new WindowInteropHelper(Rack.DMIBox.MyInstrumentMainWindow).Handle;
-            Rack.DMIBox.KeyboardModule = new KeyboardModule(windowHandle, RawInputCaptureMode.Foreground);
+            Rack.DMIBox.KeyboardModule = new KeyboardModule(new WindowInteropHelper(Rack.DMIBox.MyInstrumentMainWindow).Handle, RawInputCaptureMode.ForegroundAndBackground);
             Rack.DMIBox.tobiiModule = new TobiiModule(GazePointDataMode.Unfiltered);
             Rack.DMIBox.KeyboardModule.KeyboardBehaviors.Add(new KactivateAutoscroller());
 
@@ -44,7 +43,6 @@ namespace MyInstrument.DMIbox
             Rack.DMIBox.AutoScroller = new AutoScroller(Rack.DMIBox.MyInstrumentMainWindow.scrlMyInstrument, 0, 100, new PointFilterMAExpDecaying(0.1f)); // OLD was 100, 0.1f
             Rack.DMIBox.MyInstrumentSurface = new MyInstrumentSurface(Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument);
             Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
-            
         }
         
     }

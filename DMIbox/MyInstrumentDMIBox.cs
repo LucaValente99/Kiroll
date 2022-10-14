@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MyInstrument.Surface;
+﻿using MyInstrument.Surface;
 using NeeqDMIs;
 using NeeqDMIs.Eyetracking.Tobii;
 using NeeqDMIs.Keyboard;
