@@ -44,9 +44,6 @@
     </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ArduinoDriver, Version=2.4.6.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\ArduinoDriver.2.4.6\lib\net452\ArduinoDriver.dll</HintPath>
-    </Reference>
     <Reference Include="ArduinoUploader, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\ArduinoUploader.3.2.0\lib\net452\ArduinoUploader.dll</HintPath>
     </Reference>
@@ -263,7 +260,6 @@
     <Content Include="Libraries\XInputDotNetPure.dll" />
     <Content Include="Libraries\XInputInterface.dll" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\NeeqDMIs\NeeqDMIs.csproj">
       <Project>{5d8787ab-3ed2-4181-98ec-658814b19ae9}</Project>

@@ -1,31 +1,32 @@
+<<<<<<< HEAD
 ﻿using NeeqDMIs.Eyetracking.MouseEmulator;
 using NeeqDMIs.Eyetracking.PointFilters;
 using NeeqDMIs.Keyboard;
+=======
+﻿using NeeqDMIs.Keyboard;
+>>>>>>> 1a4e348e9fce43ef939a5355171dc0802a1810a1
 using RawInputProcessor;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MyInstrument.DMIbox.Behaviors
 {
-    internal class KactivateAutoscroller : IKeyboardBehavior
+    public class KactivateAutoscroller : IKeyboardBehavior
     {
-        const VKeyCodes activateAutoscroleller = VKeyCodes.A;
-        const VKeyCodes deactivateAutoscroleller = VKeyCodes.D;
+        private VKeyCodes activateAutoscroller = VKeyCodes.Q;
+        private VKeyCodes deactivateAutoscroller = VKeyCodes.D;
 
         public int ReceiveEvent(RawInputEventArgs e)
         {
-            if (e.VirtualKey == (ushort) activateAutoscroleller)
+            if (e.VirtualKey == (ushort)activateAutoscroller && e.KeyPressState == KeyPressState.Down)
             {
                 Rack.DMIBox.TobiiModule.MouseEmulator.EyetrackerToMouse = true;
                 Rack.DMIBox.TobiiModule.MouseEmulator.CursorVisible = false;
-
-            }else if (e.VirtualKey == (ushort)deactivateAutoscroleller)
+                return 0;
+            }
+            if (e.VirtualKey == (ushort)deactivateAutoscroller && e.KeyPressState == KeyPressState.Down)
             {
                 Rack.DMIBox.TobiiModule.MouseEmulator.EyetrackerToMouse = false;
                 Rack.DMIBox.TobiiModule.MouseEmulator.CursorVisible = true;
+                return 0;
             }
             return 1;
         }
