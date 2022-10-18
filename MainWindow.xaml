@@ -263,27 +263,70 @@
                         Grid.Column="1"/>
                     <!--End Instrument Settings button-->
 
-                    <!--Music Sheet Settings button-->
-                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
-                        <Button Style="{DynamicResource RoundButton}"
-                            Name="btnMusicSheetSettings"
-                            Width="45"
-                            Background="Transparent"
-                            BorderBrush="Transparent"
-                            Margin="5,5,0,5"
-                            Click="btnMusicSheetSettings_Click">
-                            <Image Name="btnMusicSheetSettingsImage" 
-                                Source="Images/Icons/Settings.png"
-                                Width="40"/>
-                        </Button>
-                        <Label Name="btnMusicSheetSettingsLabel" 
-                            Margin="0,0,10,0"
-                            FontFamily="Papyrus"
-                            FontWeight="Bold"
-                            FontSize="28"
-                            Foreground="White">Music Sheet Settings</Label>
+                    <!--Note visualizer-->
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <StackPanel Margin="0,0,0,0" Orientation="Horizontal" 
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center">
+                            <Border
+                            Width="110"
+                            Height="40"
+                            BorderBrush="Black"
+                            BorderThickness="4,4,2,4"
+                            CornerRadius="5,0,0,5">
+                                <Border.Background>
+                                    <ImageBrush ImageSource="Images/Backgrounds/Buttons.jpeg"></ImageBrush>
+                                </Border.Background>
+                                <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                x:Name="txtPitch"
+                                FontFamily="Digital-7 Italic"
+                                FontSize="25"
+                                Text="_"
+                                Foreground="White"
+                                TextAlignment="Center" />
+                            </Border>
+                            <Border
+                            Width="110"
+                            Height="40"
+                            BorderBrush="Black"
+                            BorderThickness="2,4,2,4">
+                                <Border.Background>
+                                    <ImageBrush ImageSource="Images/Backgrounds/Buttons.jpeg"></ImageBrush>
+                                </Border.Background>
+                                <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                x:Name="txtNoteName"
+                                FontFamily="Digital-7 Italic"
+                                FontSize="25"
+                                Text="_"
+                                Foreground="White"
+                                TextAlignment="Center" />
+                            </Border>
+                            <Border
+                                Width="110"
+                                Height="40"
+                                BorderBrush="Black"
+                                BorderThickness="2,4,4,4" 
+                                CornerRadius="0,5,5,0">
+                                <Border.Background>
+                                    <ImageBrush ImageSource="Images/Backgrounds/Buttons.jpeg"></ImageBrush>
+                                </Border.Background>
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    x:Name="txtVelocityMouth"
+                                    FontFamily="Digital-7 Italic"
+                                    FontSize="25"
+                                    Foreground="White"
+                                    Text="_"
+                                    TextAlignment="Center" />
+                            </Border>
+                        </StackPanel>
+                        <!--End Note Visualizer-->
                     </StackPanel>
-                    <!--End Music Sheet Settings button-->
                 </Grid>
 
             </Border>
@@ -400,29 +443,29 @@
                                 VerticalAlignment="Center"/>
                     <!--End Keyboard Buttons-->
 
-                    <!--Face Buttons-->
+                    <!--Breath Buttons-->
                     <Button Style="{DynamicResource RoundButton}"                      
-                            Name="btnCtrlFace"
+                            Name="btnCtrlBreath"
                             Width="35"
                             Height="35"
                             Margin ="0,0,0,0"
                             VerticalAlignment="Stretch"
                             BorderBrush="White"
                             BorderThickness="2"
-                            Click="btnCtrlFace_Click">
+                            Click="btnCtrlBreath_Click">
                         <Button.Background>
-                            <ImageBrush x:Name="btnFaceImage"
+                            <ImageBrush x:Name="btnBreathImage"
                                 ImageSource="Images/Backgrounds/Buttons.jpeg"
                                 Stretch="None"
                                 TileMode="Tile" />
                         </Button.Background>
                     </Button>
-                    <Image Source="Images/Icons/Face.png"
+                    <Image Source="Images/Icons/Breath.png"
                                 Margin="10,0,0,0"
                                 Width="auto"
-                                Height="40" 
+                                Height="45" 
                                 VerticalAlignment="Center"/>
-                    <!--End Face Buttons-->
+                    <!--End Breath Buttons-->
                 </StackPanel>
                 <!--end Keyboard and Face Buttons-->
 
@@ -433,7 +476,7 @@
                 <!--MIDI Port-->
                 <StackPanel Grid.Row="2"  Orientation="Horizontal" HorizontalAlignment="Center">
                     <Label
-                        Margin="0,0,10,0"
+                        Margin="0,0,16,0"
                         FontFamily="Papyrus"
                         FontWeight="Bold"
                         FontSize="18"
@@ -503,8 +546,83 @@
                         Grid.Row="2"
                         VerticalAlignment="Bottom"/>
 
+                <!-- Breath Port-->
+                <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                    <Label
+                        Margin="0,0,5,0"
+                        FontFamily="Papyrus"
+                        FontWeight="Bold"
+                        FontSize="18"
+                        Foreground="White" Height="35">Breath Port</Label>
+
+                    <StackPanel Margin="0,0,0,0" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button Style="{StaticResource RoundButton}"
+                            Name="btnBreathPortMinus"
+                            Margin="0,0,5,0"
+                            Width="40"
+                            Height="40"
+                            BorderBrush="Transparent"
+                            BorderThickness="2"
+                            Click="btnBreathPortMinus_Click">
+                            <Button.Background>
+                                <ImageBrush
+                                ImageSource="Images/Backgrounds/Buttons.jpeg"
+                                Stretch="None"
+                                TileMode="Tile" />
+                            </Button.Background>
+
+                            <Image Source="Images/Icons/Left_arrow.png"
+                                   Width="auto"
+                                   Height="auto"/>
+                        </Button>
+                        <Border
+                            Width="90"
+                            Height="35"
+                            Background="Black"
+                            BorderBrush="WhiteSmoke"
+                            BorderThickness="2"
+                            Visibility="Visible">
+                            <TextBlock
+                                Name="txtBreathPort"
+                                Background="Black"
+                                FontFamily="Digital-7 Italic"
+                                FontSize="27"
+                                Foreground="LightCoral"
+                                Text=""
+                                VerticalAlignment="Center"
+                                TextAlignment="Center" />
+                        </Border>
+                        <Button Style="{StaticResource RoundButton}"
+                            Name="btnBreathPortPlus"
+                            Margin="0,0,0,0"
+                            Width="40"
+                            Height="40"
+                            BorderBrush="Transparent"
+                            BorderThickness="2"
+                            Click="btnBreathPortPlus_Click">
+                            <Button.Background>
+                                <ImageBrush
+                                ImageSource="Images/Backgrounds/Buttons.jpeg"
+                                Stretch="None"
+                                TileMode="Tile" />
+                            </Button.Background>
+
+                            <Image Source="Images/Icons/Right_arrow.png"
+                                   Width="auto"
+                                   Height="auto"/>
+                        </Button>
+                    </StackPanel>
+
+                </StackPanel>
+                <!-- End Breath Port-->
+
+                <Border Style="{StaticResource SeparatorStyleHorizontal}"
+                        Grid.Row="3"
+                        VerticalAlignment="Bottom"/>
+
                 <!--Combobox Scale-->
-                <StackPanel Grid.Row="3"  Orientation="Horizontal" HorizontalAlignment="Center">
+                <StackPanel Grid.Row="4"  Orientation="Horizontal" HorizontalAlignment="Center">
 
                     <Label
                         Margin="0,0,5,0"
@@ -596,12 +714,12 @@
                 <!--Combobox Scale-->
 
                 <Border Style="{StaticResource SeparatorStyleHorizontal}"
-                            Grid.Row="3"
+                            Grid.Row="4"
                             VerticalAlignment="Bottom"/>
 
                 <!--Combobox Octave and Sharp Notes button-->
 
-                <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center">
+                <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Center">
                     <Label
                         Margin="25,0,5,0"
                         FontFamily="Papyrus"
@@ -665,12 +783,12 @@
                 <!--End Combobox Octave and Sharp Notes button-->
 
                 <Border Style="{StaticResource SeparatorStyleHorizontal}"
-                            Grid.Row="4"
+                            Grid.Row="5"
                             VerticalAlignment="Bottom"/>
 
                 <!--Blink Scale and SLide Play buttons-->
 
-                <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Center">
+                <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Center">
 
                     <Button Style="{DynamicResource RoundButton}"                      
                             Name="btnBlinkScale"
@@ -726,10 +844,10 @@
 
                 <!-- Key Vertical Distance Slider-->
                 <Border Style="{StaticResource SeparatorStyleHorizontal}"
-                            Grid.Row="5"
+                            Grid.Row="6"
                             VerticalAlignment="Bottom"/>
 
-                <StackPanel Grid.Row="6" Orientation="Vertical" HorizontalAlignment="Stretch">
+                <StackPanel Grid.Row="7" Orientation="Vertical" HorizontalAlignment="Stretch">
                     <Label
                             Grid.Row="0"
                             Grid.Column="1"
@@ -759,10 +877,10 @@
                 </StackPanel>
 
                 <Border Style="{StaticResource SeparatorStyleHorizontal}"
-                            Grid.Row="6"
+                            Grid.Row="7"
                             VerticalAlignment="Bottom"/>
 
-                <StackPanel Grid.Row="7" Orientation="Vertical" HorizontalAlignment="Stretch">
+                <StackPanel Grid.Row="8" Orientation="Vertical" HorizontalAlignment="Stretch">
                     <Label
                             Grid.Row="0"
                             Grid.Column="1"
@@ -790,348 +908,9 @@
                     <!-- .DragCompleted="sldDistance_DragCompleted" Height="18" Margin="0,0,-0.2,0" Grid.RowSpan="2" VerticalAlignment="Top" RenderTransformOrigin="0.501,0.5" /> -->
 
                 </StackPanel>
-
-                <Border Style="{StaticResource SeparatorStyleHorizontal}"
-                            Grid.Row="7"
-                            VerticalAlignment="Bottom"/>
-                <!--Note Visualizer-->
-                <StackPanel Grid.Row="8" Orientation="Vertical" HorizontalAlignment="Stretch"
-                            VerticalAlignment="Center">
-                    <StackPanel Margin="0,0,0,0" Orientation="Horizontal" 
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Center">
-                        <Border
-                            Width="90"
-                            Height="40"
-                            BorderBrush="Black"
-                            BorderThickness="4,4,2,4"
-                            CornerRadius="5,0,0,5">
-                            <Border.Background>
-                                <ImageBrush ImageSource="Images/Backgrounds/Buttons.jpeg"></ImageBrush>
-                            </Border.Background>
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                x:Name="txtPitch"
-                                FontFamily="Digital-7 Italic"
-                                FontSize="25"
-                                Text="_"
-                                Foreground="White"
-                                TextAlignment="Center" />
-                        </Border>
-                        <Border
-                            Width="90"
-                            Height="40"
-                            BorderBrush="Black"
-                            BorderThickness="2,4,2,4">
-                            <Border.Background>
-                                <ImageBrush ImageSource="Images/Backgrounds/Buttons.jpeg"></ImageBrush>
-                            </Border.Background>
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                x:Name="txtNoteName"
-                                FontFamily="Digital-7 Italic"
-                                FontSize="25"
-                                Text="_"
-                                Foreground="White"
-                                TextAlignment="Center" />
-                            </Border>
-                            <Border
-                                Width="90"
-                                Height="40"
-                                BorderBrush="Black"
-                                BorderThickness="2,4,4,4" 
-                                CornerRadius="0,5,5,0">
-                                <Border.Background>
-                                    <ImageBrush ImageSource="Images/Backgrounds/Buttons.jpeg"></ImageBrush>
-                                </Border.Background>
-                                <TextBlock
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    x:Name="txtVelocityMouth"
-                                    FontFamily="Digital-7 Italic"
-                                    FontSize="25"
-                                    Foreground="White"
-                                    Text="_"
-                                    TextAlignment="Center" />
-                            </Border>
-                        </StackPanel>
-                    <!--End Note Visualizer-->
-                    </StackPanel>
-
-                </Grid>
-
-        </Border>
-        <!--End MyInstrument's Setting Window-->
-
-        <!--MusicSheet's Setting Window-->
-        <Border Name="WindowMusicSheetSettings" 
-            Grid.Row="1"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            CornerRadius="8" 
-            Margin="0,20,20,0"
-            Width="350"  
-            Height="600"
-            BorderBrush="Black"
-            BorderThickness="4"
-            Visibility="Hidden">
-
-            <Border.Background>
-                <ImageBrush ImageSource="/Images/Backgrounds/TopBar2.jpg" TileMode="Tile" />
-            </Border.Background>
-
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="1*"></RowDefinition>
-                    <RowDefinition Height="1*"></RowDefinition>
-                    <RowDefinition Height="1*"></RowDefinition>
-                    <RowDefinition Height="1*"></RowDefinition>
-                    <RowDefinition Height="1*"></RowDefinition>
-                    <RowDefinition Height="1*"></RowDefinition>
-                    <RowDefinition Height="1*"></RowDefinition>
-                </Grid.RowDefinitions>
-
-                <!--Title-->
-                <StackPanel Grid.Row="0"  Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Label
-                        Margin="0,5,0,0"
-                        FontFamily="Papyrus"
-                        FontWeight="Bold"
-                        FontSize="25"
-                        HorizontalAlignment="Center"
-                        Foreground="White">Instrument Settings</Label>
-                    <!--End Title-->
-
-                </StackPanel>
-
-                <Border Style="{StaticResource SeparatorStyleHorizontal}"
-                            Grid.Row="0" VerticalAlignment="Bottom"/>
-
-                <StackPanel Grid.Row="1" Orientation="Horizontal" 
-                            HorizontalAlignment="Center">
-
-                    <Label
-                        Margin="0,0,5,0"
-                        FontFamily="Papyrus"
-                        FontWeight="Bold"
-                        FontSize="18"
-                        Foreground="White" Height="36">New</Label>
-
-                    <Button Style="{StaticResource RoundButton}"
-                            Name="btnNew"
-                            Margin="0,0,20,0"
-                            Width="35"
-                            Height="35"
-                            BorderBrush="Black"
-                            BorderThickness="2">
-                        <Button.Background>
-                            <ImageBrush
-                                ImageSource="Images/Backgrounds/Buttons.jpeg"
-                                Stretch="None"
-                                TileMode="Tile" />
-                        </Button.Background>
-
-                        <Image Source="Images/Icons/New.png"
-                                   Width="20"
-                                   Height="20"/>
-                    </Button>
-
-                    <Label
-                        Margin="0,0,5,0"
-                        FontFamily="Papyrus"
-                        FontWeight="Bold"
-                        FontSize="18"
-                        Foreground="White" Height="35">Save</Label>
-
-                    <Button Style="{StaticResource RoundButton}"
-                            Name="btnSave"
-                            Margin="0,0,5,0"
-                            Width="35"
-                            Height="35"
-                            BorderBrush="Black"
-                            BorderThickness="2">
-                        <Button.Background>
-                            <ImageBrush
-                                ImageSource="Images/Backgrounds/Buttons.jpeg"
-                                Stretch="None"
-                                TileMode="Tile" />
-                        </Button.Background>
-
-                        <Image Source="Images/Icons/Save.png"
-                                   Width="20"
-                                   Height="20"/>
-                    </Button>
-                </StackPanel>
-
-                <Border Style="{StaticResource SeparatorStyleHorizontal}"
-                            Grid.Row="1"
-                            VerticalAlignment="Bottom"/>
-
-                <StackPanel Grid.Row="2" Orientation="Horizontal" 
-                            HorizontalAlignment="Center">
-
-                    <Label
-                        Margin="0,0,10,0"
-                        FontFamily="Papyrus"
-                        FontWeight="Bold"
-                        FontSize="18"
-                        Foreground="White" Height="36">Disable writing mode</Label>
-
-                    <Button Style="{StaticResource RoundButton}"
-                            Name="btnDisable"
-                            Margin="0,0,0,0"
-                            Width="35"
-                            Height="35"
-                            BorderBrush="Black"
-                            BorderThickness="2"
-                            Click="btnDisable_Click">
-                        <Button.Background>
-                            <ImageBrush
-                                ImageSource="Images/Backgrounds/Buttons.jpeg"
-                                Stretch="None"
-                                TileMode="Tile" />
-                        </Button.Background>
-
-                        <Image Source="Images/Icons/Disable.png"
-                                   Width="20"
-                                   Height="20"/>
-                    </Button>
-                </StackPanel>
-
-                <Border Style="{StaticResource SeparatorStyleHorizontal}"
-                        Grid.Row="2"
-                        VerticalAlignment="Bottom"/>
-
-                <Border Style="{StaticResource SeparatorStyleHorizontal}"
-                            Grid.Row="3"
-                            VerticalAlignment="Bottom"/>
-
-                <Border Style="{StaticResource SeparatorStyleHorizontal}"
-                            Grid.Row="4"
-                            VerticalAlignment="Bottom"/>
-
-                <Border Style="{StaticResource SeparatorStyleHorizontal}"
-                            Grid.Row="5"
-                            VerticalAlignment="Bottom"/>
-
             </Grid>
 
         </Border>
-        <!--End MusicSheet's Setting Window-->
-
-        <!--#endregion End MyInstrument (Row 1)-->
-
-        <!--#region Music Sheet (Row 2)--><!--
-        <Border Grid.Row="2" VerticalAlignment="Stretch" 
-                HorizontalAlignment="Stretch" Margin="5,5,5,5" 
-                Width="Auto" Height="Auto" BorderThickness="4" 
-                CornerRadius="8" BorderBrush="Black">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="12*" />
-                </Grid.RowDefinitions>
-                <ScrollViewer x:Name="scrlMusicSheet" VerticalAlignment="Stretch" 
-                                HorizontalAlignment="Stretch" Margin="0,0,0,0" 
-                                Width="Auto" Height="Auto" 
-                                HorizontalScrollBarVisibility="Disabled" 
-                                VerticalScrollBarVisibility="Visible" Grid.Row="0">
-                    <Canvas x:Name="canvasMusicSheet" VerticalAlignment="Stretch" 
-                            HorizontalAlignment="Stretch" Margin="0,0,0,0" 
-                            Width="1500" Height="2000">
-                        <Canvas.Background>
-                            <SolidColorBrush Color="LightYellow" Opacity="0.7" />
-                        </Canvas.Background>
-                    </Canvas>
-                </ScrollViewer>
-            </Grid>
-        </Border>
-
-        <Border Grid.Row="2"
-                Height="40"
-                Width="130"               
-                CornerRadius="8"
-                BorderBrush="Black"
-                BorderThickness="3"
-                HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,20,40,0">
-
-            <Border.Background>
-                <ImageBrush ImageSource="Images/Backgrounds/TopBar2.jpg"></ImageBrush>
-            </Border.Background>
-            --><!--Fast Music Sheet Settings--><!--
-            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button Style="{StaticResource RoundButton}"
-                            Name="btnClear"
-                            Margin="0,0,10,0"
-                            Width="28"
-                            Height="28"
-                            BorderBrush="Black"
-                            BorderThickness="3">
-                    <Button.Background>
-                        <ImageBrush
-                                ImageSource="Images/Backgrounds/Buttons.jpeg"
-                                Stretch="None"
-                                TileMode="Tile" />
-                    </Button.Background>
-
-                    <Image Source="Images/Icons/Clean.png"
-                                   Width="20"
-                                   Height="20"/>
-                </Button>
-
-                <Button Style="{StaticResource RoundButton}"
-                            Name="btnUndo"
-                            Margin="0,0,10,0"
-                            Width="30"
-                            Height="30"
-                            BorderBrush="Transparent"
-                            BorderThickness="0">
-                    <Button.Background>
-                        <ImageBrush
-                                ImageSource="Images/Backgrounds/Buttons.jpeg"
-                                Stretch="None"
-                                TileMode="Tile" />
-                    </Button.Background>
-
-                    <Image Source="Images/Icons/Left_arrow.png"
-                                   Width="auto"
-                                   Height="auto"/>
-                </Button>
-
-                <Button Style="{StaticResource RoundButton}"
-                            Name="btnRedo"
-                            Width="30"
-                            Height="30"
-                            BorderBrush="Transparent"
-                            BorderThickness="0">
-                    <Button.Background>
-                        <ImageBrush
-                                ImageSource="Images/Backgrounds/Buttons.jpeg"
-                                Stretch="None"
-                                TileMode="Tile" />
-                    </Button.Background>
-
-                    <Image Source="Images/Icons/Right_arrow.png"
-                                   Width="auto"
-                                   Height="auto"/>
-                </Button>
-
-            </StackPanel>
-        </Border>
-        --><!--End Fast Music Sheet Settings-->
-
-        <!--Logo--><!--
-        <Image Source="Images/Logo/Logo1.png"  
-               Grid.Row="2"
-                   HorizontalAlignment="Right"
-                   VerticalAlignment="Bottom"
-                   Margin="0,0,30,10"
-                   Width="150"
-                   Height="150"/>
-        --><!--End Logo-->
-
-        <!--#endregion End Music Sheet (Row 2)-->
-
+        <!--End MyInstrument's Setting Window-->     
     </Grid>
 </Window>

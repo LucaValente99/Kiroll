@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Interop;
 using MyInstrument.DMIbox.Behaviors;
+using MyInstrument.DMIbox.SensorBehaviors;
 using MyInstrument.Surface;
+using NeeqDMIs.ATmega;
 using NeeqDMIs.Eyetracking.MouseEmulator;
 using NeeqDMIs.Eyetracking.PointFilters;
 using NeeqDMIs.Eyetracking.Tobii;
@@ -32,18 +34,24 @@ namespace MyInstrument.DMIbox
                 // MIDI
                 Rack.DMIBox.MidiModule = new MidiModuleNAudio(1, 1);
                 Rack.DMIBox.MidiModule.OutDevice = 1;
+
+                //Breath 
+                Rack.DMIBox.SensorReader = new SensorModule(9600);
+
                 firstTime = false;
             }
-
+            
             Rack.DMIBox.KeyboardModule = new KeyboardModule(new WindowInteropHelper(Rack.DMIBox.MyInstrumentMainWindow).Handle, RawInputCaptureMode.ForegroundAndBackground);
             Rack.DMIBox.tobiiModule = new TobiiModule(GazePointDataMode.Unfiltered);
             Rack.DMIBox.KeyboardModule.KeyboardBehaviors.Add(new KactivateAutoscroller());
 
+            Rack.DMIBox.SensorReader.Behaviors.Add(new SBbreathSensor(20, 28, 1.5f)); // 15 20
+            //Rack.DMIBox.SensorReader.Behaviors.Add(new SBreadSerial());
+
             // SURFACE INIT
-            Rack.DMIBox.AutoScroller = new AutoScroller(Rack.DMIBox.MyInstrumentMainWindow.scrlMyInstrument, 0, 100, new PointFilterMAExpDecaying(0.1f)); // OLD was 100, 0.1f
+            Rack.DMIBox.AutoScroller = new AutoScroller(Rack.DMIBox.MyInstrumentMainWindow.scrlMyInstrument, 0, 125, new PointFilterMAExpDecaying(0.1f)); // OLD was 100, 0.1f
             Rack.DMIBox.MyInstrumentSurface = new MyInstrumentSurface(Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument);
             Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
         }
-        
     }
 }

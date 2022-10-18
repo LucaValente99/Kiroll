@@ -163,7 +163,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DMIbox\Behaviors\KactivateAutoscroller.cs" />
+    <Compile Include="DMIbox\KeyboardBehaviors\KactivateAutoscroller.cs" />
+    <Compile Include="DMIbox\SensorBehaviors\SBbreathSensor.cs" />
+    <Compile Include="DMIbox\SensorBehaviors\SBreadSerial.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -248,6 +250,9 @@
     <None Include="Libraries\Tobii.Interaction.Model.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Resource Include="Images\Icons\Breath.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Content Include="Libraries\EyeXFramework.dll" />
     <Content Include="Libraries\NeeqDMIs.dll" />
     <Content Include="Libraries\NeeqDMIs.pdb" />

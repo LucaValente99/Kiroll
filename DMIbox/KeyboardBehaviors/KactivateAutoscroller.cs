@@ -1,10 +1,7 @@
-<<<<<<< HEAD
 ﻿using NeeqDMIs.Eyetracking.MouseEmulator;
 using NeeqDMIs.Eyetracking.PointFilters;
 using NeeqDMIs.Keyboard;
-=======
 ﻿using NeeqDMIs.Keyboard;
->>>>>>> 1a4e348e9fce43ef939a5355171dc0802a1810a1
 using RawInputProcessor;
 
 namespace MyInstrument.DMIbox.Behaviors

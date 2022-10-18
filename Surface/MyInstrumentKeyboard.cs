@@ -78,14 +78,14 @@ namespace MyInstrument.Surface
             musicKeyboard.Width = 150;
             if (Rack.UserSettings.SharpNotesMode == _SharpNotesModes.On)
             {
-                Rack.UserSettings.keyboardHeight = 1011;
-                musicKeyboard.Height = Rack.UserSettings.keyboardHeight;
+                Rack.UserSettings.KeyboardHeight = 1011;
+                musicKeyboard.Height = Rack.UserSettings.KeyboardHeight;
                 Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Height = 1338;
             }
             else
             {
-                Rack.UserSettings.keyboardHeight = 590;
-                musicKeyboard.Height = Rack.UserSettings.keyboardHeight;
+                Rack.UserSettings.KeyboardHeight = 590;
+                musicKeyboard.Height = Rack.UserSettings.KeyboardHeight;
                 Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Height = 781;
             }          
             musicKeyboard.Name = "_" + id.ToString();

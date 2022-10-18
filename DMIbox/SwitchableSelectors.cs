@@ -10,7 +10,7 @@ namespace MyInstrument.DMIbox
     public enum _MyInstrumentControlModes
     {
         Keyboard,
-        Face
+        Breath
     }
 
     public enum _SlidePlayModes

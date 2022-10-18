@@ -13,8 +13,6 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Drawing;
 
-
-
 namespace MyInstrument.Surface
 {
     public class AutoScroller
@@ -54,7 +52,7 @@ namespace MyInstrument.Surface
        
         private void ListenMouse(object sender, EventArgs e)
         {           
-            if (GetMousePos().X > scrollCenter.X)
+            if (GetMousePos().X > scrollCenter.X + 15) // +15 to avoid a small mistake that causes the keyboard to go back
             {
                 lastSampledPoint.X = GetMousePos().X - (int)basePosition.X;
             }

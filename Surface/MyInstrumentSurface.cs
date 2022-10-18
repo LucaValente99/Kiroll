@@ -14,8 +14,6 @@ namespace MyInstrument.Surface
 
         private static string lastKeyboardMoved = "";
 
-        private DispatcherTimer alertTimer = new DispatcherTimer(DispatcherPriority.Render);
-
         private List<StackPanel> twoMusicKeyboards = new List<StackPanel>();
 
         public List<StackPanel> TwoMusicKeyboards
@@ -31,8 +29,6 @@ namespace MyInstrument.Surface
         public MyInstrumentSurface(Canvas canvas)
         {
             this.canvas = canvas;
-            alertTimer.Interval = TimeSpan.FromMilliseconds(70);
-            alertTimer.Tick += blinkScale;
         }
 
         // Creating a stack panel list to show in the MyInstrument section
@@ -58,27 +54,26 @@ namespace MyInstrument.Surface
         // Generating movement from sx to dx
         public void DrawOnCanvas()
         {
-            alertTimer.Stop();
-
             if (twoMusicKeyboards.Count != 0)
             {
                 ClearSurface();
                 twoMusicKeyboards = CreateMusicKeyboards();
-                SetVerticalDistance(Rack.UserSettings.keyVerticaDistance);
+                SetVerticalDistance(Rack.UserSettings.KeyVerticaDistance);
             }
             else
             {
                 twoMusicKeyboards = CreateMusicKeyboards();
-                SetVerticalDistance(Rack.UserSettings.keyVerticaDistance);
+                SetVerticalDistance(Rack.UserSettings.KeyVerticaDistance);
             }
 
             double horizontalDistance = 0;
             for (int i = 0; i < twoMusicKeyboards.Count; i++)
             {
                 canvas.Children.Add(twoMusicKeyboards[i]);
+                
                 Canvas.SetLeft(twoMusicKeyboards[i], (canvas.Width - twoMusicKeyboards[i].Width) / 2 + horizontalDistance);
                 Canvas.SetTop(twoMusicKeyboards[i], (canvas.Height - twoMusicKeyboards[i].Height) / 2);
-                horizontalDistance += Rack.UserSettings.keyHorizontalDistance;
+                horizontalDistance += Rack.UserSettings.KeyHorizontalDistance;
             }
         }
 
@@ -90,8 +85,8 @@ namespace MyInstrument.Surface
                 canvas.Children.Remove(instrumentKeyboard);
             }
 
-            verticalDistance = Rack.UserSettings.keyVerticaDistance;
-            Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Width = Rack.UserSettings.canvasWidth;
+            verticalDistance = Rack.UserSettings.KeyVerticaDistance;
+            Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Width = Rack.UserSettings.CanvasWidth;
             lastKeyboardMoved = "";
             LastKeyboardPlayed = "";
 
@@ -103,74 +98,59 @@ namespace MyInstrument.Surface
             double addVerticalDistance;
             if (Rack.UserSettings.SharpNotesMode == _SharpNotesModes.On)
             {
-                addVerticalDistance = distance*11;
+                addVerticalDistance = distance * 11;
             }
             else
             {
                 addVerticalDistance = distance * 6;
             }
-            
+
             foreach (StackPanel instrumentKeyboard in twoMusicKeyboards)
             {
                 if (verticalDistance > distance)
                 {
                     instrumentKeyboard.Height += addVerticalDistance - verticalDistance;
-                    Rack.UserSettings.keyboardHeight = instrumentKeyboard.Height;
+                    Rack.UserSettings.KeyboardHeight = instrumentKeyboard.Height;
                     Canvas.SetTop(instrumentKeyboard, (canvas.Height - instrumentKeyboard.Height) / 2);
 
                 }
                 else if (verticalDistance < distance)
                 {
                     instrumentKeyboard.Height -= verticalDistance - addVerticalDistance;
-                    Rack.UserSettings.keyboardHeight = instrumentKeyboard.Height;
+                    Rack.UserSettings.KeyboardHeight = instrumentKeyboard.Height;
                     Canvas.SetTop(instrumentKeyboard, (canvas.Height - instrumentKeyboard.Height) / 2);
                 }
                 else
                 {
-                    instrumentKeyboard.Height = Rack.UserSettings.keyboardHeight + addVerticalDistance;
+                    instrumentKeyboard.Height = Rack.UserSettings.KeyboardHeight + addVerticalDistance;
                     Canvas.SetTop(instrumentKeyboard, (canvas.Height - instrumentKeyboard.Height) / 2);
                 }
 
                 int i = 0;
                 foreach (Button key in instrumentKeyboard.Children)
                 {
-                    if (i != 6 && addVerticalDistance == distance*6)
+                    if (i != 6 && addVerticalDistance == distance * 6)
                     {
-                        key.Margin = new Thickness(0, 0, 0, Rack.UserSettings.keyVerticaDistance);
+                        key.Margin = new Thickness(0, 0, 0, Rack.UserSettings.KeyVerticaDistance);
                     }
                     else if (i != 11 && addVerticalDistance == distance * 11)
                     {
-                        key.Margin = new Thickness(0, 0, 0, Rack.UserSettings.keyVerticaDistance);
+                        key.Margin = new Thickness(0, 0, 0, Rack.UserSettings.KeyVerticaDistance);
                     }
                     i++;
-                }                      
+                }
             }
             verticalDistance = addVerticalDistance;
         }
 
         public void SetHorizontalDistance(double distance)
         {
-            if (LastKeyboardPlayed == "")
-            {
-                Canvas.SetLeft(twoMusicKeyboards[1], MyInstrumentKeyboard.GetPosition(twoMusicKeyboards[0].Name).X + distance);
-            }
-            else
-            {
-                if (horizontalDistance > distance)
-                {
-                    Canvas.SetLeft(MyInstrumentKeyboard.getKeyboard(lastKeyboardMoved), MyInstrumentKeyboard.GetPosition(MyInstrumentKeyboard.getKeyboard(lastKeyboardMoved).Name).X + distance - horizontalDistance);
-
-                }
-                else if (horizontalDistance < distance)
-                {
-                    Canvas.SetLeft(MyInstrumentKeyboard.getKeyboard(lastKeyboardMoved), MyInstrumentKeyboard.GetPosition(MyInstrumentKeyboard.getKeyboard(lastKeyboardMoved).Name).X + distance - horizontalDistance);
-                }
-            }
-
-            horizontalDistance = distance;
+            DrawOnCanvas();
+            Canvas.SetLeft(twoMusicKeyboards[1], MyInstrumentKeyboard.GetPosition(twoMusicKeyboards[0].Name).X + distance);
+            horizontalDistance = distance;        
         }
 
-            public async void MoveKeyboards(double distance)
+        public void MoveKeyboards(double distance)
         {
             if (LastKeyboardPlayed != "")
             {
@@ -178,73 +158,21 @@ namespace MyInstrument.Surface
                 {
                     if ("_" + LastKeyboardPlayed != "_" + twoMusicKeyboards[1].Name)
                     {
-                        alertTimer.Stop();
-                        MyInstrumentKeyboard.resetColors(LastKeyboardPlayed);
                         Canvas.SetLeft(MyInstrumentKeyboard.getKeyboard(LastKeyboardPlayed), MyInstrumentKeyboard.GetPosition(twoMusicKeyboards[1].Name).X + distance);
                         Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Width += distance;
                         lastKeyboardMoved = MyInstrumentKeyboard.getKeyboard(LastKeyboardPlayed).Name;
-                    }
-                    else
-                    {
-                        alertTimer.Start();
                     }
                 }
                 else
                 {
                     if ("_" + LastKeyboardPlayed != "_" + lastKeyboardMoved)
                     {
-                        alertTimer.Stop();
-                        MyInstrumentKeyboard.resetColors(LastKeyboardPlayed);
                         Canvas.SetLeft(MyInstrumentKeyboard.getKeyboard(LastKeyboardPlayed), MyInstrumentKeyboard.GetPosition(MyInstrumentKeyboard.getKeyboard(lastKeyboardMoved).Name).X + distance);
                         Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Width += distance;
                         lastKeyboardMoved = MyInstrumentKeyboard.getKeyboard(LastKeyboardPlayed).Name;
                     }
-                    else
-                    {
-                        alertTimer.Start();
-                    }
-                }             
+                }
             }
         }
-
-        bool blink_on = false;
-        // If the user play the wrong scale, the correct one to play will blink
-        private void blinkScale(object sender, EventArgs e)
-        {         
-            if (blink_on)
-            {
-                foreach (StackPanel keyboard in twoMusicKeyboards)
-                {
-                    if (keyboard.Name != LastKeyboardPlayed)
-                    {
-                        int i = 0;
-                        foreach (Button key in keyboard.Children)
-                        {
-                            key.Background = new SolidColorBrush(Colors.DarkRed);
-                            key.Background = new SolidColorBrush(MyInstrumentKeyboard.KeysColorCode[i]);
-                            i++;
-                        }
-                    }
-                }
-
-            }
-            else
-            {
-                foreach (StackPanel keyboard in twoMusicKeyboards)
-                {
-                    if (keyboard.Name != LastKeyboardPlayed)
-                    {
-                        int i = 0;
-                        foreach (Button key in keyboard.Children)
-                        {
-                            key.Background = new SolidColorBrush(MyInstrumentKeyboard.KeysColorCode[i]);
-                            key.Background = new SolidColorBrush(Colors.DarkRed);
-                            i++;
-                        }
-                    }
-                }
-            }
-            blink_on = !blink_on;
-            }
-        }           
+    }
 }

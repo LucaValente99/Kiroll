@@ -8,6 +8,9 @@ using System.Windows.Shapes;
 using System.Drawing;
 using System.Windows.Documents;
 using Brushes = System.Windows.Media.Brushes;
+using System.Drawing.Drawing2D;
+
+
 
 namespace MyInstrument.Surface
 {
@@ -57,7 +60,6 @@ namespace MyInstrument.Surface
             this.key = key;
             this.keyboardID = keyboardID;
         }
-
         private void Stop(object sender, MouseEventArgs e)
         {         
             if (Rack.UserSettings.MyInstrumentControlMode == _MyInstrumentControlModes.Keyboard && Rack.DMIBox.MidiModule.IsMidiOk())
@@ -73,31 +75,37 @@ namespace MyInstrument.Surface
                 oldMidiNote = md;
 
                 Rack.DMIBox.MyInstrumentSurface.LastKeyboardPlayed = "_" + keyboardID;
-                Rack.DMIBox.MyInstrumentSurface.MoveKeyboards(Rack.UserSettings.keyHorizontalDistance);
+                Rack.DMIBox.MyInstrumentSurface.MoveKeyboards(Rack.UserSettings.KeyHorizontalDistance);
             }            
         }
 
         private void Play(object sender, MouseEventArgs e)
         {
             if (Rack.UserSettings.MyInstrumentControlMode == _MyInstrumentControlModes.Keyboard && Rack.DMIBox.MidiModule.IsMidiOk())
-            {         
-                MidiNotes md = MusicConversions.ToAbsNote(key).ToMidiNote(octave);
-
-                //Check for slideplay - if it is on Stop the old note to start the new one
-                if (oldMidiNote != MidiNotes.NaN && Rack.UserSettings.SlidePlayMode == _SlidePlayModes.On)
+            {
+                if ((Rack.DMIBox.MyInstrumentSurface.LastKeyboardPlayed != "_" + keyboardID.ToString() &&
+                    Rack.DMIBox.MyInstrumentSurface.LastKeyboardPlayed != "") || 
+                    (Rack.DMIBox.MyInstrumentSurface.LastKeyboardPlayed == "" &&
+                    "_" + keyboardID.ToString() != Rack.DMIBox.MyInstrumentSurface.TwoMusicKeyboards[1].Name))
                 {
-                    Rack.DMIBox.MidiModule.StopNote(MidiNotesMethods.ToPitchValue(oldMidiNote));
-                }        
-                
-                Rack.DMIBox.MidiModule.PlayNote(MidiNotesMethods.ToPitchValue(md), 127);
-                Rack.UserSettings.NoteName = content.Text + octave.ToString();
-                Rack.UserSettings.NotePitch = md.ToPitchValue().ToString();
-                Rack.UserSettings.NoteVelocity = "127";
+                    MidiNotes md = MusicConversions.ToAbsNote(key).ToMidiNote(octave);
+
+                    //Check for slideplay - if it is on Stop the old note to start the new one
+                    if (oldMidiNote != MidiNotes.NaN && Rack.UserSettings.SlidePlayMode == _SlidePlayModes.On)
+                    {
+                        Rack.DMIBox.MidiModule.StopNote(MidiNotesMethods.ToPitchValue(oldMidiNote));
+                    }
+
+                    Rack.DMIBox.MidiModule.PlayNote(MidiNotesMethods.ToPitchValue(md), 127);
+                    Rack.UserSettings.NoteName = content.Text + octave.ToString();
+                    Rack.UserSettings.NotePitch = md.ToPitchValue().ToString();
+                    Rack.UserSettings.NoteVelocity = "127";                   
+                }               
             }           
         }
 
         //Resettting the oldNote for SlidePlay
-        public static void resetSlidePlay()
+        public static void ResetSlidePlay()
         {
             oldMidiNote = MidiNotes.NaN;
         }

@@ -2,11 +2,14 @@
 using MyInstrument.Surface;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using Timer = System.Windows.Forms.Timer;
 
 namespace MyInstrument
 {
@@ -18,12 +21,23 @@ namespace MyInstrument
         //Bool variables for checking activation and deactivation of buttons
         private bool myInstrumentStarted = false;
         private bool myInstrumentSettingsOpened = false;
-        private bool musicSheetSettingsOpened = false;
         private bool btnKeyboardOn = false;
-        private bool btnFaceOn = false;
-        private bool btnDisableWritingMode = false;
+        private bool btnBreathOn = false;
         private bool btnSlidePlayOn = false;
         private bool btnSharpNotesOn = false;
+        private int breathSensorValue = 0;
+        public int BreathSensorValue { get => breathSensorValue; set => breathSensorValue = value; }
+        public int SensorPort
+        {
+            get { return Rack.UserSettings.SensorPort; }
+            set
+            {
+                if (value > 0)
+                {
+                    Rack.UserSettings.SensorPort = value;
+                }
+            }
+        }
 
         //Dictionaries used to select index into combobox for Start and Stop phases
         private Dictionary<string, int> comboScale = new Dictionary<string, int>()
@@ -59,13 +73,13 @@ namespace MyInstrument
         ImageBrush buttonBackground = new ImageBrush(new BitmapImage(
                     new Uri(Environment.CurrentDirectory + @"\..\..\Images\Backgrounds\Buttons.jpeg")));
 
-        private DispatcherTimer updater;
+        private Timer updater;
         public MainWindow()
         {
             InitializeComponent();
 
-            updater = new DispatcherTimer();
-            updater.Interval = TimeSpan.FromMilliseconds(10);
+            updater = new Timer();
+            updater.Interval = 10;
             updater.Tick += UpdateWindow;
             updater.Start();           
         }
@@ -84,6 +98,7 @@ namespace MyInstrument
 
         private void btnExit_Click(object sender, RoutedEventArgs e)
         {
+            Rack.DMIBox.Dispose();
             Close();
         }
 
@@ -115,6 +130,10 @@ namespace MyInstrument
                 txtMidiPort.Text = "MP" + Rack.DMIBox.MidiModule.OutDevice.ToString();
                 CheckMidiPort();
 
+                // Breath Sensor
+                UpdateSensorConnection();
+
+
                 myInstrumentStarted = true;
             }
             else
@@ -125,6 +144,7 @@ namespace MyInstrument
                 btnStart.Background = DisableBrush;
                 btnStartLabel.Content = "Start";
                 txtMidiPort.Text = "";
+                txtBreathPort.Text = "";
 
                 // Disabling ComboBox & slider
                 lstScaleChanger.IsEnabled = false;
@@ -165,31 +185,6 @@ namespace MyInstrument
             }
         }
 
-        private void btnMusicSheetSettings_Click(object sender, RoutedEventArgs e)
-        {
-            if (!musicSheetSettingsOpened)
-            {
-                musicSheetSettingsOpened = true;
-
-                // Graphic changes
-                WindowMusicSheetSettings.Visibility = Visibility.Visible;
-                btnMusicSheetSettingsImage.Source = closeSettingsIcon;
-                btnMusicSheetSettings.Background = ActiveBrush;
-                btnMusicSheetSettingsLabel.Content = "Close Settings";
-
-            }
-            else
-            {
-                musicSheetSettingsOpened = false;
-
-                // Graphic changes
-                WindowMusicSheetSettings.Visibility = Visibility.Hidden;
-                btnMusicSheetSettingsImage.Source = settingsIcon;
-                btnMusicSheetSettings.Background = DisableBrush;
-                btnMusicSheetSettingsLabel.Content = "Music Sheet Settings";
-            }
-        }
-
         #endregion Start, Exit and Setting buttons
 
         #endregion TopBar (Row0)
@@ -205,31 +200,63 @@ namespace MyInstrument
                 if (!btnKeyboardOn)
                 {
                     btnKeyboardOn = true;
-                    btnFaceOn = false;
+                    btnBreathOn = false;
                     btnCtrlKeyboard.IsEnabled = false;
-                    btnCtrlFace.IsEnabled = true;
+                    btnCtrlBreath.IsEnabled = true;
 
                     Rack.UserSettings.MyInstrumentControlMode = _MyInstrumentControlModes.Keyboard;
                     Rack.DMIBox.ResetModulationAndPressure();
                 }
             }           
         }
-        private void btnCtrlFace_Click(object sender, RoutedEventArgs e)
+        private void btnCtrlBreath_Click(object sender, RoutedEventArgs e)
         {
             if (myInstrumentStarted)
             {
-                if (!btnFaceOn)
+                if (!btnBreathOn)
                 {
-                    btnFaceOn = true;
+                    btnBreathOn = true;
                     btnKeyboardOn = false;
-                    btnCtrlFace.IsEnabled = false;
+                    btnCtrlBreath.IsEnabled = false;
                     btnCtrlKeyboard.IsEnabled = true;
 
-                    Rack.UserSettings.MyInstrumentControlMode = _MyInstrumentControlModes.Face;
+                    Rack.UserSettings.MyInstrumentControlMode = _MyInstrumentControlModes.Breath;
                     Rack.DMIBox.ResetModulationAndPressure();
                 }
             }
 
+        }
+
+        private void btnBreathPortMinus_Click(object sender, RoutedEventArgs e)
+        {
+            if (myInstrumentStarted)
+            {
+                SensorPort--;
+                UpdateSensorConnection();
+            }
+        }
+
+        private void btnBreathPortPlus_Click(object sender, RoutedEventArgs e)
+        {
+            if (myInstrumentStarted)
+            {
+                SensorPort++;
+                UpdateSensorConnection();
+            }
+        }
+
+        private void UpdateSensorConnection()
+        {
+            txtBreathPort.Text = "COM" + SensorPort.ToString();
+
+            if (Rack.DMIBox.SensorReader.Connect(SensorPort))
+            {
+                txtBreathPort.Foreground = ActiveBrush;
+            }
+            else
+            {
+                txtBreathPort.Foreground = WarningBrush;
+            }
         }
 
         private void btnMidiPortMinus_Click(object sender, RoutedEventArgs e)
@@ -304,8 +331,8 @@ namespace MyInstrument
         {
             if (myInstrumentStarted)
             {
-                Rack.UserSettings.keyVerticaDistance = sldVerticalDistance.Value;
-                Rack.DMIBox.MyInstrumentSurface.SetVerticalDistance(sldVerticalDistance.Value);
+                Rack.UserSettings.KeyVerticaDistance = sldVerticalDistance.Value;
+                Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
             }
         }
 
@@ -314,7 +341,7 @@ namespace MyInstrument
         {
             if (myInstrumentStarted)
             {
-                Rack.UserSettings.keyHorizontalDistance = sldHorizontalDistance.Value;
+                Rack.UserSettings.KeyHorizontalDistance = sldHorizontalDistance.Value;
                 Rack.DMIBox.MyInstrumentSurface.SetHorizontalDistance(sldHorizontalDistance.Value);
             }
         }
@@ -329,7 +356,7 @@ namespace MyInstrument
 
                     btnSlidePlay.Background = ActiveBrush;
                     Rack.UserSettings.SlidePlayMode = _SlidePlayModes.On;
-                    MyInstrumentButtons.resetSlidePlay();
+                    MyInstrumentButtons.ResetSlidePlay();
                 }
                 else
                 {
@@ -368,32 +395,7 @@ namespace MyInstrument
 
         #endregion Instrument Settings       
 
-        #region Music Sheet Settings
-
-        #endregion Music Sheet Settings
-
-        #endregion Instrument (Row1)
-
-        #region MusicSheet (Row2)
-
-        private void btnDisable_Click(object sender, RoutedEventArgs e)
-        {
-            if (!btnDisableWritingMode)
-            {
-                btnDisableWritingMode = true;
-                btnDisable.Background = ActiveBrush;
-            }
-            else
-            {
-                btnDisableWritingMode = false;
-                btnDisable.Background = buttonBackground;
-
-            }
-        }
-
-        #endregion MusicSheet (Row2)
-
-        
+        #endregion Instrument (Row1)       
     }
         
 }

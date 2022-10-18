@@ -1,5 +1,6 @@
 ﻿using MyInstrument.Surface;
 using NeeqDMIs;
+using NeeqDMIs.ATmega;
 using NeeqDMIs.Eyetracking.Tobii;
 using NeeqDMIs.Keyboard;
 using NeeqDMIs.Music;
@@ -19,7 +20,10 @@ namespace MyInstrument.DMIbox
 
         public TobiiModule tobiiModule { get; set; }
 
-        private bool mouthOpened = false;
+        private SensorModule sensorReader;
+        public SensorModule SensorReader { get => sensorReader; set => sensorReader = value; }
+
+        private bool breathOn = false;
         private int velocity = 127;
         private int pressure = 127;
         private int modulation = 0;
@@ -38,18 +42,18 @@ namespace MyInstrument.DMIbox
 
         #endregion Graphic components      
 
-        public bool MouthOpened
+        public bool BreathOn
         {
-            get { return mouthOpened; }
+            get { return breathOn; }
             set
             {
                 switch (Rack.UserSettings.SlidePlayMode)
                 {
                     case _SlidePlayModes.On:
-                        if (value != mouthOpened)
+                        if (value != breathOn)
                         {
-                            mouthOpened = value;
-                            if (mouthOpened == true)
+                            breathOn = value;
+                            if (breathOn == true)
                             {
                                 PlaySelectedNote();
                             }
@@ -60,10 +64,10 @@ namespace MyInstrument.DMIbox
                         }
                         break;
                     case _SlidePlayModes.Off:
-                        if (value != mouthOpened)
+                        if (value != breathOn)
                         {
-                            mouthOpened = value;
-                            if (mouthOpened == true)
+                            breathOn = value;
+                            if (breathOn == true)
                             {
                                 selectedNote = nextNote;
                                 PlaySelectedNote();
@@ -167,7 +171,7 @@ namespace MyInstrument.DMIbox
 
         public void ResetModulationAndPressure()
         {
-            MouthOpened = false;
+            BreathOn = false;
             Modulation = 0;
             Pressure = 127;
             Velocity = 127;
@@ -191,7 +195,25 @@ namespace MyInstrument.DMIbox
         private void SetPressure()
         {
             MidiModule.SetPressure(pressure);
-        }      
+        }
+
+        public void Dispose()
+        {
+            try
+            {
+                TobiiModule.Dispose();
+            }
+            catch
+            {
+            }
+            try
+            {
+                SensorReader.Disconnect();
+            }
+            catch
+            {
+            }
+        }
 
     }
 }

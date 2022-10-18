@@ -9,18 +9,19 @@ using System.Threading.Tasks;
 namespace MyInstrument.Surface.UserSettings
 {
     public interface IUserSettings
-    {
-        int MIDIPort { get; set; }
+    {    
         string ScaleName { get; set; }
         string ScaleCode { get; set; }
         string Octave { get; set; }
         string NoteName { get; set; }
         string NotePitch { get; set; }
         string NoteVelocity { get; set; }
-        double keyVerticaDistance { get; set; }
-        double keyHorizontalDistance { get; set; }
-        double keyboardHeight { get; set; }
-        int canvasWidth { get; set; }
+        double KeyVerticaDistance { get; set; }
+        double KeyHorizontalDistance { get; set; }
+        double KeyboardHeight { get; set; }
+        int CanvasWidth { get; set; }
+        int SensorPort { get; set; }
+        int MIDIPort { get; set; }
         _MyInstrumentControlModes MyInstrumentControlMode { get; set; }
         _SlidePlayModes SlidePlayMode { get; set; }
         _SharpNotesModes SharpNotesMode { get; set; }
