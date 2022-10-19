@@ -264,18 +264,20 @@
                     <!--End Instrument Settings button-->
 
                     <!--Note visualizer-->
-                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <StackPanel Margin="0,0,0,0" Orientation="Horizontal" 
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,15,0">
+
+                        <!--Note Visualizer-->
+                        <StackPanel Margin="15,0,0,0" Orientation="Horizontal" 
                         VerticalAlignment="Center"
                         HorizontalAlignment="Center">
                             <Border
-                            Width="110"
+                            Width="80"
                             Height="40"
                             BorderBrush="Black"
                             BorderThickness="4,4,2,4"
                             CornerRadius="5,0,0,5">
                                 <Border.Background>
-                                    <ImageBrush ImageSource="Images/Backgrounds/Buttons.jpeg"></ImageBrush>
+                                    <ImageBrush ImageSource="Images/Backgrounds/Buttons.jpeg"/>
                                 </Border.Background>
                                 <TextBlock
                                 HorizontalAlignment="Center"
@@ -288,12 +290,12 @@
                                 TextAlignment="Center" />
                             </Border>
                             <Border
-                            Width="110"
+                            Width="80"
                             Height="40"
                             BorderBrush="Black"
                             BorderThickness="2,4,2,4">
                                 <Border.Background>
-                                    <ImageBrush ImageSource="Images/Backgrounds/Buttons.jpeg"></ImageBrush>
+                                    <ImageBrush ImageSource="Images/Backgrounds/Buttons.jpeg"/>
                                 </Border.Background>
                                 <TextBlock
                                 HorizontalAlignment="Center"
@@ -306,13 +308,13 @@
                                 TextAlignment="Center" />
                             </Border>
                             <Border
-                                Width="110"
+                                Width="80"
                                 Height="40"
                                 BorderBrush="Black"
                                 BorderThickness="2,4,4,4" 
                                 CornerRadius="0,5,5,0">
                                 <Border.Background>
-                                    <ImageBrush ImageSource="Images/Backgrounds/Buttons.jpeg"></ImageBrush>
+                                    <ImageBrush ImageSource="Images/Backgrounds/Buttons.jpeg"/>
                                 </Border.Background>
                                 <TextBlock
                                     HorizontalAlignment="Center"
@@ -326,6 +328,23 @@
                             </Border>
                         </StackPanel>
                         <!--End Note Visualizer-->
+
+                        <!--Metronome button-->
+                        <Button Style="{DynamicResource RoundButton}"
+                            x:Name="btnMetronome"
+                            Width="50"
+                            Height="40"
+                            BorderBrush="Black"
+                            BorderThickness="3"
+                            Margin="15,0,0,0"
+                            Click="btnMetronome_Click">
+                            <Button.Background>
+                                <ImageBrush ImageSource="Images/Backgrounds/Buttons.jpeg"/>
+                            </Button.Background>
+                            <Image Source="Images/Icons/Metronome.png"
+                                Width="35"/>
+                        </Button>
+                        <!--End Metronome button-->
                     </StackPanel>
                 </Grid>
 
@@ -377,7 +396,7 @@
             CornerRadius="8" 
             Margin="20,20,0,0"
             Width="350"  
-            Height="680"
+            Height="760"
             BorderBrush="Black"
             BorderThickness="4"
             Visibility="Hidden">
@@ -389,6 +408,7 @@
             <Grid>
 
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"></RowDefinition>
                     <RowDefinition Height="1*"></RowDefinition>
                     <RowDefinition Height="1*"></RowDefinition>
                     <RowDefinition Height="1*"></RowDefinition>
@@ -621,8 +641,82 @@
                         Grid.Row="3"
                         VerticalAlignment="Bottom"/>
 
+                <!-- Metronome-->
+                <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                    <Label
+                        Margin="0,0,10,0"
+                        FontFamily="Papyrus"
+                        FontWeight="Bold"
+                        FontSize="18"
+                        Foreground="White" Height="35">Metronome</Label>
+
+                    <StackPanel Margin="0,0,0,0" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button Style="{StaticResource RoundButton}"
+                            Name="btnMetrnomeMinus"
+                            Margin="0,0,5,0"
+                            Width="40"
+                            Height="40"
+                            BorderBrush="Transparent"
+                            BorderThickness="2"
+                            Click="btnMetrnomeMinus_Click">
+                            <Button.Background>
+                                <ImageBrush
+                                ImageSource="Images/Backgrounds/Buttons.jpeg"
+                                Stretch="None"
+                                TileMode="Tile" />
+                            </Button.Background>
+
+                            <Image Source="Images/Icons/Left_arrow.png"
+                                   Width="auto"
+                                   Height="auto"/>
+                        </Button>
+                        <Border
+                            Width="90"
+                            Height="35"
+                            Background="Black"
+                            BorderBrush="WhiteSmoke"
+                            BorderThickness="2"
+                            Visibility="Visible">
+                            <TextBlock
+                                Name="txtMetronome"
+                                Background="Black"
+                                FontFamily="Digital-7 Italic"
+                                FontSize="27"
+                                Foreground="LightCoral"
+                                Text=""
+                                VerticalAlignment="Center"
+                                TextAlignment="Center" />
+                        </Border>
+                        <Button Style="{StaticResource RoundButton}"
+                            Name="btnMetrnomePlus"
+                            Margin="0,0,0,0"
+                            Width="40"
+                            Height="40"
+                            BorderBrush="Transparent"
+                            BorderThickness="2"
+                            Click="btnMetrnomePlus_Click">
+                            <Button.Background>
+                                <ImageBrush
+                                ImageSource="Images/Backgrounds/Buttons.jpeg"
+                                Stretch="None"
+                                TileMode="Tile" />
+                            </Button.Background>
+
+                            <Image Source="Images/Icons/Right_arrow.png"
+                                   Width="auto"
+                                   Height="auto"/>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+                <!-- End Metronome-->
+
+                <Border Style="{StaticResource SeparatorStyleHorizontal}"
+                        Grid.Row="4"
+                        VerticalAlignment="Bottom"/>
+
                 <!--Combobox Scale-->
-                <StackPanel Grid.Row="4"  Orientation="Horizontal" HorizontalAlignment="Center">
+                <StackPanel Grid.Row="5"  Orientation="Horizontal" HorizontalAlignment="Center">
 
                     <Label
                         Margin="0,0,5,0"
@@ -714,12 +808,12 @@
                 <!--Combobox Scale-->
 
                 <Border Style="{StaticResource SeparatorStyleHorizontal}"
-                            Grid.Row="4"
+                            Grid.Row="5"
                             VerticalAlignment="Bottom"/>
 
                 <!--Combobox Octave and Sharp Notes button-->
 
-                <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Center">
+                <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Center">
                     <Label
                         Margin="25,0,5,0"
                         FontFamily="Papyrus"
@@ -783,12 +877,12 @@
                 <!--End Combobox Octave and Sharp Notes button-->
 
                 <Border Style="{StaticResource SeparatorStyleHorizontal}"
-                            Grid.Row="5"
+                            Grid.Row="6"
                             VerticalAlignment="Bottom"/>
 
                 <!--Blink Scale and SLide Play buttons-->
 
-                <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Center">
+                <StackPanel Grid.Row="7" Orientation="Horizontal" HorizontalAlignment="Center">
 
                     <Button Style="{DynamicResource RoundButton}"                      
                             Name="btnBlinkScale"
@@ -844,10 +938,10 @@
 
                 <!-- Key Vertical Distance Slider-->
                 <Border Style="{StaticResource SeparatorStyleHorizontal}"
-                            Grid.Row="6"
+                            Grid.Row="7"
                             VerticalAlignment="Bottom"/>
 
-                <StackPanel Grid.Row="7" Orientation="Vertical" HorizontalAlignment="Stretch">
+                <StackPanel Grid.Row="8" Orientation="Vertical" HorizontalAlignment="Stretch">
                     <Label
                             Grid.Row="0"
                             Grid.Column="1"
@@ -877,10 +971,11 @@
                 </StackPanel>
 
                 <Border Style="{StaticResource SeparatorStyleHorizontal}"
-                            Grid.Row="7"
+                            Grid.Row="8"
                             VerticalAlignment="Bottom"/>
 
-                <StackPanel Grid.Row="8" Orientation="Vertical" HorizontalAlignment="Stretch">
+                <!-- Keys Horizontal Distance-->
+                <StackPanel Grid.Row="9" Orientation="Vertical" HorizontalAlignment="Stretch">
                     <Label
                             Grid.Row="0"
                             Grid.Column="1"
@@ -908,9 +1003,10 @@
                     <!-- .DragCompleted="sldDistance_DragCompleted" Height="18" Margin="0,0,-0.2,0" Grid.RowSpan="2" VerticalAlignment="Top" RenderTransformOrigin="0.501,0.5" /> -->
 
                 </StackPanel>
+                <!-- End Keys Horizontal Distance-->                             
             </Grid>
 
         </Border>
-        <!--End MyInstrument's Setting Window-->     
+        <!--End MyInstrument's Setting Window-->
     </Grid>
 </Window>

@@ -1,8 +1,7 @@
 ﻿using NeeqDMIs.Eyetracking.MouseEmulator;
 using NeeqDMIs.Eyetracking.PointFilters;
 using NeeqDMIs.Keyboard;
-﻿using NeeqDMIs.Keyboard;
-using RawInputProcessor;
+﻿using RawInputProcessor;
 
 namespace MyInstrument.DMIbox.Behaviors
 {

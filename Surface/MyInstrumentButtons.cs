@@ -76,6 +76,10 @@ namespace MyInstrument.Surface
 
                 Rack.DMIBox.MyInstrumentSurface.LastKeyboardPlayed = "_" + keyboardID;
                 Rack.DMIBox.MyInstrumentSurface.MoveKeyboards(Rack.UserSettings.KeyHorizontalDistance);
+
+                Rack.DMIBox.MyInstrumentMainWindow.txtPitch.Text = Rack.UserSettings.NotePitch;
+                Rack.DMIBox.MyInstrumentMainWindow.txtNoteName.Text = Rack.UserSettings.NoteName;
+                Rack.DMIBox.MyInstrumentMainWindow.txtVelocityMouth.Text = Rack.UserSettings.NoteVelocity;
             }            
         }
 
@@ -100,7 +104,11 @@ namespace MyInstrument.Surface
                     Rack.UserSettings.NoteName = content.Text + octave.ToString();
                     Rack.UserSettings.NotePitch = md.ToPitchValue().ToString();
                     Rack.UserSettings.NoteVelocity = "127";                   
-                }               
+                }
+
+                Rack.DMIBox.MyInstrumentMainWindow.txtPitch.Text = Rack.UserSettings.NotePitch;
+                Rack.DMIBox.MyInstrumentMainWindow.txtNoteName.Text = Rack.UserSettings.NoteName;
+                Rack.DMIBox.MyInstrumentMainWindow.txtVelocityMouth.Text = Rack.UserSettings.NoteVelocity;
             }           
         }
 

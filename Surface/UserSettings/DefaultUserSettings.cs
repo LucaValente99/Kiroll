@@ -18,6 +18,7 @@ namespace MyInstrument.Surface.UserSettings
         public double KeyVerticaDistance { get; set; } = 14;
         public double KeyHorizontalDistance { get; set; } = 600;
         public double KeyboardHeight { get; set; } = 590;
+        public double BPMmetronome { get; set; } = 110.0;
         public int CanvasWidth { get; set; } = 1518;
         public int SensorPort { get; set; } = 4;
         public int MIDIPort { get; set; } = 1;
