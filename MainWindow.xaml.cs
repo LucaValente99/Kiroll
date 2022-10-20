@@ -445,16 +445,22 @@ namespace MyInstrument
 
         private void btnMetrnomeMinus_Click(object sender, RoutedEventArgs e)
         {
-            Rack.UserSettings.BPMmetronome--;
-            metronomeTimer.Interval = Convert.ToInt32((1.0 / (Rack.UserSettings.BPMmetronome / 60.0)) * 1000);
-            CheckMetronome();
+            if (myInstrumentStarted)
+            {
+                Rack.UserSettings.BPMmetronome--;
+                metronomeTimer.Interval = Convert.ToInt32((1.0 / (Rack.UserSettings.BPMmetronome / 60.0)) * 1000);
+                CheckMetronome();
+            }           
         }
 
         private void btnMetrnomePlus_Click(object sender, RoutedEventArgs e)
         {
-            Rack.UserSettings.BPMmetronome++;
-            metronomeTimer.Interval = Convert.ToInt32((1.0 / (Rack.UserSettings.BPMmetronome / 60.0)) * 1000);
-            CheckMetronome();
+            if (myInstrumentStarted)
+            {
+                Rack.UserSettings.BPMmetronome++;
+                metronomeTimer.Interval = Convert.ToInt32((1.0 / (Rack.UserSettings.BPMmetronome / 60.0)) * 1000);
+                CheckMetronome();
+            }            
         }
     }
         
