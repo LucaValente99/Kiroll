@@ -173,7 +173,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DMIbox\KeyboardBehaviors\KactivateAutoscroller.cs" />
+    <Compile Include="DMIbox\KeyboardBehaviors\KBEyeTrackerToMouse.cs" />
     <Compile Include="DMIbox\SensorBehaviors\SBbreathSensor.cs" />
     <Compile Include="DMIbox\SensorBehaviors\SBreadSerial.cs" />
     <Compile Include="MainWindow.xaml.cs">

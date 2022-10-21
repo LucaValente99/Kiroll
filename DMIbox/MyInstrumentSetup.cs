@@ -42,8 +42,8 @@ namespace MyInstrument.DMIbox
             }
             
             Rack.DMIBox.KeyboardModule = new KeyboardModule(new WindowInteropHelper(Rack.DMIBox.MyInstrumentMainWindow).Handle, RawInputCaptureMode.ForegroundAndBackground);
-            Rack.DMIBox.tobiiModule = new TobiiModule(GazePointDataMode.Unfiltered);
-            Rack.DMIBox.KeyboardModule.KeyboardBehaviors.Add(new KactivateAutoscroller());
+            Rack.DMIBox.TobiiModule = new TobiiModule(GazePointDataMode.Unfiltered);
+            Rack.DMIBox.KeyboardModule.KeyboardBehaviors.Add(new KBEyeTrackerToMouse());
 
             Rack.DMIBox.SensorReader.Behaviors.Add(new SBbreathSensor(20, 28, 1.5f)); // 15 20
             //Rack.DMIBox.SensorReader.Behaviors.Add(new SBreadSerial());

@@ -18,7 +18,7 @@ namespace MyInstrument.DMIbox
         public _ModulationControlModes ModulationControlMode { get => modulationControlMode; set { modulationControlMode = value; ResetModulationAndPressure(); } }
         public _MouthControlModes MouthControlMode { get => mouthControlMode; set { mouthControlMode = value; ResetModulationAndPressure(); } }
 
-        public TobiiModule tobiiModule { get; set; }
+        public TobiiModule TobiiModule { get; set; }
 
         private SensorModule sensorReader;
         public SensorModule SensorReader { get => sensorReader; set => sensorReader = value; }
