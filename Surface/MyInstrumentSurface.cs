@@ -54,6 +54,7 @@ namespace MyInstrument.Surface
         // Generating movement from sx to dx
         public void DrawOnCanvas()
         {
+            // Each time this method is called the canvas is cleaned at first, then the new keyboards will be added
             if (twoMusicKeyboards.Count != 0)
             {
                 ClearSurface();
@@ -71,7 +72,7 @@ namespace MyInstrument.Surface
             {
                 canvas.Children.Add(twoMusicKeyboards[i]);
                 
-                Canvas.SetLeft(twoMusicKeyboards[i], (canvas.Width - twoMusicKeyboards[i].Width) / 2 + horizontalDistance);
+                Canvas.SetLeft(twoMusicKeyboards[i], (canvas.Width - twoMusicKeyboards[i].Width) / 4 + 50 + horizontalDistance);
                 Canvas.SetTop(twoMusicKeyboards[i], (canvas.Height - twoMusicKeyboards[i].Height) / 2);
                 horizontalDistance += Rack.UserSettings.KeyHorizontalDistance;
             }

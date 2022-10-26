@@ -25,7 +25,7 @@ namespace MyInstrument.DMIbox
         Off
     }
 
-    public enum _MouthControlModes
+    public enum _BreathControlModes
     {
         Dynamic,
         Switch

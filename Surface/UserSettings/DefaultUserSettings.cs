@@ -15,6 +15,7 @@ namespace MyInstrument.Surface.UserSettings
         public string NoteName { get; set; } = "_";
         public string NotePitch { get; set; } = "_";
         public string NoteVelocity { get; set; } = "_";
+        public string NotePressure { get; set; } = "_";
         public double KeyVerticaDistance { get; set; } = 14;
         public double KeyHorizontalDistance { get; set; } = 600;
         public double KeyboardHeight { get; set; } = 590;

@@ -29,9 +29,10 @@ namespace MyInstrument
         private bool btnBreathOn = false;
         private bool btnSlidePlayOn = false;
         private bool btnSharpNotesOn = false;
-        private int breathSensorValue = 0;
         private bool playMetronome = false;
-        private SoundPlayer metronome = new SoundPlayer(@"D:\Universita\Tirocinio_tesi\1_Tirocinio\MyInstrument\Audio\Metronome.wav");
+
+        //Sensors params
+        private int breathSensorValue = 0;
         public int BreathSensorValue { get => breathSensorValue; set => breathSensorValue = value; }
         public int SensorPort
         {
@@ -59,6 +60,7 @@ namespace MyInstrument
             {"2", 0 }, {"3", 1 }, {"4", 2 }, {"5", 3}, {"6", 4}, { "_", 5}
         };
 
+        //Colors used to highlight activation or deactivation of features clicking on the relevant buttons
         private readonly SolidColorBrush ActiveBrush = new SolidColorBrush(Colors.LightYellow);
         private readonly SolidColorBrush WarningBrush = new SolidColorBrush(Colors.DarkRed);
         private readonly SolidColorBrush DisableBrush = new SolidColorBrush(Colors.Transparent);
@@ -79,15 +81,25 @@ namespace MyInstrument
         ImageBrush buttonBackground = new ImageBrush(new BitmapImage(
                     new Uri(Environment.CurrentDirectory + @"\..\..\Images\Backgrounds\Buttons.jpeg")));
 
+        //Metronome
+        private Timer updater;
         private Timer metronomeTimer;
+        private SoundPlayer metronome = new SoundPlayer(@"D:\Universita\Tirocinio_tesi\1_Tirocinio\MyInstrument\Audio\Metronome.wav");
+
         public MainWindow()
         {
             InitializeComponent();
 
             metronomeTimer = new Timer();
+            updater = new Timer();
+
             metronomeTimer.Interval = Convert.ToInt32((1.0 / (Rack.UserSettings.BPMmetronome / 60.0)) * 1000);
-            metronomeTimer.Tick += Metronome;
-            metronomeTimer.Start();            
+            updater.Interval = 10;
+
+            metronomeTimer.Tick += Metronome;         
+
+            metronomeTimer.Start();
+           
         }
 
         private void Metronome(object sender, EventArgs e)
@@ -99,8 +111,28 @@ namespace MyInstrument
             else { 
                 metronome.Stop(); 
             }
-
         }
+        private void Update(object sender, EventArgs e)
+        {
+            //Graphic changes
+            txtPitch.Text = Rack.UserSettings.NotePitch;
+            txtNoteName.Text = Rack.UserSettings.NoteName;
+
+            if (Rack.UserSettings.MyInstrumentControlMode == _MyInstrumentControlModes.Keyboard)
+            {
+               txtVelocityMouth.Text = Rack.UserSettings.NoteVelocity;
+            }
+            else if (Rack.DMIBox.CheckedNote != null) 
+            {              
+               txtVelocityMouth.Text = Rack.UserSettings.NotePressure;
+            }
+            else
+            {
+                txtVelocityMouth.Text = "_";
+            }
+                        
+        }
+
 
         #region TopBar (Row0)
 
@@ -135,9 +167,7 @@ namespace MyInstrument
                 sldVerticalDistance.IsEnabled = true;
                 sldHorizontalDistance.IsEnabled = true;
 
-
                 // MIDI
-                txtMidiPort.Text = "MP" + Rack.DMIBox.MidiModule.OutDevice.ToString();
                 CheckMidiPort();
 
                 // Breath Sensor
@@ -145,6 +175,9 @@ namespace MyInstrument
 
                 //Metronome                
                 CheckMetronome();
+
+                updater.Tick += Update;
+                updater.Start();
 
                 myInstrumentStarted = true;               
             }
@@ -172,6 +205,8 @@ namespace MyInstrument
 
                 // Resetting surface
                 Rack.DMIBox.MyInstrumentSurface.ClearSurface();
+
+                updater.Stop();
             }
         }
 
@@ -278,6 +313,7 @@ namespace MyInstrument
             if (myInstrumentStarted)
             {
                 SensorPort--;
+                //Graphic changes
                 UpdateSensorConnection();
             }
         }
@@ -287,12 +323,13 @@ namespace MyInstrument
             if (myInstrumentStarted)
             {
                 SensorPort++;
+                //Graphic changes
                 UpdateSensorConnection();
             }
         }
 
         private void UpdateSensorConnection()
-        {
+        {          
             txtBreathPort.Text = "COM" + SensorPort.ToString();
 
             if (Rack.DMIBox.SensorReader.Connect(SensorPort))
@@ -312,8 +349,7 @@ namespace MyInstrument
                 Rack.UserSettings.MIDIPort--;
                 Rack.DMIBox.MidiModule.OutDevice = Rack.UserSettings.MIDIPort;
 
-                // Graphic changes
-                txtMidiPort.Text = "MP" + Rack.DMIBox.MidiModule.OutDevice.ToString();
+                // Graphic changes               
                 CheckMidiPort();
             }
         }
@@ -325,13 +361,13 @@ namespace MyInstrument
                 Rack.UserSettings.MIDIPort++;
                 Rack.DMIBox.MidiModule.OutDevice = Rack.UserSettings.MIDIPort;
 
-                // graphic changes
-                txtMidiPort.Text = "MP" + Rack.DMIBox.MidiModule.OutDevice.ToString();
+                // Graphic changes
                 CheckMidiPort();
             }
         }
         private void CheckMidiPort()
         {
+            txtMidiPort.Text = "MP" + Rack.DMIBox.MidiModule.OutDevice.ToString();
             if (Rack.DMIBox.MidiModule.IsMidiOk())
             {
                 txtMidiPort.Foreground = ActiveBrush;
@@ -339,6 +375,26 @@ namespace MyInstrument
             else
             {
                 txtMidiPort.Foreground = WarningBrush;
+            }
+        }
+
+        private void btnMetrnomeMinus_Click(object sender, RoutedEventArgs e)
+        {
+            if (myInstrumentStarted)
+            {
+                Rack.UserSettings.BPMmetronome--;
+                metronomeTimer.Interval = Convert.ToInt32((1.0 / (Rack.UserSettings.BPMmetronome / 60.0)) * 1000);
+                CheckMetronome();
+            }
+        }
+
+        private void btnMetrnomePlus_Click(object sender, RoutedEventArgs e)
+        {
+            if (myInstrumentStarted)
+            {
+                Rack.UserSettings.BPMmetronome++;
+                metronomeTimer.Interval = Convert.ToInt32((1.0 / (Rack.UserSettings.BPMmetronome / 60.0)) * 1000);
+                CheckMetronome();
             }
         }
 
@@ -402,7 +458,7 @@ namespace MyInstrument
 
                     btnSlidePlay.Background = ActiveBrush;
                     Rack.UserSettings.SlidePlayMode = _SlidePlayModes.On;
-                    MyInstrumentButtons.ResetSlidePlay();
+                    Rack.DMIBox.ResetSlidePlay();
                 }
                 else
                 {
@@ -442,26 +498,7 @@ namespace MyInstrument
         #endregion Instrument Settings       
 
         #endregion Instrument (Row1)       
-
-        private void btnMetrnomeMinus_Click(object sender, RoutedEventArgs e)
-        {
-            if (myInstrumentStarted)
-            {
-                Rack.UserSettings.BPMmetronome--;
-                metronomeTimer.Interval = Convert.ToInt32((1.0 / (Rack.UserSettings.BPMmetronome / 60.0)) * 1000);
-                CheckMetronome();
-            }           
-        }
-
-        private void btnMetrnomePlus_Click(object sender, RoutedEventArgs e)
-        {
-            if (myInstrumentStarted)
-            {
-                Rack.UserSettings.BPMmetronome++;
-                metronomeTimer.Interval = Convert.ToInt32((1.0 / (Rack.UserSettings.BPMmetronome / 60.0)) * 1000);
-                CheckMetronome();
-            }            
-        }
+       
     }
         
 }

@@ -62,7 +62,18 @@ namespace MyInstrument.Surface
             filter.Push(lastSampledPoint);
             lastMean = filter.GetOutput();               
 
-            Scroll();           
+            Scroll();
+
+            //if (MyInstrumentKeyboard.GetPosition(Rack.DMIBox.MyInstrumentSurface.TwoMusicKeyboards[0].Name).X == 684)            
+            //{
+            //    Rack.DMIBox.MyInstrumentSurface.MoveKeyboards(Rack.UserSettings.KeyHorizontalDistance);
+            //}
+            //Rack.DMIBox.MyInstrumentMainWindow.btnInstrumentSettingLabel.Content = MyInstrumentKeyboard.GetPosition(Rack.DMIBox.MyInstrumentSurface.TwoMusicKeyboards[1].Name).X;
+            //if (MyInstrumentKeyboard.GetPosition(Rack.DMIBox.MyInstrumentSurface.TwoMusicKeyboards[1].Name).X == 684)
+            //{
+            //    Rack.DMIBox.MyInstrumentSurface.MoveKeyboards(Rack.UserSettings.KeyHorizontalDistance);
+            //}
+
         }
         private void Scroll()
         {

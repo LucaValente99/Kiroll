@@ -15,20 +15,31 @@ namespace MyInstrument.Surface
 {
     public class MyInstrumentKeyboard : StackPanel
     {
-        public static List<Color> KeysColorCode = new List<Color>()
+        public static List<Color> KeysColorCode7 = new List<Color>()
         {
-            Colors.Red,
-            Colors.Yellow,
-            Colors.Blue,
-            Colors.Orange,
-            Colors.Purple,
-            Colors.Green,
-            Colors.Coral,
-            Colors.DarkGray,
-            Colors.White,
-            Colors.DeepPink,
-            Colors.Gold,
-            Colors.LightCyan
+            Colors.Red, // C
+            Colors.Yellow, // D
+            Colors.Blue, // E
+            Colors.SaddleBrown, // F - it should be black (email Ludovico)
+            Colors.Orange, // G
+            Colors.Green, // A
+            Colors.Purple, // B
+        };
+
+        public static List<Color> KeysColorCode12 = new List<Color>()
+        {
+            Colors.Red, // C
+            Colors.DarkRed, // C# - DarkRed
+            Colors.Yellow, // D
+            Colors.DarkGoldenrod, // D# - DarkGoldenrod
+            Colors.Blue, // E
+            Colors.SaddleBrown, // F - it should be black (email Ludovico)
+            Colors.Brown, // F# - it should be black (email Ludovico) - Brown
+            Colors.Orange, // G
+            Colors.DarkOrange, // G# - DarkOrange
+            Colors.Green, // A
+            Colors.DarkGreen, // A# - DarkGreen
+            Colors.Purple, // B
         };
 
         // Useful for meeting the deviation in terms of octave in scales:
@@ -75,18 +86,18 @@ namespace MyInstrument.Surface
             musicKeyboard = new StackPanel();
             musicKeyboard.Orientation = Orientation.Vertical;
             musicKeyboard.Background = Brushes.Transparent;
-            musicKeyboard.Width = 150;
+            musicKeyboard.Width = 170;
             if (Rack.UserSettings.SharpNotesMode == _SharpNotesModes.On)
             {
-                Rack.UserSettings.KeyboardHeight = 1011;
+                Rack.UserSettings.KeyboardHeight = 1200; //1011
                 musicKeyboard.Height = Rack.UserSettings.KeyboardHeight;
-                Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Height = 1338;
+                Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Height = 1588; //1338
             }
             else
             {
-                Rack.UserSettings.KeyboardHeight = 590;
+                Rack.UserSettings.KeyboardHeight = 700; //590
                 musicKeyboard.Height = Rack.UserSettings.KeyboardHeight;
-                Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Height = 781;
+                Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Height = 927; //781
             }          
             musicKeyboard.Name = "_" + id.ToString();
 
@@ -126,7 +137,8 @@ namespace MyInstrument.Surface
 
                 for (int i = 0; i < 7; i++)
                 {                    
-                    SolidColorBrush brush = new SolidColorBrush(KeysColorCode[i]);
+                    SolidColorBrush brush = new SolidColorBrush(KeysColorCode7[i]);
+
                     if (ComboCode == "maj")
                     {
                         if (i >= 7 - deviation_maj)
@@ -181,13 +193,13 @@ namespace MyInstrument.Surface
                 {
                     if (i >= 12 - deviation_chrom_12)
                     {
-                        SolidColorBrush brush = new SolidColorBrush(KeysColorCode[i]);
+                        SolidColorBrush brush = new SolidColorBrush(KeysColorCode12[i]);
                         MyInstrumentButtons toolKey = new MyInstrumentButtons(noteList[i].ToString(), int.Parse(ComboOctave) + 1, brush, id);
                         toolKeys.Add(toolKey.ToolKey);
                     }
                     else
                     {
-                        SolidColorBrush brush = new SolidColorBrush(KeysColorCode[i]);
+                        SolidColorBrush brush = new SolidColorBrush(KeysColorCode12[i]);
                         MyInstrumentButtons toolKey = new MyInstrumentButtons(noteList[i].ToString(), int.Parse(ComboOctave), brush, id);
                         toolKeys.Add(toolKey.ToolKey);
                     }                  
@@ -236,7 +248,7 @@ namespace MyInstrument.Surface
                     int i = 0;
                     foreach (Button key in keyboard.Children)
                     {
-                        key.Background = new SolidColorBrush(KeysColorCode[i]);
+                        key.Background = new SolidColorBrush(KeysColorCode7[i]);
                         i++;
                     }
                 }             

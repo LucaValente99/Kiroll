@@ -174,8 +174,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="DMIbox\KeyboardBehaviors\KBEyeTrackerToMouse.cs" />
-    <Compile Include="DMIbox\SensorBehaviors\SBbreathSensor.cs" />
-    <Compile Include="DMIbox\SensorBehaviors\SBreadSerial.cs" />
+    <Compile Include="DMIbox\SensorBehaviors\NBbreath.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>

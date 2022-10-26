@@ -1,17 +1,18 @@
 ﻿using MyInstrument.DMIbox;
 using NeeqDMIs.ATmega;
 using System.Globalization;
+using System.Runtime.ExceptionServices;
 
-namespace MyInstrument.DMIbox.SensorBehaviors
+namespace Netytar.DMIbox.SensorBehaviors
 {
-    public class SBbreathSensor : ISensorBehavior
+    public class NBbreath : ISensorBehavior
     {
         private int v = 1;
         private int offThresh;
         private int onThresh;
         private float sensitivity;
 
-        public SBbreathSensor(int offThresh, int onThresh, float sensitivity)
+        public NBbreath(int offThresh, int onThresh, float sensitivity)
         {
             this.offThresh = offThresh;
             this.onThresh = onThresh;
@@ -32,20 +33,18 @@ namespace MyInstrument.DMIbox.SensorBehaviors
                 {
 
                 }
-
+              
                 v = (int)(b / 3);
 
-                Rack.DMIBox.MyInstrumentMainWindow.BreathSensorValue = v;
+                //Rack.DMIBox.MyInstrumentMainWindow.BreathSensorValue = v;
                 Rack.DMIBox.Pressure = (int)(v * 2 * sensitivity);
-                Rack.DMIBox.Modulation = (int)(v / 8 * sensitivity);
 
                 if (v > onThresh && Rack.DMIBox.BreathOn == false)
                 {
                     Rack.DMIBox.BreathOn = true;
-                    //NetytarRack.DMIBox.Pressure = 110;
                 }
 
-                if (v < offThresh)
+                if (v < offThresh && Rack.DMIBox.BreathOn == true)
                 {
                     Rack.DMIBox.BreathOn = false;
                 }
