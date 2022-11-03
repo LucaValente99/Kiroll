@@ -10,16 +10,20 @@ namespace MyInstrument.Surface
 {
     public class MyInstrumentSurface
     {
-        public string LastKeyboardPlayed { get; set; } = "";
+        private string lastKeyboardPlayed = "";
+        public string LastKeyboardPlayed { get => lastKeyboardPlayed; set => lastKeyboardPlayed = value; }
+
+        //private string lastKeyboardSelected = "";
+        //public string LastKeyboardSelected { get => lastKeyboardSelected; set => lastKeyboardSelected = value; }
 
         private static string lastKeyboardMoved = "";
 
-        private List<StackPanel> twoMusicKeyboards = new List<StackPanel>();
+        private List<StackPanel> fourMusicKeyboards = new List<StackPanel>();
 
-        public List<StackPanel> TwoMusicKeyboards
+        public List<StackPanel> FourMusicKeyboards
         {
-            get { return twoMusicKeyboards; }
-            set { twoMusicKeyboards = value; }
+            get { return fourMusicKeyboards; }
+            set { fourMusicKeyboards = value; }
         }
 
         private Canvas canvas;
@@ -36,7 +40,7 @@ namespace MyInstrument.Surface
         {
             int count = 0;
             List<StackPanel> twoMusicKeyboards = new List<StackPanel>();
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 16; i++)
             {
                 MyInstrumentKeyboard instrumentKeyboard = new MyInstrumentKeyboard();
                 twoMusicKeyboards.Add(instrumentKeyboard.MusicKeyboard);
@@ -55,25 +59,25 @@ namespace MyInstrument.Surface
         public void DrawOnCanvas()
         {
             // Each time this method is called the canvas is cleaned at first, then the new keyboards will be added
-            if (twoMusicKeyboards.Count != 0)
+            if (fourMusicKeyboards.Count != 0)
             {
                 ClearSurface();
-                twoMusicKeyboards = CreateMusicKeyboards();
+                fourMusicKeyboards = CreateMusicKeyboards();
                 SetVerticalDistance(Rack.UserSettings.KeyVerticaDistance);
             }
             else
             {
-                twoMusicKeyboards = CreateMusicKeyboards();
+                fourMusicKeyboards = CreateMusicKeyboards();
                 SetVerticalDistance(Rack.UserSettings.KeyVerticaDistance);
             }
 
             double horizontalDistance = 0;
-            for (int i = 0; i < twoMusicKeyboards.Count; i++)
+            for (int i = 0; i < fourMusicKeyboards.Count; i++)
             {
-                canvas.Children.Add(twoMusicKeyboards[i]);
+                canvas.Children.Add(fourMusicKeyboards[i]);
                 
-                Canvas.SetLeft(twoMusicKeyboards[i], (canvas.Width - twoMusicKeyboards[i].Width) / 4 + 50 + horizontalDistance);
-                Canvas.SetTop(twoMusicKeyboards[i], (canvas.Height - twoMusicKeyboards[i].Height) / 2);
+                Canvas.SetLeft(fourMusicKeyboards[i], 75 + horizontalDistance); //(canvas.Width - fourMusicKeyboards[i].Width) + horizontalDistance
+                Canvas.SetTop(fourMusicKeyboards[i], (canvas.Height - fourMusicKeyboards[i].Height) / 2);
                 horizontalDistance += Rack.UserSettings.KeyHorizontalDistance;
             }
         }
@@ -81,7 +85,7 @@ namespace MyInstrument.Surface
         //Cleaning the canvas
         public void ClearSurface()
         {
-            foreach (StackPanel instrumentKeyboard in twoMusicKeyboards)
+            foreach (StackPanel instrumentKeyboard in fourMusicKeyboards)
             {
                 canvas.Children.Remove(instrumentKeyboard);
             }
@@ -89,9 +93,13 @@ namespace MyInstrument.Surface
             verticalDistance = Rack.UserSettings.KeyVerticaDistance;
             Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Width = Rack.UserSettings.CanvasWidth;
             lastKeyboardMoved = "";
-            LastKeyboardPlayed = "";
+            lastKeyboardPlayed = "";
+            firstFiveTimes = true;
 
-            twoMusicKeyboards.Clear();
+            // this needs to make checkPlayability works on DMIbox (keyboardID == (lastKeyboardPlayed + 1) % 16)
+            MyInstrumentKeyboard.ID = 0;
+
+            fourMusicKeyboards.Clear();
         }
 
         public void SetVerticalDistance(double distance)
@@ -106,7 +114,7 @@ namespace MyInstrument.Surface
                 addVerticalDistance = distance * 6;
             }
 
-            foreach (StackPanel instrumentKeyboard in twoMusicKeyboards)
+            foreach (StackPanel instrumentKeyboard in fourMusicKeyboards)
             {
                 if (verticalDistance > distance)
                 {
@@ -147,32 +155,41 @@ namespace MyInstrument.Surface
         public void SetHorizontalDistance(double distance)
         {
             DrawOnCanvas();
-            Canvas.SetLeft(twoMusicKeyboards[1], MyInstrumentKeyboard.GetPosition(twoMusicKeyboards[0].Name).X + distance);
+            Canvas.SetLeft(fourMusicKeyboards[1], MyInstrumentKeyboard.GetPosition(fourMusicKeyboards[0].Name).X + distance);
             horizontalDistance = distance;        
         }
 
+
+        private bool firstFiveTimes = true;
         public void MoveKeyboards(double distance)
         {
-            if (LastKeyboardPlayed != "")
+            Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Width += distance;
+
+            if (lastKeyboardPlayed != "")
             {
-                if (lastKeyboardMoved == "")
+                if (firstFiveTimes)
                 {
-                    if ("_" + LastKeyboardPlayed != "_" + twoMusicKeyboards[1].Name)
-                    {
-                        Canvas.SetLeft(MyInstrumentKeyboard.getKeyboard(LastKeyboardPlayed), MyInstrumentKeyboard.GetPosition(twoMusicKeyboards[1].Name).X + distance);
-                        Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Width += distance;
-                        lastKeyboardMoved = MyInstrumentKeyboard.getKeyboard(LastKeyboardPlayed).Name;
-                    }
+                    if (lastKeyboardPlayed == "8"){
+                        Canvas.SetLeft(MyInstrumentKeyboard.getKeyboard("_0"), MyInstrumentKeyboard.GetPosition(fourMusicKeyboards[15].Name).X + distance);
+                        lastKeyboardMoved = "0";
+                        //Rack.DMIBox.MyInstrumentMainWindow.btnInstrumentSettingLabel.Content = lastKeyboardMoved;
+                        MyInstrumentKeyboard.resetColors("_0");
+                        firstFiveTimes = false;
+                    }                                     
                 }
                 else
                 {
-                    if ("_" + LastKeyboardPlayed != "_" + lastKeyboardMoved)
+                    int lastKP = Int32.Parse(lastKeyboardPlayed) - 8;
+                    if (lastKP < 0)
                     {
-                        Canvas.SetLeft(MyInstrumentKeyboard.getKeyboard(LastKeyboardPlayed), MyInstrumentKeyboard.GetPosition(MyInstrumentKeyboard.getKeyboard(lastKeyboardMoved).Name).X + distance);
-                        Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Width += distance;
-                        lastKeyboardMoved = MyInstrumentKeyboard.getKeyboard(LastKeyboardPlayed).Name;
+                        lastKP = 16 + lastKP;
                     }
-                }
+
+                    Canvas.SetLeft(MyInstrumentKeyboard.getKeyboard("_"+lastKP.ToString()), MyInstrumentKeyboard.GetPosition("_"+lastKeyboardMoved).X + distance);
+                    lastKeyboardMoved = lastKP.ToString();
+                    //Rack.DMIBox.MyInstrumentMainWindow.btnInstrumentSettingLabel.Content = lastKeyboardMoved;
+                    MyInstrumentKeyboard.resetColors("_" + lastKeyboardMoved);
+                }               
             }
         }
     }

@@ -14,6 +14,9 @@ using System.Windows.Threading;
 using System.Reactive.Linq;
 using Timer = System.Windows.Forms.Timer;
 using System.Security.Policy;
+using System.Windows.Media.Converters;
+using System.Reactive;
+using System.Windows.Documents;
 
 namespace MyInstrument
 {
@@ -53,7 +56,7 @@ namespace MyInstrument
         };
         private Dictionary<string, int> comboCode = new Dictionary<string, int>()
         {
-            {"maj", 0}, {"min", 1}, {"chrom", 2}, { "_", 3}
+            {"maj", 0}, {"min", 1}, {"min_arm", 2}, {"min_mel", 3}, { "_", 5}
         };
         private Dictionary<string, int> comboOctave = new Dictionary<string, int>()
         {
@@ -96,12 +99,12 @@ namespace MyInstrument
             metronomeTimer.Interval = Convert.ToInt32((1.0 / (Rack.UserSettings.BPMmetronome / 60.0)) * 1000);
             updater.Interval = 10;
 
-            metronomeTimer.Tick += Metronome;         
+            metronomeTimer.Tick += Metronome;
+            updater.Tick += Update;
 
             metronomeTimer.Start();
            
         }
-
         private void Metronome(object sender, EventArgs e)
         {
             if (playMetronome)
@@ -114,7 +117,7 @@ namespace MyInstrument
         }
         private void Update(object sender, EventArgs e)
         {
-            //Graphic changes
+            //Graphic changes on Note Visualizer
             txtPitch.Text = Rack.UserSettings.NotePitch;
             txtNoteName.Text = Rack.UserSettings.NoteName;
 
@@ -122,15 +125,10 @@ namespace MyInstrument
             {
                txtVelocityMouth.Text = Rack.UserSettings.NoteVelocity;
             }
-            else if (Rack.DMIBox.CheckedNote != null) 
+            else 
             {              
                txtVelocityMouth.Text = Rack.UserSettings.NotePressure;
             }
-            else
-            {
-                txtVelocityMouth.Text = "_";
-            }
-                        
         }
 
 
@@ -175,22 +173,22 @@ namespace MyInstrument
 
                 //Metronome                
                 CheckMetronome();
-
-                updater.Tick += Update;
+               
                 updater.Start();
 
                 myInstrumentStarted = true;               
             }
             else
             {
-                // Graphic changes
                 myInstrumentStarted = false;
+                // Graphic changes             
                 btnStartImage.Source = startIcon;
                 btnStart.Background = DisableBrush;
                 btnStartLabel.Content = "Start";
                 txtMidiPort.Text = "";
                 txtBreathPort.Text = "";
                 txtMetronome.Text = "";
+                btnMetronome.Background = buttonBackground;
 
                 // Disabling ComboBox, slider & Metronome
                 lstScaleChanger.IsEnabled = false;
@@ -201,12 +199,12 @@ namespace MyInstrument
                 lstOctaveChanger.SelectedIndex = comboOctave["_"];
                 sldVerticalDistance.IsEnabled = false;
                 sldHorizontalDistance.IsEnabled = false;
-                playMetronome = false;
+                playMetronome = false;               
 
                 // Resetting surface
                 Rack.DMIBox.MyInstrumentSurface.ClearSurface();
 
-                updater.Stop();
+                updater.Stop();               
             }
         }
 
@@ -227,20 +225,7 @@ namespace MyInstrument
 
                 CheckMetronome();
             }                     
-        }
-        private void CheckMetronome()
-        {
-            txtMetronome.Text = Rack.UserSettings.BPMmetronome.ToString();
-
-            if (playMetronome)
-            {
-                txtMetronome.Foreground = ActiveBrush;
-            }
-            else
-            {
-                txtMetronome.Foreground = WarningBrush;
-            }
-        }
+        }      
 
         private void btnInstrumentSettings_Click(object sender, RoutedEventArgs e)
         {
@@ -328,6 +313,7 @@ namespace MyInstrument
             }
         }
 
+        // this just changes sensor port selector graphic
         private void UpdateSensorConnection()
         {          
             txtBreathPort.Text = "COM" + SensorPort.ToString();
@@ -365,6 +351,8 @@ namespace MyInstrument
                 CheckMidiPort();
             }
         }
+
+        // this just changes MIDI port selector graphic
         private void CheckMidiPort()
         {
             txtMidiPort.Text = "MP" + Rack.DMIBox.MidiModule.OutDevice.ToString();
@@ -398,9 +386,23 @@ namespace MyInstrument
             }
         }
 
+        // this just changes metronome button's graphic
+        private void CheckMetronome()
+        {
+            txtMetronome.Text = Rack.UserSettings.BPMmetronome.ToString();
+
+            if (playMetronome)
+            {
+                txtMetronome.Foreground = ActiveBrush;
+            }
+            else
+            {
+                txtMetronome.Foreground = WarningBrush;
+            }
+        }
+
         private void lstScaleChanger_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
             if (myInstrumentStarted)
             {
                 Rack.UserSettings.ScaleName = (e.AddedItems[0] as ComboBoxItem).Content as string;
@@ -410,7 +412,6 @@ namespace MyInstrument
 
         private void lstCodeChanger_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
             if (myInstrumentStarted)
             {
                 Rack.UserSettings.ScaleCode = (e.AddedItems[0] as ComboBoxItem).Content as string;
@@ -420,7 +421,6 @@ namespace MyInstrument
 
         private void lstOctaveChanger_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
             if (myInstrumentStarted)
             {
                 Rack.UserSettings.Octave = (e.AddedItems[0] as ComboBoxItem).Content as string;
@@ -458,7 +458,9 @@ namespace MyInstrument
 
                     btnSlidePlay.Background = ActiveBrush;
                     Rack.UserSettings.SlidePlayMode = _SlidePlayModes.On;
-                    Rack.DMIBox.ResetSlidePlay();
+                    //Resetting the oldNote because at start there is no an old note.
+                    //This is true until the first note is played.
+                    Rack.DMIBox.OldMidiNote = NeeqDMIs.Music.MidiNotes.NaN;
                 }
                 else
                 {
@@ -478,7 +480,7 @@ namespace MyInstrument
                 if (!btnSharpNotesOn)
                 {
                     btnSharpNotesOn = true;
-
+                   
                     btnSharpNotes.Background = ActiveBrush;
                     Rack.UserSettings.SharpNotesMode = _SharpNotesModes.On;
                     Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();

@@ -41,7 +41,7 @@ namespace MyInstrument.Surface
             // Setting scrollviewer dimensions
             lastSampledPoint = new Point();
             basePosition = scrollViewer.PointToScreen(new System.Windows.Point(0, 0));
-            scrollCenter = new System.Windows.Point(scrollViewer.ActualWidth / 2, scrollViewer.ActualHeight / 2);
+            scrollCenter = new System.Windows.Point(200, scrollViewer.ActualHeight / 2); // scrollViewer.ActualWidth / 2
 
             // Setting sampling timer
             samplerTimer.Interval = TimeSpan.FromMilliseconds(15);//1000; //1;
@@ -52,7 +52,7 @@ namespace MyInstrument.Surface
        
         private void ListenMouse(object sender, EventArgs e)
         {           
-            if (GetMousePos().X > scrollCenter.X + 15) // +15 to avoid a small mistake that causes the keyboard to go back
+            if (GetMousePos().X > scrollCenter.X) // +15 to avoid a small mistake that causes the keyboard to go back
             {
                 lastSampledPoint.X = GetMousePos().X - (int)basePosition.X;
             }
@@ -64,12 +64,12 @@ namespace MyInstrument.Surface
 
             Scroll();
 
-            //if (MyInstrumentKeyboard.GetPosition(Rack.DMIBox.MyInstrumentSurface.TwoMusicKeyboards[0].Name).X == 684)            
+            //if (MyInstrumentKeyboard.GetPosition(Rack.DMIBox.MyInstrumentSurface.FourMusicKeyboards[0].Name).X == 684)            
             //{
             //    Rack.DMIBox.MyInstrumentSurface.MoveKeyboards(Rack.UserSettings.KeyHorizontalDistance);
             //}
-            //Rack.DMIBox.MyInstrumentMainWindow.btnInstrumentSettingLabel.Content = MyInstrumentKeyboard.GetPosition(Rack.DMIBox.MyInstrumentSurface.TwoMusicKeyboards[1].Name).X;
-            //if (MyInstrumentKeyboard.GetPosition(Rack.DMIBox.MyInstrumentSurface.TwoMusicKeyboards[1].Name).X == 684)
+            //Rack.DMIBox.MyInstrumentMainWindow.btnInstrumentSettingLabel.Content = MyInstrumentKeyboard.GetPosition(Rack.DMIBox.MyInstrumentSurface.FourMusicKeyboards[1].Name).X;
+            //if (MyInstrumentKeyboard.GetPosition(Rack.DMIBox.MyInstrumentSurface.FourMusicKeyboards[1].Name).X == 684)
             //{
             //    Rack.DMIBox.MyInstrumentSurface.MoveKeyboards(Rack.UserSettings.KeyHorizontalDistance);
             //}

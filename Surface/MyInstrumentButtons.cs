@@ -30,65 +30,56 @@ namespace MyInstrument.Surface
             }
         }
 
-        private TextBlock content;
         private int octave;
         public int Octave { get { return octave; } set { octave = value; } }
+
         private string key;
         public string Key { get { return key; } set { key = value; } }
+
         private string keyboardID;
         public string KeyboardID { get { return keyboardID; } set { keyboardID = value; } }
-
         public MyInstrumentButtons(string key, int octave,  SolidColorBrush brush, int keyboardID) : base()
         {
-            content = new TextBlock();
-            content.Text = MusicConversions.ToAbsNote(key).ToStandardString();
-            content.Foreground = Brushes.Black;
-            content.FontSize = 30;
-            content.FontWeight = FontWeights.Bold;
 
+            // playable key
             toolKey = new Button();
             toolKey.Name = key;
-            toolKey.Width = 170; //170
-            toolKey.Height = 100; //84.2 
+            toolKey.Width = 150; //170
+            toolKey.Height = 84.2; //100
             toolKey.Background = brush;
             toolKey.BorderThickness = new Thickness(3);
             toolKey.BorderBrush = Brushes.Black;
-            toolKey.Content = content;
+            toolKey.Content = MusicConversions.ToAbsNote(key).ToStandardString();
 
-            toolKey.MouseEnter += Play;
-            toolKey.MouseLeave += Stop;                  
+            //Button content
+            toolKey.Foreground = Brushes.Black;
+            toolKey.FontSize = 30;
+            toolKey.FontWeight = FontWeights.Bold;
+
+            toolKey.MouseEnter += SelectNote;                
 
             this.octave = octave;
             this.key = key;
-            this.keyboardID = "_" + keyboardID;
+            this.keyboardID = keyboardID.ToString();
         }
-        private void Stop(object sender, MouseEventArgs e)
-        {
-            Rack.DMIBox.SelectedNote = MusicConversions.ToAbsNote(key).ToMidiNote(octave);
-            if (Rack.UserSettings.MyInstrumentControlMode == _MyInstrumentControlModes.Keyboard)
-            {
-                Rack.DMIBox.KbCtrl = false;
-            }
-            //else
-            //{
-            //    Rack.DMIBox.BreathOn = false;
-            //}
-        }
-
-        private void Play(object sender, MouseEventArgs e)
+        private void SelectNote(object sender, MouseEventArgs e)
         {
             Rack.DMIBox.CheckedNote = this;
             Rack.DMIBox.SelectedNote = MusicConversions.ToAbsNote(key).ToMidiNote(octave);
-            if (Rack.UserSettings.MyInstrumentControlMode == _MyInstrumentControlModes.Keyboard)
+            Rack.DMIBox.IsPlaying = false;
+
+            if (Rack.DMIBox.CheckPlayability())
             {
-                Rack.DMIBox.KbCtrl = true;
+                MyInstrumentKeyboard.resetColors("_" + keyboardID);
+                MyInstrumentKeyboard.updateColors("_" + keyboardID, toolKey);
+                //Rack.DMIBox.MyInstrumentSurface.LastKeyboardSelected = keyboardID;
+                //Rack.DMIBox.MyInstrumentSurface.MoveKeyboards(Rack.UserSettings.KeyHorizontalDistance);
             }
-            //else
-            //{
-            //    Rack.DMIBox.BreathOn = true;
-            //}
 
+            if (Rack.UserSettings.SlidePlayMode == _SlidePlayModes.On && Rack.DMIBox.BreathOn == true)
+            {
+                Rack.DMIBox.PlaySelectedNote();
+            }            
         }
-
     }
 }

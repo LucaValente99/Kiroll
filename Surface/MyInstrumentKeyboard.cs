@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using Brushes = System.Windows.Media.Brushes;
 using Color = System.Windows.Media.Color;
@@ -34,38 +35,13 @@ namespace MyInstrument.Surface
             Colors.DarkGoldenrod, // D# - DarkGoldenrod
             Colors.Blue, // E
             Colors.SaddleBrown, // F - it should be black (email Ludovico)
-            Colors.Brown, // F# - it should be black (email Ludovico) - Brown
+            Colors.Brown, // F# - it should be black (email Ludovico) 
             Colors.Orange, // G
             Colors.DarkOrange, // G# - DarkOrange
             Colors.Green, // A
             Colors.DarkGreen, // A# - DarkGreen
             Colors.Purple, // B
-        };
-
-        // Useful for meeting the deviation in terms of octave in scales:
-        // es. maj C# scale on 4th octave -> C#4, D#4, F4, F#4, G#4, A#4, C5. The last C in the scale will be in the superior octave, so { "C#", 1 }, that means "into the C# maj scale there is just one note
-        // that needs to be increased about one octave".
-        private Dictionary<string, int> deviationMaj = new Dictionary<string, int>() {
-            {"C", 0 }, { "C#", 1 }, { "D", 1 }, { "D#", 2 }, { "E", 2 }, { "F", 3 }, { "F#", 3 }, {"G", 4 }, { "G#", 4 }, { "A", 5 }, { "A#", 5 }, { "B", 6 }
-            };
-        private Dictionary<string, int> deviationMin = new Dictionary<string, int>() {
-            {"C", 0 }, { "C#", 0 }, { "D", 1 }, { "D#", 1 }, { "E", 2 }, { "F", 3 }, { "F#", 3 }, {"G", 4 }, { "G#", 4 }, { "A", 5 }, { "A#", 6 }, { "B", 6 }
-            };
-        private Dictionary<string, int> deviationChrom_7 = new Dictionary<string, int>() {
-            {"C", 0 }, { "C#", 0 }, { "D", 0 }, { "D#", 0 }, { "E", 0 }, { "F", 0 }, { "F#", 1 }, {"G", 2 }, { "G#", 3 }, { "A", 4 }, { "A#", 5 }, { "B", 6 }
-            };
-        private Dictionary<string, int> deviationChrom_12 = new Dictionary<string, int>() {
-            {"C", 0 }, { "C#", 1 }, { "D", 2 }, { "D#", 3 }, { "E", 4 }, { "F", 5 }, { "F#", 6 }, {"G", 7 }, { "G#", 8 }, { "A", 9 }, { "A#", 10 }, { "B", 11 }
-            };
-
-        private string comboScale = Rack.UserSettings.ScaleName;
-        private string comboCode = Rack.UserSettings.ScaleCode;
-        private string comboOctave = Rack.UserSettings.Octave;
-        public string ComboScale { get => comboScale; set { comboScale = value; } }
-        public string ComboCode { get => comboCode; set { comboCode = value; } }
-        public string ComboOctave { get => comboOctave; set { comboOctave = value; } }
-
-        public static int id = 0;
+        };       
 
         private StackPanel musicKeyboard;
         public StackPanel MusicKeyboard
@@ -81,33 +57,62 @@ namespace MyInstrument.Surface
             }
         }
 
+        // Useful for meeting the deviation in terms of octave in scales:
+        // es. maj C# scale on 4th octave -> C#4, D#4, F4, F#4, G#4, A#4, C5. The last C in the scale will be in the superior octave, so { "C#", 1 }, that means "into the C# maj scale there is just one note
+        // that needs to be increased about one octave".
+        private Dictionary<string, int> deviationMaj = new Dictionary<string, int>() {
+            {"C", 0 }, { "C#", 1 }, { "D", 1 }, { "D#", 2 }, { "E", 2 }, { "F", 3 }, { "F#", 3 }, {"G", 4 }, { "G#", 4 }, { "A", 5 }, { "A#", 5 }, { "B", 6 }
+            };
+        private Dictionary<string, int> deviationMin_nat = new Dictionary<string, int>() {
+            {"C", 0 }, { "C#", 0 }, { "D", 1 }, { "D#", 1 }, { "E", 2 }, { "F", 3 }, { "F#", 3 }, {"G", 4 }, { "G#", 4 }, { "A", 5 }, { "A#", 6 }, { "B", 6 }
+            };
+        private Dictionary<string, int> deviationMin_arm = new Dictionary<string, int>() {
+            {"C", 0 }, { "C#", 1 }, { "D", 1 }, { "D#", 1 }, { "E", 2 }, { "F", 3 }, { "F#", 3 }, {"G", 4 }, { "G#", 4 }, { "A", 5 }, { "A#", 6 }, { "B", 6 }
+            };
+        private Dictionary<string, int> deviationMin_mel = new Dictionary<string, int>() {
+            {"C", 0 }, { "C#", 1 }, { "D", 1 }, { "D#", 2 }, { "E", 2 }, { "F", 3 }, { "F#", 3 }, {"G", 4 }, { "G#", 4 }, { "A", 5 }, { "A#", 6 }, { "B", 6 }
+            };
+        private Dictionary<string, int> deviationChrom_12 = new Dictionary<string, int>() {
+            {"C", 0 }, { "C#", 1 }, { "D", 2 }, { "D#", 3 }, { "E", 4 }, { "F", 5 }, { "F#", 6 }, {"G", 7 }, { "G#", 8 }, { "A", 9 }, { "A#", 10 }, { "B", 11 }
+            };
+
+        private string comboScale = Rack.UserSettings.ScaleName;
+        private string comboCode = Rack.UserSettings.ScaleCode;
+        private string comboOctave = Rack.UserSettings.Octave;
+        public string ComboScale { get => comboScale; set { comboScale = value; } }
+        public string ComboCode { get => comboCode; set { comboCode = value; } }
+        public string ComboOctave { get => comboOctave; set { comboOctave = value; } }
+
+        private static int id = 0;
+        public static int ID { get => id; set => id = value; }
+
         public MyInstrumentKeyboard() : base()
         {
             musicKeyboard = new StackPanel();
             musicKeyboard.Orientation = Orientation.Vertical;
             musicKeyboard.Background = Brushes.Transparent;
-            musicKeyboard.Width = 170;
+            musicKeyboard.Width = 150; //170
+            musicKeyboard.Name = "_" + id.ToString();
+
             if (Rack.UserSettings.SharpNotesMode == _SharpNotesModes.On)
             {
-                Rack.UserSettings.KeyboardHeight = 1200; //1011
+                Rack.UserSettings.KeyboardHeight = 1011; //1200
                 musicKeyboard.Height = Rack.UserSettings.KeyboardHeight;
-                Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Height = 1588; //1338
+                Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Height = 1338; //1588
             }
             else
             {
-                Rack.UserSettings.KeyboardHeight = 700; //590
+                Rack.UserSettings.KeyboardHeight = 590; //700
                 musicKeyboard.Height = Rack.UserSettings.KeyboardHeight;
-                Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Height = 927; //781
+                Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Height = 781; //927
             }          
-            musicKeyboard.Name = "_" + id.ToString();
-
+            
             FillStackPanel();
         }
 
         //Filling stack panels with associated keys 
         private void FillStackPanel()
         {
-
             foreach (Button toolKey in CreateKeys())
             {
                 musicKeyboard.Children.Add(toolKey);
@@ -122,9 +127,10 @@ namespace MyInstrument.Surface
             List<AbsNotes> noteList;
 
             int deviation_maj;
-            int deviation_min;
-            int deviation_chrom_7;
-            int deviation_chrom_12;
+            int deviation_min_nat;
+            int deviation_min_arm;
+            int deviation_min_mel;
+            int deviation_chrom_12; // just in SharpNote On case
 
             if (Rack.UserSettings.SharpNotesMode == _SharpNotesModes.Off)
             {
@@ -132,11 +138,13 @@ namespace MyInstrument.Surface
                 noteList = scale.NotesInScale;
 
                 deviation_maj = deviationMaj[noteList[0].ToStandardString()];
-                deviation_min = deviationMin[noteList[0].ToStandardString()];
-                deviation_chrom_7 = deviationChrom_7[noteList[0].ToStandardString()];                
+                deviation_min_nat = deviationMin_nat[noteList[0].ToStandardString()];
+                deviation_min_arm = deviationMin_arm[noteList[0].ToStandardString()];
+                deviation_min_mel = deviationMin_mel[noteList[0].ToStandardString()];
 
                 for (int i = 0; i < 7; i++)
                 {                    
+                    //taking right color from the list dependign on note
                     SolidColorBrush brush = new SolidColorBrush(KeysColorCode7[i]);
 
                     if (ComboCode == "maj")
@@ -156,7 +164,7 @@ namespace MyInstrument.Surface
 
                     if (ComboCode == "min")
                     {
-                        if (i >= 7 - deviation_min)
+                        if (i >= 7 - deviation_min_nat)
                         {
                             MyInstrumentButtons toolKey = new MyInstrumentButtons(noteList[i].ToString(), int.Parse(ComboOctave) + 1, brush, id);
                             toolKeys.Add(toolKey.ToolKey);
@@ -168,9 +176,23 @@ namespace MyInstrument.Surface
                         }
                     }
 
-                    if (ComboCode == "chrom")
+                    if (ComboCode == "min_arm")
                     {
-                        if (i >= 7 - deviation_chrom_7)
+                        if (i >= 7 - deviation_min_arm)
+                        {
+                            MyInstrumentButtons toolKey = new MyInstrumentButtons(noteList[i].ToString(), int.Parse(ComboOctave) + 1, brush, id);
+                            toolKeys.Add(toolKey.ToolKey);
+                        }
+                        else
+                        {
+                            MyInstrumentButtons toolKey = new MyInstrumentButtons(noteList[i].ToString(), int.Parse(ComboOctave), brush, id);
+                            toolKeys.Add(toolKey.ToolKey);
+                        }
+                    }
+
+                    if (ComboCode == "min_mel")
+                    {
+                        if (i >= 7 - deviation_min_mel)
                         {
                             MyInstrumentButtons toolKey = new MyInstrumentButtons(noteList[i].ToString(), int.Parse(ComboOctave) + 1, brush, id);
                             toolKeys.Add(toolKey.ToolKey);
@@ -204,54 +226,64 @@ namespace MyInstrument.Surface
                         toolKeys.Add(toolKey.ToolKey);
                     }                  
                 }
-            }            
+            }
 
-            id++;
+            // for each scale created the id will be incremented by one
+            id++;           
             return toolKeys;
         }
 
+        // STATIC METHODS
         public static Point GetPosition(string id)
         {
-            foreach (StackPanel keyboard in Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Children)
-            {
-                if ("_" + keyboard.Name == "_" + id.ToString())
-                {
-                    int x = (int) Canvas.GetLeft(keyboard);
-                    int y = (int) Canvas.GetTop(keyboard);
-                    return new Point(x, y);
-                }
-            }
+            StackPanel keyboard = Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Children[Int32.Parse(id.Substring(1))] as StackPanel;
+            int x = (int)Canvas.GetLeft(keyboard);
+            int y = (int)Canvas.GetTop(keyboard);
 
-            return new Point(0, 0);
+            return new Point(x, y);
         }
 
         // Getting the keyboard as child of the Canvas
         public static StackPanel getKeyboard(string id)
         {
-            foreach (StackPanel keyboard in Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Children)
-            {
-                if ("_" + keyboard.Name == "_" + id.ToString())
-                {
-                    return keyboard;
-                }
-            }
-
-            return new StackPanel();
+            StackPanel keyboard = Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Children[Int32.Parse(id.Substring(1))] as StackPanel;
+            return keyboard;
         }
 
         public static void resetColors(string id)
         {
-            foreach (StackPanel keyboard in Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Children)
+            StackPanel keyboard = Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Children[Int32.Parse(id.Substring(1))] as StackPanel;
+
+            int i = 0;
+            foreach (Button key in keyboard.Children)
             {
-                if ("_" + keyboard.Name == "_" + id.ToString())
+                if (keyboard.Children.Count == 7)
                 {
-                    int i = 0;
-                    foreach (Button key in keyboard.Children)
-                    {
-                        key.Background = new SolidColorBrush(KeysColorCode7[i]);
-                        i++;
-                    }
-                }             
+                    key.Background = new SolidColorBrush(KeysColorCode7[i]);
+                }
+                else
+                {
+                    key.Background = new SolidColorBrush(KeysColorCode12[i]);
+                }
+                key.Opacity = 1;
+                key.Foreground = new SolidColorBrush(Colors.Black);
+                i++;
+            }
+
+        }
+
+        public static void updateColors(string id, Button btn)
+        {
+            StackPanel keyboard = Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Children[Int32.Parse(id.Substring(1))] as StackPanel;
+
+            foreach (Button key in keyboard.Children)
+            {
+                if (key.Name != btn.Name)
+                {
+                    key.Background = new SolidColorBrush(Colors.Black);
+                    key.Opacity = 0.5;
+                    key.Foreground = new SolidColorBrush(Colors.DarkGray);
+                }
             }
         }
 

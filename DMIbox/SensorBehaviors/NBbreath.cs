@@ -1,17 +1,17 @@
 ﻿using MyInstrument.DMIbox;
 using NeeqDMIs.ATmega;
+using NeeqDMIs.NithSensors;
 using System.Globalization;
 using System.Runtime.ExceptionServices;
 
 namespace Netytar.DMIbox.SensorBehaviors
 {
-    public class NBbreath : ISensorBehavior
+    public class NBbreath : INithSensorBehavior
     {
         private int v = 1;
         private int offThresh;
         private int onThresh;
         private float sensitivity;
-
         public NBbreath(int offThresh, int onThresh, float sensitivity)
         {
             this.offThresh = offThresh;
@@ -19,7 +19,7 @@ namespace Netytar.DMIbox.SensorBehaviors
             this.sensitivity = sensitivity;
         }
 
-        public void ReceiveSensorRead(string val)
+        public void HandleData(NithSensorData val)
         {
             if (Rack.UserSettings.MyInstrumentControlMode == _MyInstrumentControlModes.Breath)
             {
@@ -27,7 +27,7 @@ namespace Netytar.DMIbox.SensorBehaviors
 
                 try
                 {
-                    b = float.Parse(val, CultureInfo.InvariantCulture.NumberFormat);
+                    b = float.Parse(val.GetValue(NithArguments.press), CultureInfo.InvariantCulture.NumberFormat);
                 }
                 catch
                 {
@@ -39,12 +39,12 @@ namespace Netytar.DMIbox.SensorBehaviors
                 //Rack.DMIBox.MyInstrumentMainWindow.BreathSensorValue = v;
                 Rack.DMIBox.Pressure = (int)(v * 2 * sensitivity);
 
-                if (v > onThresh && Rack.DMIBox.BreathOn == false)
+                if (v > onThresh)
                 {
                     Rack.DMIBox.BreathOn = true;
                 }
 
-                if (v < offThresh && Rack.DMIBox.BreathOn == true)
+                if (v < offThresh)
                 {
                     Rack.DMIBox.BreathOn = false;
                 }

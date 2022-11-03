@@ -17,13 +17,13 @@ namespace MyInstrument.Surface.UserSettings
         public string NoteVelocity { get; set; } = "_";
         public string NotePressure { get; set; } = "_";
         public double KeyVerticaDistance { get; set; } = 14;
-        public double KeyHorizontalDistance { get; set; } = 600;
+        public double KeyHorizontalDistance { get; set; } = 400;
         public double KeyboardHeight { get; set; } = 590;
         public double BPMmetronome { get; set; } = 110.0;
         public int CanvasWidth { get; set; } = 1518;
         public int SensorPort { get; set; } = 4;
         public int MIDIPort { get; set; } = 1;
-        public _MyInstrumentControlModes MyInstrumentControlMode { get; set; } = _MyInstrumentControlModes.Keyboard;
+        public _MyInstrumentControlModes MyInstrumentControlMode { get; set; } = _MyInstrumentControlModes.NaN;
         public _SlidePlayModes SlidePlayMode { get; set; } = _SlidePlayModes.Off;
         public _SharpNotesModes SharpNotesMode { get; set; } = _SharpNotesModes.Off;
             

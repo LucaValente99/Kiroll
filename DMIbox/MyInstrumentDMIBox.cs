@@ -6,7 +6,10 @@ using NeeqDMIs.Eyetracking.Tobii;
 using NeeqDMIs.Keyboard;
 using NeeqDMIs.MIDI;
 using NeeqDMIs.Music;
+using NeeqDMIs.NithSensors;
+using System;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using MessageBox = System.Windows.Forms.MessageBox;
@@ -22,21 +25,24 @@ namespace MyInstrument.DMIbox
         private bool breathOn = false;
         private int velocity = 127;
         private int pressure = 0;
-        private bool kbCtrl = false;
+        private bool isPlaying = false;
+
+        public bool IsPlaying { get => isPlaying; set => isPlaying = value; }
 
         //MIDI & Sensors
         public IMidiModule MidiModule { get; set; }
         public TobiiModule TobiiModule { get; set; }
 
-        private SensorModule sensorReader;
-        public SensorModule SensorReader { get => sensorReader; set => sensorReader = value; }
+        private NithModule sensorReader;
+        public NithModule SensorReader { get => sensorReader; set => sensorReader = value; }
 
         // Used to memorize the old note played, it helps to manage the Slide Play mode
-        private MidiNotes oldMidiNote = MidiNotes.C5;
-        private MidiNotes selectedNote = MidiNotes.C5;
+        private MidiNotes oldMidiNote = MidiNotes.NaN;
+        private MidiNotes selectedNote = MidiNotes.NaN;
         public MidiNotes SelectedNote {get => selectedNote; set => selectedNote = value;}
+        public MidiNotes OldMidiNote { get => oldMidiNote; set => oldMidiNote = value; }
 
-        private MyInstrumentButtons checkedNote;
+        private MyInstrumentButtons checkedNote = null;
         public MyInstrumentButtons CheckedNote { get => checkedNote; set => checkedNote = value; }
 
         public MainWindow MyInstrumentMainWindow { get; set; }
@@ -123,23 +129,6 @@ namespace MyInstrument.DMIbox
             }
         }
 
-        public bool KbCtrl
-        {
-            get { return kbCtrl; }
-            set
-            {
-                kbCtrl = value;
-                if (kbCtrl)
-                {
-                    PlaySelectedNote();
-                }
-                else
-                {
-                    StopSelectedNote();
-                }
-            }
-        }
-
         public void ResetModulationAndPressure()
         {
             breathOn = false;
@@ -147,62 +136,78 @@ namespace MyInstrument.DMIbox
             Velocity = 127;
         }
 
-        private void PlaySelectedNote()
+        public void PlaySelectedNote()
         {
-            if (Rack.DMIBox.MidiModule.IsMidiOk() && checkedNote!= null)
+            if (Rack.DMIBox.MidiModule.IsMidiOk() && checkedNote!= null && Rack.UserSettings.MyInstrumentControlMode != _MyInstrumentControlModes.NaN)
             {
                 //MessageBox.Show(((Rack.DMIBox.MyInstrumentSurface.LastKeyboardPlayed != checkedNote.KeyboardID &&
-                //    Rack.DMIBox.MyInstrumentSurface.LastKeyboardPlayed != "") ||
-                //    (Rack.DMIBox.MyInstrumentSurface.LastKeyboardPlayed == "" &&
-                //    checkedNote.KeyboardID != Rack.DMIBox.MyInstrumentSurface.TwoMusicKeyboards[1].Name)).ToString());
-                //if ((Rack.DMIBox.MyInstrumentSurface.LastKeyboardPlayed != checkedNote.KeyboardID &&
-                //    Rack.DMIBox.MyInstrumentSurface.LastKeyboardPlayed != "") ||
-                //    (Rack.DMIBox.MyInstrumentSurface.LastKeyboardPlayed == "" &&
-                //    checkedNote.KeyboardID != Rack.DMIBox.MyInstrumentSurface.TwoMusicKeyboards[1].Name))
-                //{
-                //Check for slideplay - if it is on Stop the old note to start the new one
+                //    Rack.DMIBox.MyInstrumentSurface.LastKeyboardPlayed != "")).ToString());
+
+                if (CheckPlayability())
+                {
+                    //Check for slideplay - if it is on Stop the old note to start the new one
                     if (oldMidiNote != MidiNotes.NaN && Rack.UserSettings.SlidePlayMode == _SlidePlayModes.On)
                     {
                         Rack.DMIBox.MidiModule.StopNote((int)oldMidiNote);
                     }
                    
                     MidiModule.PlayNote((int)selectedNote, velocity);
+                    isPlaying = true;
+
+                    oldMidiNote = selectedNote;
+
+                    Rack.DMIBox.MyInstrumentSurface.LastKeyboardPlayed = checkedNote.KeyboardID;
 
                     Rack.UserSettings.NoteName = checkedNote.Key + checkedNote.Octave;
                     Rack.UserSettings.NotePitch = ((int)selectedNote).ToString();
-                    Rack.UserSettings.NoteVelocity = velocity.ToString();                   
-                //}
+                    Rack.UserSettings.NoteVelocity = velocity.ToString();
+
+                    Rack.DMIBox.MyInstrumentSurface.MoveKeyboards(Rack.UserSettings.KeyHorizontalDistance);
+                }
+            }
+        }
+        private void StopSelectedNote()
+        {
+            if (Rack.DMIBox.MidiModule.IsMidiOk() && checkedNote != null && isPlaying == true && Rack.UserSettings.MyInstrumentControlMode != _MyInstrumentControlModes.NaN)
+            {
+                
+                MidiModule.StopNote((int)selectedNote);
+                isPlaying = false;
+
+                Rack.UserSettings.NoteName = "_";
+                Rack.UserSettings.NotePitch = "_";
+                Rack.UserSettings.NoteVelocity = "_";                   
+                                                          
+                checkedNote = null;
+            }
+            else
+            {
+                MidiModule.StopNote((int)oldMidiNote);
             }
         }
 
-        private void StopSelectedNote()
+        public bool CheckPlayability()
         {
-            if (Rack.DMIBox.MidiModule.IsMidiOk())
+            bool startingCase = Rack.DMIBox.MyInstrumentSurface.LastKeyboardPlayed == "";
+
+            bool firstNoteToPlay = "_" + checkedNote.KeyboardID == "_0";
+
+            if (startingCase)
             {
-                if (Rack.UserSettings.SlidePlayMode != _SlidePlayModes.On)
-                {
-                    MidiModule.StopNote((int)selectedNote);
-                    Rack.UserSettings.NoteName = "_";
-                    Rack.UserSettings.NotePitch = "_";
-                    Rack.UserSettings.NoteVelocity = "_";                   
-                }
-                oldMidiNote = selectedNote;
-               
-                Rack.DMIBox.MyInstrumentSurface.LastKeyboardPlayed = checkedNote.KeyboardID;            
-                Rack.DMIBox.MyInstrumentSurface.MoveKeyboards(Rack.UserSettings.KeyHorizontalDistance);
+                //MyInstrumentMainWindow.btnInstrumentSettingLabel.Content = "0";
+                return firstNoteToPlay;
             }
-            checkedNote = null;
-        }     
+
+            int lastKeyboardPlayed = Convert.ToInt32(Rack.DMIBox.MyInstrumentSurface.LastKeyboardPlayed);
+            int keyboardID = Convert.ToInt32(checkedNote.KeyboardID);
+            //MyInstrumentMainWindow.btnInstrumentSettingLabel.Content = keyboardID + " " + (lastKeyboardPlayed + 1) % 16;
+
+            return keyboardID == (lastKeyboardPlayed + 1) % 16;
+        }
 
         private void SetPressure()
         {
             MidiModule.SetPressure(pressure);
-        }
-
-        //Resettting the oldNote for SlidePlay
-        public void ResetSlidePlay()
-        {
-            oldMidiNote = MidiNotes.NaN;
         }
 
         public void Dispose()

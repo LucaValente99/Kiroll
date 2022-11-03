@@ -791,11 +791,14 @@
                         <ComboBoxItem Name="maj" IsSelected="True">
                             maj
                         </ComboBoxItem>
-                        <ComboBoxItem Name="min">
+                        <ComboBoxItem Name="min_nat">
                             min
                         </ComboBoxItem>
-                        <ComboBoxItem Name="chrom">
-                            chrom
+                        <ComboBoxItem Name="min_arm">
+                            min_arm
+                        </ComboBoxItem>
+                        <ComboBoxItem Name="min_mel">
+                            min_mel
                         </ComboBoxItem>
                         <ComboBoxItem Name="__" Visibility="Collapsed" IsEnabled="False" IsSelected="True">
                             _
@@ -991,12 +994,12 @@
                         Margin="40,0,40,0"
                         TickPlacement="BottomRight"
                         TickFrequency="100"
-                        Value="550"
+                        Value="400"
                         IsSnapToTickEnabled="True"
                         LargeChange="0"
                         Focusable="False"
-                        Minimum="250"
-                        Maximum="650"   
+                        Minimum="200"
+                        Maximum="600"   
                         IsEnabled="false"
                         Thumb.DragCompleted="sldHorizontalDistance_DragCompleted"
                         />

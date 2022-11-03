@@ -12,6 +12,8 @@ using NeeqDMIs.Eyetracking.PointFilters;
 using NeeqDMIs.Eyetracking.Tobii;
 using NeeqDMIs.Keyboard;
 using NeeqDMIs.MIDI;
+using NeeqDMIs.NithSensors;
+using Netytar;
 using Netytar.DMIbox.SensorBehaviors;
 using RawInputProcessor;
 using Tobii.Interaction.Framework;
@@ -38,23 +40,26 @@ namespace MyInstrument.DMIbox
                 Rack.DMIBox.MidiModule.OutDevice = 1;
 
                 //Breath 
-                Rack.DMIBox.SensorReader = new SensorModule(9600);
+                Rack.DMIBox.SensorReader = new NithModule();
 
                 Rack.DMIBox.KeyboardModule = new KeyboardModule(new WindowInteropHelper(Rack.DMIBox.MyInstrumentMainWindow).Handle, RawInputCaptureMode.ForegroundAndBackground);
                 Rack.DMIBox.TobiiModule = new TobiiModule(GazePointDataMode.Unfiltered);
 
                 Rack.DMIBox.KeyboardModule.KeyboardBehaviors.Add(new KBEyeTrackerToMouse());
+                Rack.DMIBox.KeyboardModule.KeyboardBehaviors.Add(new KBsimulateBreathOn());
 
-                Rack.DMIBox.SensorReader.Behaviors.Add(new NBbreath(20, 28, 1.5f)); // 15 20
+                Rack.DMIBox.SensorReader.SensorBehaviors.Add(new NBbreath(20, 28, 1.5f)); // 15 20
 
                 // SURFACE INIT
-                Rack.DMIBox.AutoScroller = new AutoScroller(Rack.DMIBox.MyInstrumentMainWindow.scrlMyInstrument, 0, 250, new PointFilterMAExpDecaying(0.1f)); // OLD was 100, 0.1f
+                Rack.DMIBox.AutoScroller = new AutoScroller(Rack.DMIBox.MyInstrumentMainWindow.scrlMyInstrument, 0, 350, new PointFilterMAExpDecaying(0.1f)); // OLD was 100, 0.1f
                 Rack.DMIBox.MyInstrumentSurface = new MyInstrumentSurface(Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument);
 
                 firstTime = false;
             }
                       
             Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+            Rack.DMIBox.KeyboardModule.KeyboardBehaviors.Add(new KBsimulateBreathOn());
+
         }
     }
 }
