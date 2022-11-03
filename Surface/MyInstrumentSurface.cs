@@ -10,32 +10,37 @@ namespace MyInstrument.Surface
 {
     public class MyInstrumentSurface
     {
+        // Used to keep track of lastKeyboardPlayed. It is updated when keyboard is played.
         private string lastKeyboardPlayed = "";
         public string LastKeyboardPlayed { get => lastKeyboardPlayed; set => lastKeyboardPlayed = value; }
 
-        //private string lastKeyboardSelected = "";
-        //public string LastKeyboardSelected { get => lastKeyboardSelected; set => lastKeyboardSelected = value; }
+        private int lastKP = 0; // Integer version of last lastKeyboardPlayed
 
+        // Used to keep track of lastKeyboardSelected. It is updated for every note selection (SelectNote on MyInstrumentButton).
+        private string lastKeyboardSelected = "";
+        public string LastKeyboardSelected { get => lastKeyboardSelected; set => lastKeyboardSelected = value; }
+
+        // Used to keep track of lastKeyboardMoved.
         private static string lastKeyboardMoved = "";
 
-        private List<StackPanel> fourMusicKeyboards = new List<StackPanel>();
+        private List<StackPanel> musicKeyboards = new List<StackPanel>();
 
-        public List<StackPanel> FourMusicKeyboards
+        public List<StackPanel> MusicKeyboards
         {
-            get { return fourMusicKeyboards; }
-            set { fourMusicKeyboards = value; }
+            get { return musicKeyboards; }
+            set { musicKeyboards = value; }
         }
 
         private Canvas canvas;
 
         private double verticalDistance = 0;
-        private double horizontalDistance = 0;
+        private double horizontalDistance;
         public MyInstrumentSurface(Canvas canvas)
         {
             this.canvas = canvas;
         }
 
-        // Creating a stack panel list to show in the MyInstrument section
+        // Creating a stack panel (keyboard) list
         private List<StackPanel> CreateMusicKeyboards()
         {
             int count = 0;
@@ -54,38 +59,37 @@ namespace MyInstrument.Surface
 
         }
 
-        // Drawing stack panels on the screen with the scale associated;
-        // Generating movement from sx to dx
+        // Drawing stack panels (keyboards) on the screen with the scale associated
         public void DrawOnCanvas()
         {
             // Each time this method is called the canvas is cleaned at first, then the new keyboards will be added
-            if (fourMusicKeyboards.Count != 0)
+            if (musicKeyboards.Count != 0)
             {
                 ClearSurface();
-                fourMusicKeyboards = CreateMusicKeyboards();
+                musicKeyboards = CreateMusicKeyboards();
                 SetVerticalDistance(Rack.UserSettings.KeyVerticaDistance);
             }
             else
             {
-                fourMusicKeyboards = CreateMusicKeyboards();
+                musicKeyboards = CreateMusicKeyboards();
                 SetVerticalDistance(Rack.UserSettings.KeyVerticaDistance);
             }
 
-            double horizontalDistance = 0;
-            for (int i = 0; i < fourMusicKeyboards.Count; i++)
+            horizontalDistance = 0;
+            for (int i = 0; i < musicKeyboards.Count; i++)
             {
-                canvas.Children.Add(fourMusicKeyboards[i]);
+                canvas.Children.Add(musicKeyboards[i]);
                 
-                Canvas.SetLeft(fourMusicKeyboards[i], 75 + horizontalDistance); //(canvas.Width - fourMusicKeyboards[i].Width) + horizontalDistance
-                Canvas.SetTop(fourMusicKeyboards[i], (canvas.Height - fourMusicKeyboards[i].Height) / 2);
+                Canvas.SetLeft(musicKeyboards[i], 75 + horizontalDistance); 
+                Canvas.SetTop(musicKeyboards[i], (canvas.Height - musicKeyboards[i].Height) / 2);
                 horizontalDistance += Rack.UserSettings.KeyHorizontalDistance;
             }
         }
 
-        //Cleaning the canvas
+        // Cleaning the canvas
         public void ClearSurface()
         {
-            foreach (StackPanel instrumentKeyboard in fourMusicKeyboards)
+            foreach (StackPanel instrumentKeyboard in musicKeyboards)
             {
                 canvas.Children.Remove(instrumentKeyboard);
             }
@@ -94,14 +98,17 @@ namespace MyInstrument.Surface
             Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Width = Rack.UserSettings.CanvasWidth;
             lastKeyboardMoved = "";
             lastKeyboardPlayed = "";
-            firstFiveTimes = true;
+            lastKeyboardSelected = "";
+            afterEighthKeyboard = false;
+            firstTime = false;
 
-            // this needs to make checkPlayability works on DMIbox (keyboardID == (lastKeyboardPlayed + 1) % 16)
+            // This needs to make checkPlayability works on DMIbox (keyboardID == (lastKeyboardPlayed + 1) % 16)
             MyInstrumentKeyboard.ID = 0;
 
-            fourMusicKeyboards.Clear();
+            musicKeyboards.Clear();
         }
-
+        
+        // Setting distancce between keys
         public void SetVerticalDistance(double distance)
         {
             double addVerticalDistance;
@@ -114,7 +121,7 @@ namespace MyInstrument.Surface
                 addVerticalDistance = distance * 6;
             }
 
-            foreach (StackPanel instrumentKeyboard in fourMusicKeyboards)
+            foreach (StackPanel instrumentKeyboard in musicKeyboards)
             {
                 if (verticalDistance > distance)
                 {
@@ -136,6 +143,7 @@ namespace MyInstrument.Surface
                 }
 
                 int i = 0;
+
                 foreach (Button key in instrumentKeyboard.Children)
                 {
                     if (i != 6 && addVerticalDistance == distance * 6)
@@ -155,40 +163,49 @@ namespace MyInstrument.Surface
         public void SetHorizontalDistance(double distance)
         {
             DrawOnCanvas();
-            Canvas.SetLeft(fourMusicKeyboards[1], MyInstrumentKeyboard.GetPosition(fourMusicKeyboards[0].Name).X + distance);
+            Canvas.SetLeft(musicKeyboards[1], MyInstrumentKeyboard.GetPosition(musicKeyboards[0].Name).X + distance);
             horizontalDistance = distance;        
         }
 
 
-        private bool firstFiveTimes = true;
+        // These two variables helps to control which keyboard needs to move and when (afterEighthKeyboard), then where it needs to stop before moving (firstTime).
+
+        // Start moving keyboards after the selection of the eighth one
+        private bool afterEighthKeyboard = false;
+        // Start the movement of scrollbar the second time the MoveKeybaords method is called
+        private bool firstTime = false;
         public void MoveKeyboards(double distance)
         {
-            Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Width += distance;
-
-            if (lastKeyboardPlayed != "")
+            if (!firstTime)
             {
-                if (firstFiveTimes)
+                firstTime = true;
+            }
+            else {
+                Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Width += Rack.UserSettings.KeyHorizontalDistance;
+            }
+
+            if (lastKeyboardSelected != "")
+            {
+                if (!afterEighthKeyboard)
                 {
-                    if (lastKeyboardPlayed == "8"){
-                        Canvas.SetLeft(MyInstrumentKeyboard.getKeyboard("_0"), MyInstrumentKeyboard.GetPosition(fourMusicKeyboards[15].Name).X + distance);
+                    if (lastKeyboardSelected == "8"){
+                        Canvas.SetLeft(MyInstrumentKeyboard.GetKeyboard("_0"), MyInstrumentKeyboard.GetPosition(musicKeyboards[15].Name).X + distance);
                         lastKeyboardMoved = "0";
-                        //Rack.DMIBox.MyInstrumentMainWindow.btnInstrumentSettingLabel.Content = lastKeyboardMoved;
-                        MyInstrumentKeyboard.resetColors("_0");
-                        firstFiveTimes = false;
+                        MyInstrumentKeyboard.ResetColors("_0");
+                        afterEighthKeyboard = true;
                     }                                     
                 }
                 else
                 {
-                    int lastKP = Int32.Parse(lastKeyboardPlayed) - 8;
+                    lastKP = Int32.Parse(lastKeyboardSelected) - 8;
                     if (lastKP < 0)
                     {
-                        lastKP = 16 + lastKP;
+                        lastKP = 16 + lastKP; // Es: if keyboard n° 5 is played -> 5 - 8 = -3, 16 - 3 = 13 is the keyboard to move.
                     }
 
-                    Canvas.SetLeft(MyInstrumentKeyboard.getKeyboard("_"+lastKP.ToString()), MyInstrumentKeyboard.GetPosition("_"+lastKeyboardMoved).X + distance);
+                    Canvas.SetLeft(MyInstrumentKeyboard.GetKeyboard("_" + lastKP.ToString()), MyInstrumentKeyboard.GetPosition("_" + lastKeyboardMoved).X + distance);
                     lastKeyboardMoved = lastKP.ToString();
-                    //Rack.DMIBox.MyInstrumentMainWindow.btnInstrumentSettingLabel.Content = lastKeyboardMoved;
-                    MyInstrumentKeyboard.resetColors("_" + lastKeyboardMoved);
+                    MyInstrumentKeyboard.ResetColors("_" + lastKeyboardMoved);
                 }               
             }
         }

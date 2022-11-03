@@ -22,8 +22,9 @@ namespace MyInstrument.DMIbox
 {
     internal class MyInstrumentSetup
     {
-        //used to track the first time the instrument is started: lots of objects need to be instantiated
-        //just one time (this is due to the possibilitiy to start and stop the instrument)
+        // Used to track the first time the instrument is started: lots of objects need to be instantiated
+        // just one time (this is due to the possibilitiy to start and stop the instrument).
+
         private static bool firstTime = true;
         public MyInstrumentSetup(MainWindow window)
         {
@@ -39,7 +40,7 @@ namespace MyInstrument.DMIbox
                 Rack.DMIBox.MidiModule = new MidiModuleNAudio(1, 1);
                 Rack.DMIBox.MidiModule.OutDevice = 1;
 
-                //Breath 
+                //Breath Sensor 
                 Rack.DMIBox.SensorReader = new NithModule();
 
                 Rack.DMIBox.KeyboardModule = new KeyboardModule(new WindowInteropHelper(Rack.DMIBox.MyInstrumentMainWindow).Handle, RawInputCaptureMode.ForegroundAndBackground);
@@ -48,18 +49,15 @@ namespace MyInstrument.DMIbox
                 Rack.DMIBox.KeyboardModule.KeyboardBehaviors.Add(new KBEyeTrackerToMouse());
                 Rack.DMIBox.KeyboardModule.KeyboardBehaviors.Add(new KBsimulateBreathOn());
 
-                Rack.DMIBox.SensorReader.SensorBehaviors.Add(new NBbreath(20, 28, 1.5f)); // 15 20
+                Rack.DMIBox.SensorReader.SensorBehaviors.Add(new NBbreath(40, 40, 1.5f)); // 15 20 1.5f
 
                 // SURFACE INIT
-                Rack.DMIBox.AutoScroller = new AutoScroller(Rack.DMIBox.MyInstrumentMainWindow.scrlMyInstrument, 0, 350, new PointFilterMAExpDecaying(0.1f)); // OLD was 100, 0.1f
+                Rack.DMIBox.AutoScroller = new AutoScroller(Rack.DMIBox.MyInstrumentMainWindow.scrlMyInstrument, 0, 300, new PointFilterMAExpDecaying(0.09f)); // OLD was 100, 0.1f
                 Rack.DMIBox.MyInstrumentSurface = new MyInstrumentSurface(Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument);
 
                 firstTime = false;
-            }
-                      
+            }                     
             Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
-            Rack.DMIBox.KeyboardModule.KeyboardBehaviors.Add(new KBsimulateBreathOn());
-
         }
     }
 }

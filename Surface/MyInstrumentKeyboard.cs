@@ -110,7 +110,7 @@ namespace MyInstrument.Surface
             FillStackPanel();
         }
 
-        //Filling stack panels with associated keys 
+        // Filling stack panels with associated keys 
         private void FillStackPanel()
         {
             foreach (Button toolKey in CreateKeys())
@@ -119,7 +119,7 @@ namespace MyInstrument.Surface
             }
         }
 
-        //Creating key, giving it the note of the scale, then add it to the keyboard
+        // Creating keys, giving it the note of the scale, then add it to the keyboard
         private List<Button> CreateKeys()
         {
             List<Button> toolKeys = new List<Button>();
@@ -144,7 +144,7 @@ namespace MyInstrument.Surface
 
                 for (int i = 0; i < 7; i++)
                 {                    
-                    //taking right color from the list dependign on note
+                    // Taking right color from the list dependign on note
                     SolidColorBrush brush = new SolidColorBrush(KeysColorCode7[i]);
 
                     if (ComboCode == "maj")
@@ -228,12 +228,14 @@ namespace MyInstrument.Surface
                 }
             }
 
-            // for each scale created the id will be incremented by one
+            // For each scale created the id will be incremented by one
             id++;           
             return toolKeys;
         }
 
         // STATIC METHODS
+
+        // Getting the position of keyboard as child of the Canvas
         public static Point GetPosition(string id)
         {
             StackPanel keyboard = Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Children[Int32.Parse(id.Substring(1))] as StackPanel;
@@ -244,13 +246,14 @@ namespace MyInstrument.Surface
         }
 
         // Getting the keyboard as child of the Canvas
-        public static StackPanel getKeyboard(string id)
+        public static StackPanel GetKeyboard(string id)
         {
             StackPanel keyboard = Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Children[Int32.Parse(id.Substring(1))] as StackPanel;
             return keyboard;
         }
 
-        public static void resetColors(string id)
+        // Resetting the keyboard colors
+        public static void ResetColors(string id)
         {
             StackPanel keyboard = Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Children[Int32.Parse(id.Substring(1))] as StackPanel;
 
@@ -272,7 +275,8 @@ namespace MyInstrument.Surface
 
         }
 
-        public static void updateColors(string id, Button btn)
+        // Updating the keyboard colors: all the notes in keyboard will turn balck (opacity: 0.5) except for the selected one.
+        public static void UpdateColors(string id, Button btn)
         {
             StackPanel keyboard = Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Children[Int32.Parse(id.Substring(1))] as StackPanel;
 

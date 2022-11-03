@@ -126,8 +126,15 @@ namespace MyInstrument
                txtVelocityMouth.Text = Rack.UserSettings.NoteVelocity;
             }
             else 
-            {              
-               txtVelocityMouth.Text = Rack.UserSettings.NotePressure;
+            {   
+               if (Rack.DMIBox.IsPlaying)
+                {
+                    txtVelocityMouth.Text = Rack.UserSettings.NotePressure;
+                }
+                else
+                {
+                    txtVelocityMouth.Text = "_";
+                }
             }
         }
 

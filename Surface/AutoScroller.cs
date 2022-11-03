@@ -64,12 +64,12 @@ namespace MyInstrument.Surface
 
             Scroll();
 
-            //if (MyInstrumentKeyboard.GetPosition(Rack.DMIBox.MyInstrumentSurface.FourMusicKeyboards[0].Name).X == 684)            
+            //if (MyInstrumentKeyboard.GetPosition(Rack.DMIBox.MyInstrumentSurface.MusicKeyboards[0].Name).X == 684)            
             //{
             //    Rack.DMIBox.MyInstrumentSurface.MoveKeyboards(Rack.UserSettings.KeyHorizontalDistance);
             //}
-            //Rack.DMIBox.MyInstrumentMainWindow.btnInstrumentSettingLabel.Content = MyInstrumentKeyboard.GetPosition(Rack.DMIBox.MyInstrumentSurface.FourMusicKeyboards[1].Name).X;
-            //if (MyInstrumentKeyboard.GetPosition(Rack.DMIBox.MyInstrumentSurface.FourMusicKeyboards[1].Name).X == 684)
+            //Rack.DMIBox.MyInstrumentMainWindow.btnInstrumentSettingLabel.Content = MyInstrumentKeyboard.GetPosition(Rack.DMIBox.MyInstrumentSurface.MusicKeyboards[1].Name).X;
+            //if (MyInstrumentKeyboard.GetPosition(Rack.DMIBox.MyInstrumentSurface.MusicKeyboards[1].Name).X == 684)
             //{
             //    Rack.DMIBox.MyInstrumentSurface.MoveKeyboards(Rack.UserSettings.KeyHorizontalDistance);
             //}

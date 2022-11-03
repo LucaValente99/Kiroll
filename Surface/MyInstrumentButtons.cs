@@ -41,7 +41,7 @@ namespace MyInstrument.Surface
         public MyInstrumentButtons(string key, int octave,  SolidColorBrush brush, int keyboardID) : base()
         {
 
-            // playable key
+            // Playable key
             toolKey = new Button();
             toolKey.Name = key;
             toolKey.Width = 150; //170
@@ -51,7 +51,7 @@ namespace MyInstrument.Surface
             toolKey.BorderBrush = Brushes.Black;
             toolKey.Content = MusicConversions.ToAbsNote(key).ToStandardString();
 
-            //Button content
+            // Button content
             toolKey.Foreground = Brushes.Black;
             toolKey.FontSize = 30;
             toolKey.FontWeight = FontWeights.Bold;
@@ -62,18 +62,24 @@ namespace MyInstrument.Surface
             this.key = key;
             this.keyboardID = keyboardID.ToString();
         }
+
         private void SelectNote(object sender, MouseEventArgs e)
         {
             Rack.DMIBox.CheckedNote = this;
             Rack.DMIBox.SelectedNote = MusicConversions.ToAbsNote(key).ToMidiNote(octave);
             Rack.DMIBox.IsPlaying = false;
 
+            // If the keyboard that contains the note is valid, colors will be update and the movement will be started.
             if (Rack.DMIBox.CheckPlayability())
             {
-                MyInstrumentKeyboard.resetColors("_" + keyboardID);
-                MyInstrumentKeyboard.updateColors("_" + keyboardID, toolKey);
-                //Rack.DMIBox.MyInstrumentSurface.LastKeyboardSelected = keyboardID;
-                //Rack.DMIBox.MyInstrumentSurface.MoveKeyboards(Rack.UserSettings.KeyHorizontalDistance);
+                MyInstrumentKeyboard.ResetColors("_" + keyboardID);
+                MyInstrumentKeyboard.UpdateColors("_" + keyboardID, toolKey);             
+
+                if (Rack.DMIBox.MyInstrumentSurface.LastKeyboardSelected != keyboardID)
+                {
+                    Rack.DMIBox.MyInstrumentSurface.LastKeyboardSelected = keyboardID;
+                    Rack.DMIBox.MyInstrumentSurface.MoveKeyboards(Rack.UserSettings.KeyHorizontalDistance);
+                }
             }
 
             if (Rack.UserSettings.SlidePlayMode == _SlidePlayModes.On && Rack.DMIBox.BreathOn == true)

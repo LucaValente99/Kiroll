@@ -25,11 +25,12 @@ namespace MyInstrument.DMIbox
         private bool breathOn = false;
         private int velocity = 127;
         private int pressure = 0;
-        private bool isPlaying = false;
 
+        // Used to track when a note and relative keyboard is playing
+        private bool isPlaying = false;
         public bool IsPlaying { get => isPlaying; set => isPlaying = value; }
 
-        //MIDI & Sensors
+        // MIDI & Sensors
         public IMidiModule MidiModule { get; set; }
         public TobiiModule TobiiModule { get; set; }
 
@@ -42,18 +43,19 @@ namespace MyInstrument.DMIbox
         public MidiNotes SelectedNote {get => selectedNote; set => selectedNote = value;}
         public MidiNotes OldMidiNote { get => oldMidiNote; set => oldMidiNote = value; }
 
+        // Used to update note visualizer when a note is played
         private MyInstrumentButtons checkedNote = null;
         public MyInstrumentButtons CheckedNote { get => checkedNote; set => checkedNote = value; }
 
+        // Main classes instantiated when the application starts, into MyInstrumentSetup class
         public MainWindow MyInstrumentMainWindow { get; set; }
-        public KeyboardModule KeyboardModule { get; set; }
+        public KeyboardModule KeyboardModule { get; set; }    
+        public AutoScroller AutoScroller { get; set; }
 
-        // Graphic components
-        private AutoScroller autoScroller;
         private MyInstrumentSurface myInstrumentSurface;
-        public AutoScroller AutoScroller { get => autoScroller; set => autoScroller = value; }
         public MyInstrumentSurface MyInstrumentSurface { get => myInstrumentSurface; set => myInstrumentSurface = value; }
 
+        // Playing a note when user blows
         public bool BreathOn
         {
             get { return breathOn; }
@@ -75,6 +77,7 @@ namespace MyInstrument.DMIbox
             }
         }
 
+        // Setting pressure when user blows
         public int Pressure
         {
             get { return pressure; }
@@ -109,6 +112,7 @@ namespace MyInstrument.DMIbox
             }
         }     
 
+        // Setting velocity (it will be 127 by default)
         public int Velocity
         {
             get { return velocity; }
@@ -129,6 +133,7 @@ namespace MyInstrument.DMIbox
             }
         }
 
+        // Called evrey time the control mode changes (keyboard - breath)
         public void ResetModulationAndPressure()
         {
             breathOn = false;
@@ -136,19 +141,17 @@ namespace MyInstrument.DMIbox
             Velocity = 127;
         }
 
+        // Playing the selected note
         public void PlaySelectedNote()
         {
-            if (Rack.DMIBox.MidiModule.IsMidiOk() && checkedNote!= null && Rack.UserSettings.MyInstrumentControlMode != _MyInstrumentControlModes.NaN)
+            if (MidiModule.IsMidiOk() && checkedNote!= null && Rack.UserSettings.MyInstrumentControlMode != _MyInstrumentControlModes.NaN)
             {
-                //MessageBox.Show(((Rack.DMIBox.MyInstrumentSurface.LastKeyboardPlayed != checkedNote.KeyboardID &&
-                //    Rack.DMIBox.MyInstrumentSurface.LastKeyboardPlayed != "")).ToString());
-
                 if (CheckPlayability())
                 {
-                    //Check for slideplay - if it is on Stop the old note to start the new one
+                    // Check for slideplay - if it is on Stop the old note to start the new one
                     if (oldMidiNote != MidiNotes.NaN && Rack.UserSettings.SlidePlayMode == _SlidePlayModes.On)
                     {
-                        Rack.DMIBox.MidiModule.StopNote((int)oldMidiNote);
+                        MidiModule.StopNote((int)oldMidiNote);
                     }
                    
                     MidiModule.PlayNote((int)selectedNote, velocity);
@@ -156,51 +159,50 @@ namespace MyInstrument.DMIbox
 
                     oldMidiNote = selectedNote;
 
-                    Rack.DMIBox.MyInstrumentSurface.LastKeyboardPlayed = checkedNote.KeyboardID;
+                    myInstrumentSurface.LastKeyboardPlayed = checkedNote.KeyboardID;
 
                     Rack.UserSettings.NoteName = checkedNote.Key + checkedNote.Octave;
                     Rack.UserSettings.NotePitch = ((int)selectedNote).ToString();
                     Rack.UserSettings.NoteVelocity = velocity.ToString();
-
-                    Rack.DMIBox.MyInstrumentSurface.MoveKeyboards(Rack.UserSettings.KeyHorizontalDistance);
                 }
             }
         }
+
+        // Stopping the last played note 
         private void StopSelectedNote()
         {
-            if (Rack.DMIBox.MidiModule.IsMidiOk() && checkedNote != null && isPlaying == true && Rack.UserSettings.MyInstrumentControlMode != _MyInstrumentControlModes.NaN)
+            if (MidiModule.IsMidiOk() && checkedNote != null && isPlaying == true && Rack.UserSettings.MyInstrumentControlMode != _MyInstrumentControlModes.NaN)
             {
                 
                 MidiModule.StopNote((int)selectedNote);
-                isPlaying = false;
-
-                Rack.UserSettings.NoteName = "_";
-                Rack.UserSettings.NotePitch = "_";
-                Rack.UserSettings.NoteVelocity = "_";                   
-                                                          
+                isPlaying = false;                                                                                         
                 checkedNote = null;
             }
             else
             {
                 MidiModule.StopNote((int)oldMidiNote);
             }
+
+            Rack.UserSettings.NoteName = "_";
+            Rack.UserSettings.NotePitch = "_";
+            Rack.UserSettings.NoteVelocity = "_";
         }
 
+        // This method helps to understand if the note selected, the one that will be played, is valid or not.
+        // The logic is easy: when the application starts just the keyboard with id == "_0", so the first keboard on screen, could be played.
+        // After the first case only the keyboard after the last played could be played.
         public bool CheckPlayability()
         {
-            bool startingCase = Rack.DMIBox.MyInstrumentSurface.LastKeyboardPlayed == "";
-
-            bool firstNoteToPlay = "_" + checkedNote.KeyboardID == "_0";
+            bool startingCase = myInstrumentSurface.LastKeyboardPlayed == "";           
 
             if (startingCase)
             {
-                //MyInstrumentMainWindow.btnInstrumentSettingLabel.Content = "0";
+                bool firstNoteToPlay = "_" + checkedNote.KeyboardID == "_0";
                 return firstNoteToPlay;
             }
 
-            int lastKeyboardPlayed = Convert.ToInt32(Rack.DMIBox.MyInstrumentSurface.LastKeyboardPlayed);
+            int lastKeyboardPlayed = Convert.ToInt32(myInstrumentSurface.LastKeyboardPlayed);
             int keyboardID = Convert.ToInt32(checkedNote.KeyboardID);
-            //MyInstrumentMainWindow.btnInstrumentSettingLabel.Content = keyboardID + " " + (lastKeyboardPlayed + 1) % 16;
 
             return keyboardID == (lastKeyboardPlayed + 1) % 16;
         }

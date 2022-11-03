@@ -8,11 +8,10 @@ namespace Netytar.DMIbox.SensorBehaviors
 {
     public class NBbreath : INithSensorBehavior
     {
-        private int v = 1;
         private int offThresh;
         private int onThresh;
         private float sensitivity;
-        public NBbreath(int offThresh, int onThresh, float sensitivity)
+        public NBbreath(int offThresh, int onThresh, float sensitivity) 
         {
             this.offThresh = offThresh;
             this.onThresh = onThresh;
@@ -32,19 +31,16 @@ namespace Netytar.DMIbox.SensorBehaviors
                 catch
                 {
 
-                }
-              
-                v = (int)(b / 3);
+                }          
 
-                //Rack.DMIBox.MyInstrumentMainWindow.BreathSensorValue = v;
-                Rack.DMIBox.Pressure = (int)(v * 2 * sensitivity);
+                Rack.DMIBox.Pressure = (int) (b * sensitivity);
 
-                if (v > onThresh)
+                if (b > onThresh)
                 {
                     Rack.DMIBox.BreathOn = true;
                 }
 
-                if (v < offThresh)
+                if (b < offThresh)
                 {
                     Rack.DMIBox.BreathOn = false;
                 }

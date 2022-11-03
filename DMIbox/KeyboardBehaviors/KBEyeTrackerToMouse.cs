@@ -13,13 +13,13 @@ namespace MyInstrument.DMIbox.Behaviors
             if (e.VirtualKey == (ushort)activate)
             {
                 Rack.DMIBox.TobiiModule.MouseEmulator.EyetrackerToMouse = true;
-                //Rack.DMIBox.TobiiModule.MouseEmulator.CursorVisible = false;
+                Rack.DMIBox.TobiiModule.MouseEmulator.CursorVisible = false;
                 return 0;
             }
             if (e.VirtualKey == (ushort)deactivate)
             {
                 Rack.DMIBox.TobiiModule.MouseEmulator.EyetrackerToMouse = false;
-                //Rack.DMIBox.TobiiModule.MouseEmulator.CursorVisible = true;
+                Rack.DMIBox.TobiiModule.MouseEmulator.CursorVisible = true;
                 return 0;
             }
             return 1;

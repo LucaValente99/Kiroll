@@ -20,12 +20,6 @@ namespace MyInstrument.DMIbox
         Off
     }
 
-    public enum _ModulationControlModes
-    {
-        On,
-        Off
-    }
-
     public enum _BreathControlModes
     {
         Dynamic,
