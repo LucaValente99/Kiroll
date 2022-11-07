@@ -19,7 +19,8 @@ namespace MyInstrument.Surface
     {
         private ScrollViewer scrollViewer;
         private int radiusThreshold;
-        private int proportional;
+        private int proportionalVertical;
+        private int proportionalHorizontal;
         private IPointFilter filter;
 
         private System.Windows.Point scrollCenter;
@@ -36,7 +37,8 @@ namespace MyInstrument.Surface
             this.radiusThreshold = radiusThreshold;
             this.filter = filter;
             this.scrollViewer = scrollViewer;
-            this.proportional = proportional;
+            this.proportionalHorizontal = proportional;
+            this.proportionalVertical = proportional - 200;
 
             // Setting scrollviewer dimensions
             lastSampledPoint = new Point();
@@ -81,8 +83,8 @@ namespace MyInstrument.Surface
             Ydifference = (scrollCenter.Y - lastMean.Y);
             if (Math.Abs(scrollCenter.Y - lastMean.Y) > radiusThreshold && Math.Abs(scrollCenter.X - lastMean.X) > radiusThreshold)
             {              
-                scrollViewer.ScrollToHorizontalOffset(scrollViewer.HorizontalOffset - Math.Pow((Xdifference / proportional), 2) * Math.Sign(Xdifference));
-                scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - Math.Pow((Ydifference / proportional), 2) * Math.Sign(Ydifference));
+                scrollViewer.ScrollToHorizontalOffset(scrollViewer.HorizontalOffset - Math.Pow((Xdifference / proportionalHorizontal), 2) * Math.Sign(Xdifference));
+                scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - Math.Pow((Ydifference / proportionalVertical), 2) * Math.Sign(Ydifference));
             }
         }
 

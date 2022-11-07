@@ -176,6 +176,11 @@
     <Compile Include="DMIbox\KeyboardBehaviors\KBsimulateBreathOn.cs" />
     <Compile Include="DMIbox\KeyboardBehaviors\KBEyeTrackerToMouse.cs" />
     <Compile Include="DMIbox\SensorBehaviors\NBbreath.cs" />
+    <Compile Include="DMIbox\TobiiBehaviors\EPpitchPlay.cs" />
+    <Compile Include="DMIbox\TobiiBehaviors\TBactivateButton.cs" />
+    <Compile Include="DMIbox\TobiiBehaviors\TBselectCode.cs" />
+    <Compile Include="DMIbox\TobiiBehaviors\TBselectOctave.cs" />
+    <Compile Include="DMIbox\TobiiBehaviors\TBselectScale.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>

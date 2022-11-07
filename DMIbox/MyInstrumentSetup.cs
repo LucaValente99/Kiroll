@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Interop;
-using MyInstrument.DMIbox.Behaviors;
+using MyInstrument.DMIbox.KeyboardBehaviors;
+using MyInstrument.DMIbox.SensorBehaviors;
+using MyInstrument.DMIbox.TobiiBehaviors;
 using MyInstrument.Surface;
 using NeeqDMIs.ATmega;
 using NeeqDMIs.Eyetracking.MouseEmulator;
@@ -13,8 +15,6 @@ using NeeqDMIs.Eyetracking.Tobii;
 using NeeqDMIs.Keyboard;
 using NeeqDMIs.MIDI;
 using NeeqDMIs.NithSensors;
-using Netytar;
-using Netytar.DMIbox.SensorBehaviors;
 using RawInputProcessor;
 using Tobii.Interaction.Framework;
 
@@ -49,7 +49,10 @@ namespace MyInstrument.DMIbox
                 Rack.DMIBox.KeyboardModule.KeyboardBehaviors.Add(new KBEyeTrackerToMouse());
                 Rack.DMIBox.KeyboardModule.KeyboardBehaviors.Add(new KBsimulateBreathOn());
 
-                Rack.DMIBox.SensorReader.SensorBehaviors.Add(new NBbreath(40, 40, 1.5f)); // 15 20 1.5f
+                Rack.DMIBox.TobiiModule.BlinkBehaviors.Add(new TBselectScale());
+                Rack.DMIBox.TobiiModule.BlinkBehaviors.Add(new TBselectCode());
+                Rack.DMIBox.TobiiModule.BlinkBehaviors.Add(new TBselectOctave());
+                Rack.DMIBox.SensorReader.SensorBehaviors.Add(new NBbreath(20, 28, 1.5f)); // 15 20 1.5f
 
                 // SURFACE INIT
                 Rack.DMIBox.AutoScroller = new AutoScroller(Rack.DMIBox.MyInstrumentMainWindow.scrlMyInstrument, 0, 300, new PointFilterMAExpDecaying(0.09f)); // OLD was 100, 0.1f

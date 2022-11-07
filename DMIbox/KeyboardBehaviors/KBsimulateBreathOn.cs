@@ -1,11 +1,10 @@
 ﻿using MyInstrument.DMIbox;
 using NeeqDMIs.Keyboard;
-using Netytar.DMIbox;
 using RawInputProcessor;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Netytar
+namespace MyInstrument.DMIbox.KeyboardBehaviors
 {
     public class KBsimulateBreathOn : IKeyboardBehavior
     {

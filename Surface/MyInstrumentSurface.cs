@@ -84,6 +84,8 @@ namespace MyInstrument.Surface
                 Canvas.SetTop(musicKeyboards[i], (canvas.Height - musicKeyboards[i].Height) / 2);
                 horizontalDistance += Rack.UserSettings.KeyHorizontalDistance;
             }
+
+            MyInstrumentKeyboard.UpdateOpacity();
         }
 
         // Cleaning the canvas

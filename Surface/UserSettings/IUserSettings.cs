@@ -38,6 +38,7 @@ namespace MyInstrument.Surface.UserSettings
         _MyInstrumentControlModes MyInstrumentControlMode { get; set; }
         _SlidePlayModes SlidePlayMode { get; set; }
         _SharpNotesModes SharpNotesMode { get; set; }
+        _BlinkModes BlinkModes { get; set; }
 
     }
 }

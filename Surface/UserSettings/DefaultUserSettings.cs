@@ -21,7 +21,7 @@ namespace MyInstrument.Surface.UserSettings
         public string NotePressure { get; set; } = "_";
 
         // Keybard-Canvas distances and sizes default settings
-        public double KeyVerticaDistance { get; set; } = 14;
+        public double KeyVerticaDistance { get; set; } = 15;
         public double KeyHorizontalDistance { get; set; } = 400;
         public double KeyboardHeight { get; set; } = 590;
         public int CanvasWidth { get; set; } = 1518;
@@ -37,6 +37,7 @@ namespace MyInstrument.Surface.UserSettings
         public _MyInstrumentControlModes MyInstrumentControlMode { get; set; } = _MyInstrumentControlModes.NaN;
         public _SlidePlayModes SlidePlayMode { get; set; } = _SlidePlayModes.Off;
         public _SharpNotesModes SharpNotesMode { get; set; } = _SharpNotesModes.Off;
+        public _BlinkModes BlinkModes { get; set; } = _BlinkModes.Off;
             
     }
 }

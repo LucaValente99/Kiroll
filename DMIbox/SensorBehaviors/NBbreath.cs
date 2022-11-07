@@ -4,7 +4,7 @@ using NeeqDMIs.NithSensors;
 using System.Globalization;
 using System.Runtime.ExceptionServices;
 
-namespace Netytar.DMIbox.SensorBehaviors
+namespace MyInstrument.DMIbox.SensorBehaviors
 {
     public class NBbreath : INithSensorBehavior
     {

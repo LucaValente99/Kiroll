@@ -1,18 +1,10 @@
 ﻿using MyInstrument.Surface;
-using NAudio.CoreAudioApi.Interfaces;
-using NeeqDMIs;
-using NeeqDMIs.ATmega;
 using NeeqDMIs.Eyetracking.Tobii;
 using NeeqDMIs.Keyboard;
 using NeeqDMIs.MIDI;
 using NeeqDMIs.Music;
 using NeeqDMIs.NithSensors;
 using System;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Forms;
-using System.Windows.Input;
-using MessageBox = System.Windows.Forms.MessageBox;
 
 namespace MyInstrument.DMIbox
 {
@@ -144,7 +136,9 @@ namespace MyInstrument.DMIbox
         // Playing the selected note
         public void PlaySelectedNote()
         {
-            if (MidiModule.IsMidiOk() && checkedNote!= null && Rack.UserSettings.MyInstrumentControlMode != _MyInstrumentControlModes.NaN)
+            if (MidiModule.IsMidiOk() && checkedNote!= null && 
+                Rack.UserSettings.MyInstrumentControlMode != _MyInstrumentControlModes.NaN &&
+                !MyInstrumentMainWindow.MyInstrumentSettingsOpened)
             {
                 if (CheckPlayability())
                 {
@@ -171,7 +165,9 @@ namespace MyInstrument.DMIbox
         // Stopping the last played note 
         private void StopSelectedNote()
         {
-            if (MidiModule.IsMidiOk() && checkedNote != null && isPlaying == true && Rack.UserSettings.MyInstrumentControlMode != _MyInstrumentControlModes.NaN)
+            if (MidiModule.IsMidiOk() && checkedNote != null && 
+                isPlaying == true && Rack.UserSettings.MyInstrumentControlMode != _MyInstrumentControlModes.NaN &&
+                !MyInstrumentMainWindow.MyInstrumentSettingsOpened)
             {
                 
                 MidiModule.StopNote((int)selectedNote);

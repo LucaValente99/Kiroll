@@ -16,31 +16,20 @@ namespace MyInstrument.Surface
 {
     public class MyInstrumentKeyboard : StackPanel
     {
-        public static List<Color> KeysColorCode7 = new List<Color>()
+        public static Dictionary<string, Color> KeysColorCode = new Dictionary<string, Color>()
         {
-            Colors.Red, // C
-            Colors.Yellow, // D
-            Colors.Blue, // E
-            Colors.SaddleBrown, // F - it should be black (email Ludovico)
-            Colors.Orange, // G
-            Colors.Green, // A
-            Colors.Purple, // B
-        };
-
-        public static List<Color> KeysColorCode12 = new List<Color>()
-        {
-            Colors.Red, // C
-            Colors.DarkRed, // C# - DarkRed
-            Colors.Yellow, // D
-            Colors.DarkGoldenrod, // D# - DarkGoldenrod
-            Colors.Blue, // E
-            Colors.SaddleBrown, // F - it should be black (email Ludovico)
-            Colors.Brown, // F# - it should be black (email Ludovico) 
-            Colors.Orange, // G
-            Colors.DarkOrange, // G# - DarkOrange
-            Colors.Green, // A
-            Colors.DarkGreen, // A# - DarkGreen
-            Colors.Purple, // B
+            {"C", Colors.Red }, // C - Red
+            {"C#", Colors.DarkRed }, // C# - DarkRed
+            {"D", Colors.Yellow }, // D - Yellow
+            {"D#", Colors.DarkGoldenrod }, // D# - DarkGoldenrod
+            {"E", Colors.Blue }, // E - Blue
+            {"F", Colors.SaddleBrown }, // F - it should be black (email Ludovico)
+            {"F#", Colors.Brown }, // F# - it should be black (email Ludovico) 
+            {"G", Colors.Orange }, // G - Orange
+            {"G#", Colors.DarkOrange }, // G# - DarkOrange
+            {"A", Colors.Green }, // A - Green
+            {"A#", Colors.DarkGreen }, // A# - DarkGreen
+            {"B", Colors.Purple }, // B - Purple
         };       
 
         private StackPanel musicKeyboard;
@@ -61,7 +50,7 @@ namespace MyInstrument.Surface
         // es. maj C# scale on 4th octave -> C#4, D#4, F4, F#4, G#4, A#4, C5. The last C in the scale will be in the superior octave, so { "C#", 1 }, that means "into the C# maj scale there is just one note
         // that needs to be increased about one octave".
         private Dictionary<string, int> deviationMaj = new Dictionary<string, int>() {
-            {"C", 0 }, { "C#", 1 }, { "D", 1 }, { "D#", 2 }, { "E", 2 }, { "F", 3 }, { "F#", 3 }, {"G", 4 }, { "G#", 4 }, { "A", 5 }, { "A#", 5 }, { "B", 6 }
+            {"C", 0 }, { "C#", 1 }, { "D", 1 }, { "D#", 2 }, { "E", 2 }, { "F", 3 }, { "F#", 3 }, {"G", 4 }, { "G#", 5 }, { "A", 5 }, { "A#", 6 }, { "B", 6 }
             };
         private Dictionary<string, int> deviationMin_nat = new Dictionary<string, int>() {
             {"C", 0 }, { "C#", 0 }, { "D", 1 }, { "D#", 1 }, { "E", 2 }, { "F", 3 }, { "F#", 3 }, {"G", 4 }, { "G#", 4 }, { "A", 5 }, { "A#", 6 }, { "B", 6 }
@@ -145,7 +134,7 @@ namespace MyInstrument.Surface
                 for (int i = 0; i < 7; i++)
                 {                    
                     // Taking right color from the list dependign on note
-                    SolidColorBrush brush = new SolidColorBrush(KeysColorCode7[i]);
+                    SolidColorBrush brush = new SolidColorBrush(KeysColorCode[noteList[i].ToStandardString()]);
 
                     if (ComboCode == "maj")
                     {
@@ -213,15 +202,15 @@ namespace MyInstrument.Surface
 
                 for (int i = 0; i < 12; i++)
                 {
+                    SolidColorBrush brush = new SolidColorBrush(KeysColorCode[noteList[i].ToStandardString()]);
+
                     if (i >= 12 - deviation_chrom_12)
                     {
-                        SolidColorBrush brush = new SolidColorBrush(KeysColorCode12[i]);
                         MyInstrumentButtons toolKey = new MyInstrumentButtons(noteList[i].ToString(), int.Parse(ComboOctave) + 1, brush, id);
                         toolKeys.Add(toolKey.ToolKey);
                     }
                     else
                     {
-                        SolidColorBrush brush = new SolidColorBrush(KeysColorCode12[i]);
                         MyInstrumentButtons toolKey = new MyInstrumentButtons(noteList[i].ToString(), int.Parse(ComboOctave), brush, id);
                         toolKeys.Add(toolKey.ToolKey);
                     }                  
@@ -262,11 +251,11 @@ namespace MyInstrument.Surface
             {
                 if (keyboard.Children.Count == 7)
                 {
-                    key.Background = new SolidColorBrush(KeysColorCode7[i]);
+                    key.Background = new SolidColorBrush(KeysColorCode[MusicConversions.ToAbsNote(key.Name).ToStandardString()]);
                 }
                 else
                 {
-                    key.Background = new SolidColorBrush(KeysColorCode12[i]);
+                    key.Background = new SolidColorBrush(KeysColorCode[MusicConversions.ToAbsNote(key.Name).ToStandardString()]);
                 }
                 key.Opacity = 1;
                 key.Foreground = new SolidColorBrush(Colors.Black);
@@ -289,6 +278,32 @@ namespace MyInstrument.Surface
                     key.Foreground = new SolidColorBrush(Colors.DarkGray);
                 }
             }
+        }
+
+        // Updating the opcaity of keyboard colors
+        public static void UpdateOpacity()
+        {
+            foreach (StackPanel keyboard in Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Children)
+            {
+                foreach (Button key in keyboard.Children)
+                {
+
+                    if (Rack.DMIBox.MyInstrumentMainWindow.MyInstrumentSettingsOpened)
+                    {
+                        if (key.Opacity == 1)
+                        {
+                            key.Opacity = 0.6;
+                        }
+                    }
+                    else
+                    {
+                        if (key.Opacity == 0.6)
+                        {
+                            key.Opacity = 1;
+                        }
+                    }
+                }
+            }          
         }
 
     }

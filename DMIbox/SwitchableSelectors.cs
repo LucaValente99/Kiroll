@@ -30,4 +30,12 @@ namespace MyInstrument.DMIbox
         On,
         Off
     }
+
+    public enum _BlinkModes
+    {
+        Scale,
+        Octave,
+        Code,
+        Off
+    }
 }

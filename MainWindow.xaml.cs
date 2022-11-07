@@ -28,10 +28,12 @@ namespace MyInstrument
         //Bool variables for checking activation and deactivation of buttons
         private bool myInstrumentStarted = false;
         private bool myInstrumentSettingsOpened = false;
+        public bool MyInstrumentSettingsOpened { get => myInstrumentSettingsOpened; }
         private bool btnKeyboardOn = false;
         private bool btnBreathOn = false;
         private bool btnSlidePlayOn = false;
         private bool btnSharpNotesOn = false;
+        private bool btnBlinkOn = false;
         private bool playMetronome = false;
 
         //Sensors params
@@ -49,18 +51,41 @@ namespace MyInstrument
             }
         }
 
-        //Dictionaries used to select index into combobox for Start and Stop phases
-        private Dictionary<string, int> comboScale = new Dictionary<string, int>()
+        //Dictionaries used to select Scale, Octave and Code
+        private int scaleIndex = 0;
+        public int ScaleIndex { get => scaleIndex; set => scaleIndex = value; }
+
+        private Dictionary<int, string> comboScale = new Dictionary<int, string>()
         {
-            {"C", 0 }, { "C#", 1 }, { "D", 2 }, { "D#", 3 }, { "E", 4 }, { "F", 5 }, { "F#", 6 }, {"G", 7 }, { "G#", 8 }, { "A", 9 }, { "A#", 10 }, { "B", 11}, { "_", 12}
+            { 0, "C" }, { 1, "C#" }, { 2, "D" }, { 3, "D#" }, { 4, "E" }, { 5, "F" }, { 6, "F#" }, { 7, "G" }, { 8, "G#" }, { 9, "A" }, { 10, "A#" }, { 11, "B"}
         };
-        private Dictionary<string, int> comboCode = new Dictionary<string, int>()
+        public Dictionary<int, string> ComboScale { get => comboScale; }
+
+        private int codeIndex = 0;
+        public int CodeIndex { get => codeIndex; set => codeIndex = value; }
+
+        private Dictionary<int, string> comboCode = new Dictionary<int, string>()
         {
-            {"maj", 0}, {"min", 1}, {"min_arm", 2}, {"min_mel", 3}, { "_", 5}
+            { 0, "maj" }, { 1, "min" }, { 2, "min_arm" }, { 3, "min_mel" }
         };
-        private Dictionary<string, int> comboOctave = new Dictionary<string, int>()
+        public Dictionary<int, string> ComboCode { get => comboCode; }
+
+        int octaveIndex = 2;
+        public int OctaveIndex { get => octaveIndex; set => octaveIndex = value; }
+
+        private Dictionary<int, string> comboOctave = new Dictionary<int, string>()
         {
-            {"2", 0 }, {"3", 1 }, {"4", 2 }, {"5", 3}, {"6", 4}, { "_", 5}
+            { 0, "2" }, { 1, "3" }, { 2, "4" }, { 3, "5" }, { 4, "6" }
+        };
+        public Dictionary<int, string> ComboOctave { get => comboOctave; }
+
+        //Blink Behaviors
+        private int blinkIndex = 0;
+        public int BlinkIndex { get => blinkIndex; set => blinkIndex = value; }
+
+        private Dictionary<int, string> blinkBehaviors = new Dictionary<int, string>()
+        {
+            { 0, "Scale" }, { 1, "Octave" }, { 2, "Code" }
         };
 
         //Colors used to highlight activation or deactivation of features clicking on the relevant buttons
@@ -162,15 +187,13 @@ namespace MyInstrument
                 btnStart.Background = ActiveBrush;
                 btnStartLabel.Content = "Running...";
 
-                // Enabling ComboBox & slider
-                lstScaleChanger.IsEnabled = true;
-                lstScaleChanger.SelectedIndex = comboScale[Rack.UserSettings.ScaleName];
-                lstCodeChanger.IsEnabled = true;
-                lstCodeChanger.SelectedIndex = comboCode[Rack.UserSettings.ScaleCode];
-                lstOctaveChanger.IsEnabled = true;
-                lstOctaveChanger.SelectedIndex = comboOctave[Rack.UserSettings.Octave];
-                sldVerticalDistance.IsEnabled = true;
-                sldHorizontalDistance.IsEnabled = true;
+                // Enabling Scale-Octave-Code & slider
+                txtScale.Text = Rack.UserSettings.ScaleName;
+                txtCode.Text = Rack.UserSettings.ScaleCode;
+                txtOctave.Text = Rack.UserSettings.Octave;
+                txtBlink.Text = blinkBehaviors[blinkIndex];
+                txtVerticalDistance.Text = Rack.UserSettings.KeyVerticaDistance.ToString();
+                txtHorizontalDistance.Text = Rack.UserSettings.KeyHorizontalDistance.ToString();
 
                 // MIDI
                 CheckMidiPort();
@@ -197,15 +220,15 @@ namespace MyInstrument
                 txtMetronome.Text = "";
                 btnMetronome.Background = buttonBackground;
 
-                // Disabling ComboBox, slider & Metronome
-                lstScaleChanger.IsEnabled = false;
-                lstScaleChanger.SelectedIndex = comboScale["_"];
-                lstCodeChanger.IsEnabled = false;
-                lstCodeChanger.SelectedIndex = comboCode["_"];
-                lstOctaveChanger.IsEnabled = false;
-                lstOctaveChanger.SelectedIndex = comboOctave["_"];
-                sldVerticalDistance.IsEnabled = false;
-                sldHorizontalDistance.IsEnabled = false;
+                // Disabling Scale-Octave-Code, slider & Metronome and Blink Behaviors
+                //lstScaleChanger.IsEnabled = false;
+                //lstScaleChanger.SelectedIndex = comboScale["_"];
+                txtScale.Text = "";
+                txtCode.Text = "";
+                txtOctave.Text = "";
+                txtVerticalDistance.Text = "";
+                txtHorizontalDistance.Text = "";
+                txtBlink.Text = "";
                 playMetronome = false;               
 
                 // Resetting surface
@@ -241,20 +264,29 @@ namespace MyInstrument
                 myInstrumentSettingsOpened = true;
 
                 // Graphic changes
-                WindowInstrumentSettings.Visibility = Visibility.Visible;
+                WindowInstrumentSettings_1.Visibility = Visibility.Visible;
+                WindowInstrumentSettings_2.Visibility = Visibility.Visible;
                 btnInstrumentSettingImage.Source = closeSettingsIcon;
                 btnInstrumentSettings.Background = ActiveBrush;
                 btnInstrumentSettingLabel.Content = "Close Settings";
+                if (myInstrumentStarted)
+                {
+                    MyInstrumentKeyboard.UpdateOpacity();
+                }               
             }
             else
             {
                 myInstrumentSettingsOpened = false;
-
                 // Graphic changes
-                WindowInstrumentSettings.Visibility = Visibility.Hidden;
+                WindowInstrumentSettings_1.Visibility = Visibility.Hidden;
+                WindowInstrumentSettings_2.Visibility = Visibility.Hidden;
                 btnInstrumentSettingImage.Source = settingsIcon;
                 btnInstrumentSettings.Background = DisableBrush;
                 btnInstrumentSettingLabel.Content = "Instrument Settings";
+                if (myInstrumentStarted)
+                {
+                    MyInstrumentKeyboard.UpdateOpacity();
+                }
             }
         }
 
@@ -408,50 +440,223 @@ namespace MyInstrument
             }
         }
 
-        private void lstScaleChanger_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void btnScaleMinus_Click(object sender, RoutedEventArgs e)
         {
             if (myInstrumentStarted)
             {
-                Rack.UserSettings.ScaleName = (e.AddedItems[0] as ComboBoxItem).Content as string;
-                Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+                if (scaleIndex > 0)
+                {
+                    scaleIndex--;
+                    txtScale.Text = comboScale[scaleIndex];
+                    Rack.UserSettings.ScaleName = txtScale.Text;
+                    Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+                }
             }
         }
 
-        private void lstCodeChanger_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void btnScalePlus_Click(object sender, RoutedEventArgs e)
         {
             if (myInstrumentStarted)
             {
-                Rack.UserSettings.ScaleCode = (e.AddedItems[0] as ComboBoxItem).Content as string;
-                Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+                if (scaleIndex < 11)
+                {
+                    scaleIndex++;
+                    txtScale.Text = comboScale[scaleIndex];
+                    Rack.UserSettings.ScaleName = txtScale.Text;
+                    Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+                }
             }
         }
 
-        private void lstOctaveChanger_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        public void btnCodeMinus_Click(object sender, RoutedEventArgs e)
         {
             if (myInstrumentStarted)
             {
-                Rack.UserSettings.Octave = (e.AddedItems[0] as ComboBoxItem).Content as string;
-                Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+                if (codeIndex > 0)
+                {
+                    codeIndex--;
+                    txtCode.Text = comboCode[codeIndex];
+                    Rack.UserSettings.ScaleCode = txtCode.Text;
+                    Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+                }
+            }
+        }
+
+        private void btnCodePlus_Click(object sender, RoutedEventArgs e)
+        {
+            if (myInstrumentStarted)
+            {
+                if (codeIndex < 3)
+                {
+                    codeIndex++;
+                    txtCode.Text = comboCode[codeIndex];
+                    Rack.UserSettings.ScaleCode = txtCode.Text;
+                    Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+                }
+            }
+        }
+
+        private void btnOctaveMinus_Click(object sender, RoutedEventArgs e)
+        {
+            if (myInstrumentStarted)
+            {
+                if (octaveIndex > 0)
+                {
+                    octaveIndex--;
+                    txtOctave.Text = comboOctave[octaveIndex];
+                    Rack.UserSettings.Octave = txtOctave.Text;
+                    Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+                }
+            }
+        }
+
+        private void btnOctavePlus_Click(object sender, RoutedEventArgs e)
+        {
+            if (myInstrumentStarted)
+            {
+                if (octaveIndex < 4)
+                {
+                    octaveIndex++;
+                    txtOctave.Text = comboOctave[octaveIndex];
+                    Rack.UserSettings.Octave = txtOctave.Text;
+                    Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+                }
+            }
+        }
+
+        private void btnBlink_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (myInstrumentStarted)
+            {
+                if (!btnBlinkOn)
+                {
+                    btnBlinkOn = true;
+                    btnBlink.Background = ActiveBrush;
+                    txtBlink.Foreground = new SolidColorBrush(Colors.White);
+
+                    switch (txtBlink.Text)
+                    {
+                        case "Scale":
+                            Rack.UserSettings.BlinkModes = _BlinkModes.Scale;
+                            break;
+                        case "Octave":
+                            Rack.UserSettings.BlinkModes = _BlinkModes.Octave;
+                            break;
+                        case "Code":
+                            Rack.UserSettings.BlinkModes = _BlinkModes.Code;
+                            break;
+                    }
+                }
+                else
+                {
+                    btnBlinkOn = false;
+                    btnBlink.Background = buttonBackground;
+                    txtBlink.Foreground = WarningBrush;
+                    Rack.UserSettings.BlinkModes = _BlinkModes.Off;
+                }
+            }
+        }
+
+        private void btnBlinkMinus_Click(object sender, RoutedEventArgs e)
+        {
+            if (myInstrumentStarted)
+            {
+                if (blinkIndex > 0)
+                {
+                    blinkIndex--;
+                    txtBlink.Text = blinkBehaviors[blinkIndex];
+                    switch (blinkBehaviors[blinkIndex])
+                    {
+                        case "Scale":
+                            Rack.UserSettings.BlinkModes = _BlinkModes.Scale;
+                            break;
+                        case "Octave":
+                            Rack.UserSettings.BlinkModes = _BlinkModes.Octave;
+                            break;
+                        case "Code":
+                            Rack.UserSettings.BlinkModes = _BlinkModes.Code;
+                            break;
+                    }
+                }
+            }
+        }
+
+        private void btnBlinkPlus_Click(object sender, RoutedEventArgs e)
+        {
+            if (myInstrumentStarted)
+            {
+                if (blinkIndex < 2)
+                {
+                    blinkIndex++;
+                    txtBlink.Text = blinkBehaviors[blinkIndex];
+                    switch (blinkBehaviors[blinkIndex])
+                    {
+                        case "Scale":
+                            Rack.UserSettings.BlinkModes = _BlinkModes.Scale;
+                            break;
+                        case "Octave":
+                            Rack.UserSettings.BlinkModes = _BlinkModes.Octave;
+                            break;
+                        case "Code":
+                            Rack.UserSettings.BlinkModes = _BlinkModes.Code;
+                            break;
+                    }
+                }
             }
         }
 
         // Setting vertical distance between keys in keyboards
-        private void sldVerticalDistance_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        private void btnVerticalDistanceMinus_Click(object sender, RoutedEventArgs e)
         {
             if (myInstrumentStarted)
             {
-                Rack.UserSettings.KeyVerticaDistance = sldVerticalDistance.Value;
-                Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+                if (Rack.UserSettings.KeyVerticaDistance > 4)
+                {
+                    Rack.UserSettings.KeyVerticaDistance -= 5;
+                    txtVerticalDistance.Text = Rack.UserSettings.KeyVerticaDistance.ToString();
+                    Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+                }
+            }
+        }
+
+        private void btnVerticalDistancePlus_Click(object sender, RoutedEventArgs e)
+        {
+            if (myInstrumentStarted)
+            {
+                if (Rack.UserSettings.KeyVerticaDistance < 26)
+                {
+                    Rack.UserSettings.KeyVerticaDistance += 5;
+                    txtVerticalDistance.Text = Rack.UserSettings.KeyVerticaDistance.ToString();
+                    Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+                }
             }
         }
 
         // Setting horizontal distance between keyboards
-        private void sldHorizontalDistance_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        private void btnHorizontalDistanceMinus_Click(object sender, RoutedEventArgs e)
         {
             if (myInstrumentStarted)
             {
-                Rack.UserSettings.KeyHorizontalDistance = sldHorizontalDistance.Value;
-                Rack.DMIBox.MyInstrumentSurface.SetHorizontalDistance(sldHorizontalDistance.Value);
+                if (Rack.UserSettings.KeyHorizontalDistance > 200)
+                {
+                    Rack.UserSettings.KeyHorizontalDistance -= 100;
+                    txtHorizontalDistance.Text = Rack.UserSettings.KeyHorizontalDistance.ToString();
+                    Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+                }
+            }
+        }
+
+        private void btnHorizontalDistancePlus_Click(object sender, RoutedEventArgs e)
+        {
+            if (myInstrumentStarted)
+            {
+                if (Rack.UserSettings.KeyHorizontalDistance < 600)
+                {
+                    Rack.UserSettings.KeyHorizontalDistance += 100;
+                    txtHorizontalDistance.Text = Rack.UserSettings.KeyHorizontalDistance.ToString();
+                    Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+                }
             }
         }
 
@@ -506,8 +711,7 @@ namespace MyInstrument
 
         #endregion Instrument Settings       
 
-        #endregion Instrument (Row1)       
-       
+        #endregion Instrument (Row1)                 
     }
         
 }
