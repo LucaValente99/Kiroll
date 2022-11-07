@@ -6,11 +6,13 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Brushes = System.Windows.Media.Brushes;
 using Color = System.Windows.Media.Color;
+using Point = System.Drawing.Point;
 
 namespace MyInstrument.Surface
 {
@@ -259,6 +261,8 @@ namespace MyInstrument.Surface
                 }
                 key.Opacity = 1;
                 key.Foreground = new SolidColorBrush(Colors.Black);
+                key.BorderThickness = new Thickness(3);
+                key.BorderBrush = new SolidColorBrush(Colors.Black);
                 i++;
             }
 
@@ -275,7 +279,12 @@ namespace MyInstrument.Surface
                 {
                     key.Background = new SolidColorBrush(Colors.Black);
                     key.Opacity = 0.5;
-                    key.Foreground = new SolidColorBrush(Colors.DarkGray);
+                    key.Foreground = new SolidColorBrush(Colors.DarkGray);                   
+                }
+                else
+                {
+                    key.BorderThickness = new Thickness(5);
+                    key.BorderBrush = new SolidColorBrush(Colors.Beige);
                 }
             }
         }

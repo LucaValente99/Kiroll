@@ -17,6 +17,9 @@ using System.Security.Policy;
 using System.Windows.Media.Converters;
 using System.Reactive;
 using System.Windows.Documents;
+using Button = System.Windows.Controls.Button;
+using System.Drawing;
+using System.Windows.Shapes;
 
 namespace MyInstrument
 {
@@ -206,7 +209,7 @@ namespace MyInstrument
                
                 updater.Start();
 
-                myInstrumentStarted = true;               
+                myInstrumentStarted = true;   
             }
             else
             {
