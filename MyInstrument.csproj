@@ -176,7 +176,6 @@
     <Compile Include="DMIbox\KeyboardBehaviors\KBsimulateBreathOn.cs" />
     <Compile Include="DMIbox\KeyboardBehaviors\KBEyeTrackerToMouse.cs" />
     <Compile Include="DMIbox\SensorBehaviors\NBbreath.cs" />
-    <Compile Include="DMIbox\TobiiBehaviors\EPpitchPlay.cs" />
     <Compile Include="DMIbox\TobiiBehaviors\TBactivateButton.cs" />
     <Compile Include="DMIbox\TobiiBehaviors\TBselectCode.cs" />
     <Compile Include="DMIbox\TobiiBehaviors\TBselectOctave.cs" />
@@ -270,6 +269,12 @@
     </Resource>
     <Content Include="Audio\Metronome.wav" />
     <Resource Include="Images\Icons\Metronome.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Icons\Eye.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Icons\EyeClosed.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Content Include="Libraries\EyeXFramework.dll" />

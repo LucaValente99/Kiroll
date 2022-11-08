@@ -14,8 +14,8 @@ namespace MyInstrument.DMIbox.TobiiBehaviors
     {
         public TBselectOctave()
         {
-            LCThresh = 2;
-            RCThresh = 2;
+            LCThresh = 6;
+            RCThresh = 6;
         }
 
         public override void Event_doubleClose() { }
@@ -24,32 +24,34 @@ namespace MyInstrument.DMIbox.TobiiBehaviors
 
         public override void Event_leftClose()
         {
-            if (Rack.UserSettings.BlinkModes == _BlinkModes.Octave)
+            if (Rack.UserSettings.EyeCtrl == _EyeCtrl.On)
             {
-                if (Rack.DMIBox.MyInstrumentMainWindow.OctaveIndex > 0)
+                if (Rack.UserSettings.BlinkModes == _BlinkModes.Octave)
                 {
-                    Rack.DMIBox.MyInstrumentMainWindow.OctaveIndex--;
-                    Rack.DMIBox.MyInstrumentMainWindow.txtOctave.Text = Rack.DMIBox.MyInstrumentMainWindow.ComboOctave[Rack.DMIBox.MyInstrumentMainWindow.OctaveIndex];
-                    Rack.UserSettings.Octave = Rack.DMIBox.MyInstrumentMainWindow.txtOctave.Text;
-                    Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+                    if (Rack.DMIBox.MyInstrumentMainWindow.OctaveIndex > 0)
+                    {
+                        Rack.DMIBox.MyInstrumentMainWindow.OctaveIndex--;
+                        Rack.UserSettings.Octave = Rack.DMIBox.MyInstrumentMainWindow.ComboOctave[Rack.DMIBox.MyInstrumentMainWindow.OctaveIndex];
+                    }
                 }
-            }
+            }        
         }
 
         public override void Event_leftOpen() { }
 
         public override void Event_rightClose()
         {
-            if (Rack.UserSettings.BlinkModes == _BlinkModes.Octave)
+            if (Rack.UserSettings.EyeCtrl == _EyeCtrl.On)
             {
-                if (Rack.DMIBox.MyInstrumentMainWindow.CodeIndex < 4)
+                if (Rack.UserSettings.BlinkModes == _BlinkModes.Octave)
                 {
-                    Rack.DMIBox.MyInstrumentMainWindow.OctaveIndex++;
-                    Rack.DMIBox.MyInstrumentMainWindow.txtOctave.Text = Rack.DMIBox.MyInstrumentMainWindow.ComboOctave[Rack.DMIBox.MyInstrumentMainWindow.OctaveIndex];
-                    Rack.UserSettings.Octave = Rack.DMIBox.MyInstrumentMainWindow.txtOctave.Text; 
-                    Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+                    if (Rack.DMIBox.MyInstrumentMainWindow.CodeIndex < 4)
+                    {
+                        Rack.DMIBox.MyInstrumentMainWindow.OctaveIndex++;
+                        Rack.UserSettings.Octave = Rack.DMIBox.MyInstrumentMainWindow.ComboOctave[Rack.DMIBox.MyInstrumentMainWindow.OctaveIndex];
+                    }
                 }
-            }
+            }            
         }
         public override void Event_rightOpen() { }
     }

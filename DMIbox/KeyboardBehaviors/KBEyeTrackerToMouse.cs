@@ -12,7 +12,7 @@ namespace MyInstrument.DMIbox.KeyboardBehaviors
         {
             if (e.VirtualKey == (ushort)activate)
             {
-                Rack.DMIBox.TobiiModule.MouseEmulator.EyetrackerToMouse = true;
+                //Rack.DMIBox.TobiiModule.MouseEmulator.EyetrackerToMouse = true;
                 Rack.DMIBox.TobiiModule.MouseEmulator.CursorVisible = false;
                 return 0;
             }

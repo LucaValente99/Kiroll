@@ -38,6 +38,8 @@ namespace MyInstrument.Surface.UserSettings
         public _SlidePlayModes SlidePlayMode { get; set; } = _SlidePlayModes.Off;
         public _SharpNotesModes SharpNotesMode { get; set; } = _SharpNotesModes.Off;
         public _BlinkModes BlinkModes { get; set; } = _BlinkModes.Off;
+        public _EyeCtrl EyeCtrl { get; set; } = _EyeCtrl.Off;
+        public _BreathControlModes BreathControlModes { get; set; } = _BreathControlModes.Dynamic;
             
     }
 }

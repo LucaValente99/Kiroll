@@ -3,23 +3,13 @@ using MyInstrument.Surface;
 using System;
 using System.Collections.Generic;
 using System.Media;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms;
+using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Threading;
-using System.Reactive.Linq;
 using Timer = System.Windows.Forms.Timer;
-using System.Security.Policy;
-using System.Windows.Media.Converters;
-using System.Reactive;
-using System.Windows.Documents;
-using Button = System.Windows.Controls.Button;
-using System.Drawing;
-using System.Windows.Shapes;
 
 namespace MyInstrument
 {
@@ -30,6 +20,8 @@ namespace MyInstrument
     {
         //Bool variables for checking activation and deactivation of buttons
         private bool myInstrumentStarted = false;
+        
+        //If settings are opened the instrument will not play and keyboard opacity will be set to 0.6;
         private bool myInstrumentSettingsOpened = false;
         public bool MyInstrumentSettingsOpened { get => myInstrumentSettingsOpened; }
         private bool btnKeyboardOn = false;
@@ -37,7 +29,22 @@ namespace MyInstrument
         private bool btnSlidePlayOn = false;
         private bool btnSharpNotesOn = false;
         private bool btnBlinkOn = false;
+        private bool btnBlowkOn = false;
+        private bool btnEyeOn = false;
         private bool playMetronome = false;
+
+        //Used to track doubleClose eyes behave
+        private bool click = false;
+        public bool Click { 
+            
+            get => click; 
+            set { 
+                    if (value != click)
+                    {
+                        click = value;
+                    }
+                }
+            }
 
         //Sensors params
         private int breathSensorValue = 0;
@@ -56,6 +63,7 @@ namespace MyInstrument
 
         //Dictionaries used to select Scale, Octave and Code
         private int scaleIndex = 0;
+        private int oldScaleIndex = 0;
         public int ScaleIndex { get => scaleIndex; set => scaleIndex = value; }
 
         private Dictionary<int, string> comboScale = new Dictionary<int, string>()
@@ -65,6 +73,7 @@ namespace MyInstrument
         public Dictionary<int, string> ComboScale { get => comboScale; }
 
         private int codeIndex = 0;
+        private int oldCodeIndex = 0;
         public int CodeIndex { get => codeIndex; set => codeIndex = value; }
 
         private Dictionary<int, string> comboCode = new Dictionary<int, string>()
@@ -73,7 +82,8 @@ namespace MyInstrument
         };
         public Dictionary<int, string> ComboCode { get => comboCode; }
 
-        int octaveIndex = 2;
+        private int octaveIndex = 2;
+        private int oldOctaveIndex = 2;
         public int OctaveIndex { get => octaveIndex; set => octaveIndex = value; }
 
         private Dictionary<int, string> comboOctave = new Dictionary<int, string>()
@@ -89,6 +99,15 @@ namespace MyInstrument
         private Dictionary<int, string> blinkBehaviors = new Dictionary<int, string>()
         {
             { 0, "Scale" }, { 1, "Octave" }, { 2, "Code" }
+        };
+
+        //Blow Behaviors
+        private int blowIndex = 0;
+        public int BlowIndex { get => blowIndex; set => blowIndex = value; }
+
+        private Dictionary<int, string> blowBehaviors = new Dictionary<int, string>()
+        {
+            { 0, "Dynamic" }, { 1, "Static" }
         };
 
         //Colors used to highlight activation or deactivation of features clicking on the relevant buttons
@@ -140,7 +159,7 @@ namespace MyInstrument
                 metronome.Play();
             }
             else { 
-                metronome.Stop(); 
+                metronome.Stop();
             }
         }
         private void Update(object sender, EventArgs e)
@@ -151,11 +170,11 @@ namespace MyInstrument
 
             if (Rack.UserSettings.MyInstrumentControlMode == _MyInstrumentControlModes.Keyboard)
             {
-               txtVelocityMouth.Text = Rack.UserSettings.NoteVelocity;
+                txtVelocityMouth.Text = Rack.UserSettings.NoteVelocity;
             }
-            else 
-            {   
-               if (Rack.DMIBox.IsPlaying)
+            else
+            {
+                if (Rack.DMIBox.IsPlaying)
                 {
                     txtVelocityMouth.Text = Rack.UserSettings.NotePressure;
                 }
@@ -164,8 +183,68 @@ namespace MyInstrument
                     txtVelocityMouth.Text = "_";
                 }
             }
+
+            // When Scale, Code or Octave will change 'DrawOnCanvas' will be called.
+            // This is necessary cause is not possible to access canvas when using blink behaviors.
+            // Canvas is in fact managed by a different thread that avoid the access to.
+
+            if (oldScaleIndex != scaleIndex)
+            {
+                oldScaleIndex = scaleIndex;
+                txtScale.Text = comboScale[scaleIndex];
+                Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+            }
+
+            if (oldOctaveIndex != octaveIndex)
+            {
+                oldOctaveIndex = octaveIndex;
+                txtOctave.Text = comboOctave[octaveIndex];
+                Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+            }
+
+            if (oldCodeIndex != codeIndex)
+            {
+                oldCodeIndex = codeIndex;
+                txtCode.Text = comboCode[codeIndex];
+                Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+            }
+
+            if (Rack.UserSettings.EyeCtrl == _EyeCtrl.On)
+            {
+                if (Click)
+                {
+                    Rack.DMIBox.LastGazedButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                    Click = false;
+                }
+                
+                btnCtrlEye.Background = ActiveBrush;
+
+                if (btnBlinkOn) 
+                {
+                    txtBlink.Foreground = new SolidColorBrush(Colors.White);
+                }
+                else
+                {
+                    txtBlink.Foreground = WarningBrush;
+                }
+
+
+            }
+            else
+            {
+                btnCtrlEye.Background = buttonBackground;
+                txtBlink.Foreground = WarningBrush;
+            }
+            // If doubleClose eyes behave happen click became True so a button will be clicked, the last gazed
+            
+   
         }
 
+        // Each button (Start & Stop excluded) has this behave, if gazed, the button will be selected waiting to be clicked
+        private void eyeGazeHandler(object sender, MouseEventArgs e)
+        {
+            Rack.DMIBox.LastGazedButton = (Button)sender;
+        }
 
         #region TopBar (Row0)
 
@@ -195,6 +274,7 @@ namespace MyInstrument
                 txtCode.Text = Rack.UserSettings.ScaleCode;
                 txtOctave.Text = Rack.UserSettings.Octave;
                 txtBlink.Text = blinkBehaviors[blinkIndex];
+                txtBSwitc.Text = blowBehaviors[blowIndex];
                 txtVerticalDistance.Text = Rack.UserSettings.KeyVerticaDistance.ToString();
                 txtHorizontalDistance.Text = Rack.UserSettings.KeyHorizontalDistance.ToString();
 
@@ -207,7 +287,7 @@ namespace MyInstrument
                 //Metronome                
                 CheckMetronome();
                
-                updater.Start();
+                updater.Start();               
 
                 myInstrumentStarted = true;   
             }
@@ -223,7 +303,7 @@ namespace MyInstrument
                 txtMetronome.Text = "";
                 btnMetronome.Background = buttonBackground;
 
-                // Disabling Scale-Octave-Code, slider & Metronome and Blink Behaviors
+                // Disabling Scale-Octave-Code, slider & Metronome, Blink & Blow Behaviors
                 //lstScaleChanger.IsEnabled = false;
                 //lstScaleChanger.SelectedIndex = comboScale["_"];
                 txtScale.Text = "";
@@ -232,12 +312,13 @@ namespace MyInstrument
                 txtVerticalDistance.Text = "";
                 txtHorizontalDistance.Text = "";
                 txtBlink.Text = "";
-                playMetronome = false;               
-
+                txtBSwitc.Text = "";
+                playMetronome = false;  
+                         
                 // Resetting surface
                 Rack.DMIBox.MyInstrumentSurface.ClearSurface();
 
-                updater.Stop();               
+                updater.Stop();
             }
         }
 
@@ -311,6 +392,7 @@ namespace MyInstrument
                     btnBreathOn = false;
                     btnCtrlKeyboard.IsEnabled = false;
                     btnCtrlBreath.IsEnabled = true;
+                    txtBSwitc.Foreground = WarningBrush;
 
                     Rack.UserSettings.MyInstrumentControlMode = _MyInstrumentControlModes.Keyboard;
                     Rack.DMIBox.ResetModulationAndPressure();
@@ -327,12 +409,34 @@ namespace MyInstrument
                     btnKeyboardOn = false;
                     btnCtrlBreath.IsEnabled = false;
                     btnCtrlKeyboard.IsEnabled = true;
+                    txtBSwitc.Foreground = new SolidColorBrush(Colors.White);
 
                     Rack.UserSettings.MyInstrumentControlMode = _MyInstrumentControlModes.Breath;
                     Rack.DMIBox.ResetModulationAndPressure();
                 }
             }
 
+        }
+
+        private void btnCtrlEye_Click(object sender, RoutedEventArgs e)
+        {
+            if (myInstrumentStarted)
+            {
+                if (!btnEyeOn)
+                {
+                    btnEyeOn = true;
+                    Rack.UserSettings.EyeCtrl = _EyeCtrl.On;
+                    Rack.DMIBox.TobiiModule.MouseEmulator.EyetrackerToMouse = true;
+                    Rack.DMIBox.TobiiModule.MouseEmulator.CursorVisible = false;                   
+                }
+                else
+                {
+                    btnEyeOn = false;
+                    Rack.UserSettings.EyeCtrl = _EyeCtrl.Off;
+                    Rack.DMIBox.TobiiModule.MouseEmulator.EyetrackerToMouse = false;
+                    Rack.DMIBox.TobiiModule.MouseEmulator.CursorVisible = true;
+                }
+            }
         }
 
         private void btnBreathPortMinus_Click(object sender, RoutedEventArgs e)
@@ -452,7 +556,7 @@ namespace MyInstrument
                     scaleIndex--;
                     txtScale.Text = comboScale[scaleIndex];
                     Rack.UserSettings.ScaleName = txtScale.Text;
-                    Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+                    //Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
                 }
             }
         }
@@ -466,7 +570,7 @@ namespace MyInstrument
                     scaleIndex++;
                     txtScale.Text = comboScale[scaleIndex];
                     Rack.UserSettings.ScaleName = txtScale.Text;
-                    Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+                    //Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
                 }
             }
         }
@@ -480,7 +584,7 @@ namespace MyInstrument
                     codeIndex--;
                     txtCode.Text = comboCode[codeIndex];
                     Rack.UserSettings.ScaleCode = txtCode.Text;
-                    Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+                    //Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
                 }
             }
         }
@@ -494,7 +598,7 @@ namespace MyInstrument
                     codeIndex++;
                     txtCode.Text = comboCode[codeIndex];
                     Rack.UserSettings.ScaleCode = txtCode.Text;
-                    Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+                    //Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
                 }
             }
         }
@@ -508,7 +612,7 @@ namespace MyInstrument
                     octaveIndex--;
                     txtOctave.Text = comboOctave[octaveIndex];
                     Rack.UserSettings.Octave = txtOctave.Text;
-                    Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+                    //Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
                 }
             }
         }
@@ -522,7 +626,7 @@ namespace MyInstrument
                     octaveIndex++;
                     txtOctave.Text = comboOctave[octaveIndex];
                     Rack.UserSettings.Octave = txtOctave.Text;
-                    Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+                    //Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
                 }
             }
         }
@@ -536,7 +640,6 @@ namespace MyInstrument
                 {
                     btnBlinkOn = true;
                     btnBlink.Background = ActiveBrush;
-                    txtBlink.Foreground = new SolidColorBrush(Colors.White);
 
                     switch (txtBlink.Text)
                     {
@@ -555,7 +658,6 @@ namespace MyInstrument
                 {
                     btnBlinkOn = false;
                     btnBlink.Background = buttonBackground;
-                    txtBlink.Foreground = WarningBrush;
                     Rack.UserSettings.BlinkModes = _BlinkModes.Off;
                 }
             }
@@ -603,6 +705,48 @@ namespace MyInstrument
                             break;
                         case "Code":
                             Rack.UserSettings.BlinkModes = _BlinkModes.Code;
+                            break;
+                    }
+                }
+            }
+        }
+
+        private void btnBSwitchMinus_Click(object sender, RoutedEventArgs e)
+        {
+            if (myInstrumentStarted)
+            {
+                if (blowIndex > 0)
+                {
+                    blowIndex--;
+                    txtBSwitc.Text = blowBehaviors[blowIndex];
+                    switch (blowBehaviors[blowIndex])
+                    {
+                        case "Dynamic":
+                            Rack.UserSettings.BreathControlModes = _BreathControlModes.Dynamic;
+                            break;
+                        case "Static":
+                            Rack.UserSettings.BreathControlModes = _BreathControlModes.Static;
+                            break;
+                    }
+                }
+            }
+        }
+
+        private void btnBSwitcPlus_Click(object sender, RoutedEventArgs e)
+        {
+            if (myInstrumentStarted)
+            {
+                if (blowIndex < 1)
+                {
+                    blowIndex++;
+                    txtBSwitc.Text = blowBehaviors[blowIndex];
+                    switch (blowBehaviors[blowIndex])
+                    {
+                        case "Dynamic":
+                            Rack.UserSettings.BreathControlModes = _BreathControlModes.Dynamic;
+                            break;
+                        case "Static":
+                            Rack.UserSettings.BreathControlModes = _BreathControlModes.Static;
                             break;
                     }
                 }
@@ -714,7 +858,8 @@ namespace MyInstrument
 
         #endregion Instrument Settings       
 
-        #endregion Instrument (Row1)                 
+        #endregion Instrument (Row1)                        
+       
     }
         
 }

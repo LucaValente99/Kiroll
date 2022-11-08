@@ -5,15 +5,12 @@ using NeeqDMIs.MIDI;
 using NeeqDMIs.Music;
 using NeeqDMIs.NithSensors;
 using System;
+using System.Windows.Controls;
 
 namespace MyInstrument.DMIbox
 {
     public class MyInstrumentDMIBox 
     {
-        private const _BreathControlModes DEFAULT_BREATHCONTROLMODE = _BreathControlModes.Dynamic;        
-        private _BreathControlModes breathControlMode = DEFAULT_BREATHCONTROLMODE;
-        public _BreathControlModes BreathControlMode { get => breathControlMode; set { breathControlMode = value; ResetModulationAndPressure(); } }
-
         private bool breathOn = false;
         private int velocity = 127;
         private int pressure = 0;
@@ -21,6 +18,10 @@ namespace MyInstrument.DMIbox
         // Used to track when a note and relative keyboard is playing
         private bool isPlaying = false;
         public bool IsPlaying { get => isPlaying; set => isPlaying = value; }
+
+        // Used to click buttons using eye tracker
+        private Button lastGazedButton = new Button();
+        public Button LastGazedButton { get => lastGazedButton; set => lastGazedButton = value; }
 
         // MIDI & Sensors
         public IMidiModule MidiModule { get; set; }
@@ -75,7 +76,7 @@ namespace MyInstrument.DMIbox
             get { return pressure; }
             set
             {
-                if (BreathControlMode == _BreathControlModes.Dynamic)
+                if (Rack.UserSettings.BreathControlModes == _BreathControlModes.Dynamic)
                 {
                     if (value < 30 && value > 1)
                     {
@@ -96,7 +97,7 @@ namespace MyInstrument.DMIbox
                     Rack.UserSettings.NotePressure = pressure.ToString();
                     SetPressure();
                 }
-                if (BreathControlMode == _BreathControlModes.Switch)
+                if (Rack.UserSettings.BreathControlModes == _BreathControlModes.Static)
                 {
                     pressure = 127;
                     SetPressure();
@@ -168,8 +169,7 @@ namespace MyInstrument.DMIbox
             if (MidiModule.IsMidiOk() && checkedNote != null && 
                 isPlaying == true && Rack.UserSettings.MyInstrumentControlMode != _MyInstrumentControlModes.NaN &&
                 !MyInstrumentMainWindow.MyInstrumentSettingsOpened)
-            {
-                
+            {                
                 MidiModule.StopNote((int)selectedNote);
                 isPlaying = false;                                                                                         
                 checkedNote = null;

@@ -14,6 +14,12 @@ namespace MyInstrument.DMIbox
         NaN
     }
 
+    public enum _EyeCtrl
+    {
+        On,
+        Off
+    }
+
     public enum _SlidePlayModes
     {
         On,
@@ -23,7 +29,7 @@ namespace MyInstrument.DMIbox
     public enum _BreathControlModes
     {
         Dynamic,
-        Switch
+        Static
     }
 
     public enum _SharpNotesModes {

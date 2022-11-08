@@ -14,8 +14,8 @@ namespace MyInstrument.DMIbox.TobiiBehaviors
     {
         public TBselectScale()
         {
-            LCThresh = 2;
-            RCThresh = 2;
+            LCThresh = 6;
+            RCThresh = 6;
         }
 
         public override void Event_doubleClose() { }
@@ -24,32 +24,34 @@ namespace MyInstrument.DMIbox.TobiiBehaviors
 
         public override void Event_leftClose()
         {
-            if (Rack.UserSettings.BlinkModes == _BlinkModes.Scale)
+            if (Rack.UserSettings.EyeCtrl == _EyeCtrl.On)
             {
-                if (Rack.DMIBox.MyInstrumentMainWindow.ScaleIndex > 0)
+                if (Rack.UserSettings.BlinkModes == _BlinkModes.Scale)
                 {
-                    Rack.DMIBox.MyInstrumentMainWindow.ScaleIndex--;
-                    Rack.DMIBox.MyInstrumentMainWindow.txtScale.Text = Rack.DMIBox.MyInstrumentMainWindow.ComboScale[Rack.DMIBox.MyInstrumentMainWindow.ScaleIndex];
-                    Rack.UserSettings.ScaleName = Rack.DMIBox.MyInstrumentMainWindow.txtScale.Text;
-                    Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+                    if (Rack.DMIBox.MyInstrumentMainWindow.ScaleIndex > 0)
+                    {
+                        Rack.DMIBox.MyInstrumentMainWindow.ScaleIndex--;
+                        Rack.UserSettings.ScaleName = Rack.DMIBox.MyInstrumentMainWindow.ComboScale[Rack.DMIBox.MyInstrumentMainWindow.ScaleIndex];
+                    }
                 }
-            }
+            }            
         }
 
         public override void Event_leftOpen() { }
 
         public override void Event_rightClose()
         {
-            if (Rack.UserSettings.BlinkModes == _BlinkModes.Scale)
+            if (Rack.UserSettings.EyeCtrl == _EyeCtrl.On)
             {
-                if (Rack.DMIBox.MyInstrumentMainWindow.ScaleIndex < 11)
+                if (Rack.UserSettings.BlinkModes == _BlinkModes.Scale)
                 {
-                    Rack.DMIBox.MyInstrumentMainWindow.ScaleIndex++;
-                    Rack.DMIBox.MyInstrumentMainWindow.txtScale.Text = Rack.DMIBox.MyInstrumentMainWindow.ComboScale[Rack.DMIBox.MyInstrumentMainWindow.ScaleIndex];
-                    Rack.UserSettings.ScaleName = Rack.DMIBox.MyInstrumentMainWindow.ComboScale[Rack.DMIBox.MyInstrumentMainWindow.ScaleIndex];
-                    Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+                    if (Rack.DMIBox.MyInstrumentMainWindow.ScaleIndex < 11)
+                    {
+                        Rack.DMIBox.MyInstrumentMainWindow.ScaleIndex++;
+                        Rack.UserSettings.ScaleName = Rack.DMIBox.MyInstrumentMainWindow.ComboScale[Rack.DMIBox.MyInstrumentMainWindow.ScaleIndex];
+                    }
                 }
-            }
+            }           
         }
         public override void Event_rightOpen() { }
     }

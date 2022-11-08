@@ -52,6 +52,8 @@ namespace MyInstrument.DMIbox
                 Rack.DMIBox.TobiiModule.BlinkBehaviors.Add(new TBselectScale());
                 Rack.DMIBox.TobiiModule.BlinkBehaviors.Add(new TBselectCode());
                 Rack.DMIBox.TobiiModule.BlinkBehaviors.Add(new TBselectOctave());
+                Rack.DMIBox.TobiiModule.BlinkBehaviors.Add(new TBactivateButton());
+
                 Rack.DMIBox.SensorReader.SensorBehaviors.Add(new NBbreath(20, 28, 1.5f)); // 15 20 1.5f
 
                 // SURFACE INIT
@@ -59,7 +61,8 @@ namespace MyInstrument.DMIbox
                 Rack.DMIBox.MyInstrumentSurface = new MyInstrumentSurface(Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument);
 
                 firstTime = false;
-            }                     
+            }
+
             Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
         }
     }

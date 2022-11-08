@@ -245,7 +245,8 @@
                             Background="Transparent"
                             BorderBrush="Transparent"
                             Margin="5,5,0,5"
-                            Click="btnInstrumentSettings_Click">
+                            Click="btnInstrumentSettings_Click"
+                            MouseEnter="eyeGazeHandler">
                             <Image Name="btnInstrumentSettingImage"
                                 Source="Images/Icons/Settings.png"
                                 Width="40"/>
@@ -266,6 +267,31 @@
                     <!--Note visualizer-->
                     <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,15,0">
 
+                        <!--Eye Button-->
+                        <Button Style="{DynamicResource RoundButton}"                      
+                            Name="btnCtrlEye"
+                            Width="45"
+                            Height="45"
+                            Margin ="5,0,0,0"
+                            VerticalAlignment="Stretch"
+                            BorderBrush="Black"
+                            BorderThickness="3"
+                            Click="btnCtrlEye_Click"
+                            MouseEnter="eyeGazeHandler">
+                            <Button.Background>
+                                <ImageBrush x:Name="btnEyeImage"
+                                ImageSource="Images/Backgrounds/Buttons.jpeg"
+                                Stretch="None"
+                                TileMode="Tile" />
+                            </Button.Background>
+                            <Image Source="Images/Icons/Eye.png"
+                                Margin="0,0,0,0"
+                                Width="auto"
+                                Height="35" 
+                                VerticalAlignment="Center"/>
+                        </Button>
+
+                        <!--End Breath Buttons-->
                         <!--Note Visualizer-->
                         <StackPanel Margin="15,0,0,0" Orientation="Horizontal" 
                         VerticalAlignment="Center"
@@ -327,24 +353,7 @@
                                     TextAlignment="Center" />
                             </Border>
                         </StackPanel>
-                        <!--End Note Visualizer-->
-
-                        <!--Metronome button-->
-                        <Button Style="{DynamicResource RoundButton}"
-                            x:Name="btnMetronome"
-                            Width="45"
-                            Height="45"
-                            BorderBrush="Black"
-                            BorderThickness="3"
-                            Margin="15,0,0,0"
-                            Click="btnMetronome_Click">
-                            <Button.Background>
-                                <ImageBrush ImageSource="Images/Backgrounds/Buttons.jpeg"/>
-                            </Button.Background>
-                            <Image Source="Images/Icons/Metronome.png"
-                                Width="35"/>
-                        </Button>
-                        <!--End Metronome button-->
+                        <!--End Note Visualizer-->                        
                     </StackPanel>
                 </Grid>
 
@@ -445,7 +454,8 @@
                             VerticalAlignment="Stretch"
                             BorderBrush="White"
                             BorderThickness="2"
-                            Click="btnCtrlKeyboard_Click">
+                            Click="btnCtrlKeyboard_Click"
+                            MouseEnter="eyeGazeHandler">
                         <Button.Background>
                             <ImageBrush x:Name="btnKeyboardImage"
                                 ImageSource="Images/Backgrounds/Buttons.jpeg"
@@ -469,7 +479,8 @@
                             VerticalAlignment="Stretch"
                             BorderBrush="White"
                             BorderThickness="2"
-                            Click="btnCtrlBreath_Click">
+                            Click="btnCtrlBreath_Click"
+                            MouseEnter="eyeGazeHandler">
                         <Button.Background>
                             <ImageBrush x:Name="btnBreathImage"
                                 ImageSource="Images/Backgrounds/Buttons.jpeg"
@@ -482,7 +493,7 @@
                                 Width="auto"
                                 Height="45" 
                                 VerticalAlignment="Center"/>
-                    <!--End Breath Buttons-->
+                    <!--End Breath Buttons-->                   
                 </StackPanel>
                 <!--end Keyboard and Face Buttons-->
 
@@ -507,7 +518,8 @@
                             Height="45"
                             BorderBrush="Transparent"
                             BorderThickness="2"
-                            Click="btnScaleMinus_Click">
+                            Click="btnScaleMinus_Click"
+                            MouseEnter="eyeGazeHandler">
                         <Button.Background>
                             <ImageBrush
                                 ImageSource="Images/Backgrounds/Buttons.jpeg"
@@ -543,7 +555,8 @@
                             Height="45"
                             BorderBrush="Transparent"
                             BorderThickness="2"
-                            Click="btnScalePlus_Click">
+                            Click="btnScalePlus_Click"
+                            MouseEnter="eyeGazeHandler">
                         <Button.Background>
                             <ImageBrush
                                 ImageSource="Images/Backgrounds/Buttons.jpeg"
@@ -580,7 +593,8 @@
                             Height="45"
                             BorderBrush="Transparent"
                             BorderThickness="2"
-                            Click="btnCodeMinus_Click">
+                            Click="btnCodeMinus_Click"
+                            MouseEnter="eyeGazeHandler">
                             <Button.Background>
                                 <ImageBrush
                                 ImageSource="Images/Backgrounds/Buttons.jpeg"
@@ -616,7 +630,8 @@
                             Height="45"
                             BorderBrush="Transparent"
                             BorderThickness="2"
-                            Click="btnCodePlus_Click">
+                            Click="btnCodePlus_Click"
+                            MouseEnter="eyeGazeHandler">
                             <Button.Background>
                                 <ImageBrush
                                 ImageSource="Images/Backgrounds/Buttons.jpeg"
@@ -647,7 +662,8 @@
                             Height="45"
                             BorderBrush="Transparent"
                             BorderThickness="2"
-                            Click="btnOctaveMinus_Click">
+                            Click="btnOctaveMinus_Click"
+                            MouseEnter="eyeGazeHandler">
                         <Button.Background>
                             <ImageBrush
                                 ImageSource="Images/Backgrounds/Buttons.jpeg"
@@ -683,7 +699,8 @@
                             Height="45"
                             BorderBrush="Transparent"
                             BorderThickness="2"
-                            Click="btnOctavePlus_Click">
+                            Click="btnOctavePlus_Click"
+                            MouseEnter="eyeGazeHandler">
                         <Button.Background>
                             <ImageBrush
                                 ImageSource="Images/Backgrounds/Buttons.jpeg"
@@ -723,7 +740,8 @@
                             Height="45"
                             BorderBrush="Transparent"
                             BorderThickness="2"
-                                Click="btnMidiPortMinus_Click">
+                            Click="btnMidiPortMinus_Click"
+                            MouseEnter="eyeGazeHandler">
                             <Button.Background>
                                 <ImageBrush
                                 ImageSource="Images/Backgrounds/Buttons.jpeg"
@@ -759,7 +777,8 @@
                             Height="45"
                             BorderBrush="Transparent"
                             BorderThickness="2"
-                                Click="btnMidiPortPlus_Click">
+                            Click="btnMidiPortPlus_Click"
+                            MouseEnter="eyeGazeHandler">
                             <Button.Background>
                                 <ImageBrush
                                 ImageSource="Images/Backgrounds/Buttons.jpeg"
@@ -809,7 +828,8 @@
                             Height="45"
                             BorderBrush="Transparent"
                             BorderThickness="2"
-                            Click="btnBreathPortMinus_Click">
+                            Click="btnBreathPortMinus_Click"
+                            MouseEnter="eyeGazeHandler">
                             <Button.Background>
                                 <ImageBrush
                                 ImageSource="Images/Backgrounds/Buttons.jpeg"
@@ -845,7 +865,8 @@
                             Height="45"
                             BorderBrush="Transparent"
                             BorderThickness="2"
-                            Click="btnBreathPortPlus_Click">
+                            Click="btnBreathPortPlus_Click"
+                            MouseEnter="eyeGazeHandler">
                             <Button.Background>
                                 <ImageBrush
                                 ImageSource="Images/Backgrounds/Buttons.jpeg"
@@ -874,7 +895,7 @@
             CornerRadius="8" 
             Margin="0,20,20,0"
             Width="400"  
-            Height="600"
+            Height="700"
             BorderBrush="Black"
             BorderThickness="4"
             Visibility="Hidden">
@@ -886,6 +907,7 @@
             <Grid>
 
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"></RowDefinition>
                     <RowDefinition Height="1*"></RowDefinition>
                     <RowDefinition Height="1*"></RowDefinition>
                     <RowDefinition Height="1*"></RowDefinition>
@@ -921,7 +943,8 @@
                             VerticalAlignment="Stretch"
                             BorderBrush="White"
                             BorderThickness="2"
-                            Click="btnSharpNotes_Click">
+                            Click="btnSharpNotes_Click"
+                            MouseEnter="eyeGazeHandler">
                         <Button.Background>
                             <ImageBrush
                                 ImageSource="Images/Backgrounds/Buttons.jpeg"
@@ -945,7 +968,8 @@
                             VerticalAlignment="Stretch"
                             BorderBrush="White"
                             BorderThickness="2"
-                            Click="btnSlidePlay_Click">
+                            Click="btnSlidePlay_Click"
+                            MouseEnter="eyeGazeHandler">
                         <Button.Background>
                             <ImageBrush
                                 ImageSource="Images/Backgrounds/Buttons.jpeg"
@@ -981,7 +1005,8 @@
                             VerticalAlignment="Stretch"
                             BorderBrush="White"
                             BorderThickness="2"
-                            Click="btnBlink_Click">
+                            Click="btnBlink_Click"
+                            MouseEnter="eyeGazeHandler">
                         <Button.Background>
                             <ImageBrush
                                 ImageSource="Images/Backgrounds/Buttons.jpeg"
@@ -1005,7 +1030,8 @@
                             Height="45"
                             BorderBrush="Transparent"
                             BorderThickness="2"
-                            Click="btnBlinkMinus_Click">
+                            Click="btnBlinkMinus_Click"
+                            MouseEnter="eyeGazeHandler">
                             <Button.Background>
                                 <ImageBrush
                                 ImageSource="Images/Backgrounds/Buttons.jpeg"
@@ -1041,7 +1067,8 @@
                             Height="45"
                             BorderBrush="Transparent"
                             BorderThickness="2"
-                            Click="btnBlinkPlus_Click">
+                            Click="btnBlinkPlus_Click"
+                            MouseEnter="eyeGazeHandler">
                             <Button.Background>
                                 <ImageBrush
                                 ImageSource="Images/Backgrounds/Buttons.jpeg"
@@ -1067,13 +1094,24 @@
                 <!-- Metronome-->
                 <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center"
                             VerticalAlignment="Center">
-                    <Label
-                        Margin="0,0,5,0"
-                        FontFamily="Papyrus"
-                        FontWeight="Bold"
-                        FontSize="20"
-                        Foreground="White" Height="35">Metronome</Label>
 
+                    <!--Metronome button-->
+                    <Button Style="{DynamicResource RoundButton}"
+                            x:Name="btnMetronome"
+                            Width="45"
+                            Height="45"
+                            BorderBrush="White"
+                            BorderThickness="2"
+                            Margin="0,0,0,0"
+                            Click="btnMetronome_Click"
+                            MouseEnter="eyeGazeHandler">
+                        <Button.Background>
+                            <ImageBrush ImageSource="Images/Backgrounds/Buttons.jpeg"/>
+                        </Button.Background>
+                    </Button>
+                    <Image Source="Images/Icons/Metronome.png"
+                                Width="40" Margin="0,0,30,0"/>
+                    <!--End Metronome button-->
                     <StackPanel Margin="0,0,0,0" Orientation="Horizontal" VerticalAlignment="Center">
                         <Button Style="{StaticResource RoundButton}"
                             Name="btnMetrnomeMinus"
@@ -1082,7 +1120,8 @@
                             Height="45"
                             BorderBrush="Transparent"
                             BorderThickness="2"
-                            Click="btnMetrnomeMinus_Click">
+                            Click="btnMetrnomeMinus_Click"
+                            MouseEnter="eyeGazeHandler">
                             <Button.Background>
                                 <ImageBrush
                                 ImageSource="Images/Backgrounds/Buttons.jpeg"
@@ -1118,7 +1157,8 @@
                             Height="45"
                             BorderBrush="Transparent"
                             BorderThickness="2"
-                            Click="btnMetrnomePlus_Click">
+                            Click="btnMetrnomePlus_Click"
+                            MouseEnter="eyeGazeHandler">
                             <Button.Background>
                                 <ImageBrush
                                 ImageSource="Images/Backgrounds/Buttons.jpeg"
@@ -1138,8 +1178,83 @@
                         Grid.Row="3"
                         VerticalAlignment="Bottom"/>
 
+                <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <!-- BSwitch -->
+                    <Label
+                        Margin="0,0,10,0"
+                        FontFamily="Papyrus"
+                        FontWeight="Bold"
+                        FontSize="20"
+                        Foreground="White" Height="36">Blow Mode</Label>
+
+                    <Button Style="{StaticResource RoundButton}"
+                            Name="btnBSwitchMinus"
+                            Margin="0,0,5,0"
+                            Width="45"
+                            Height="45"
+                            BorderBrush="Transparent"
+                            BorderThickness="2"
+                            Click="btnBSwitchMinus_Click"
+                            MouseEnter="eyeGazeHandler">
+                        <Button.Background>
+                            <ImageBrush
+                                ImageSource="Images/Backgrounds/Buttons.jpeg"
+                                Stretch="None"
+                                TileMode="Tile" />
+                        </Button.Background>
+
+                        <Image Source="Images/Icons/Left_arrow.png"
+                                   Width="auto"
+                                   Height="auto"/>
+                    </Button>
+                    <Border
+                            Width="100"
+                            Height="40"
+                            Background="Black"
+                            BorderBrush="WhiteSmoke"
+                            BorderThickness="2"
+                            Visibility="Visible">
+                        <TextBlock
+                                Name="txtBSwitc"
+                                Background="Black"
+                                FontFamily="Digital-7 Italic"
+                                FontSize="27"
+                                Foreground="DarkRed"
+                                Text=""
+                                VerticalAlignment="Center"
+                                TextAlignment="Center" />
+                    </Border>
+                    <Button Style="{StaticResource RoundButton}"
+                            Name="btnBSwitcPlus"
+                            Margin="5,0,15,0"
+                            Width="45"
+                            Height="45"
+                            BorderBrush="Transparent"
+                            BorderThickness="2"
+                            Click="btnBSwitcPlus_Click"
+                            MouseEnter="eyeGazeHandler">
+                        <Button.Background>
+                            <ImageBrush
+                                ImageSource="Images/Backgrounds/Buttons.jpeg"
+                                Stretch="None"
+                                TileMode="Tile" />
+                        </Button.Background>
+
+                        <Image Source="Images/Icons/Right_arrow.png"
+                                   Width="auto"
+                                   Height="auto"/>
+                    </Button>
+
+                </StackPanel>
+
+                <Border Style="{StaticResource SeparatorStyleHorizontal}"
+                        Grid.Row="4"
+                        VerticalAlignment="Bottom"/>
+
+                <!--End Octave-->
+
                 <!-- Key Vertical Distance Slider-->
-                <StackPanel Grid.Row="4" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel Grid.Row="5" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Label
                             Grid.Row="0"
                             Grid.Column="1"
@@ -1159,7 +1274,8 @@
                             Height="45"
                             BorderBrush="Transparent"
                             BorderThickness="2"
-                            Click="btnVerticalDistanceMinus_Click">
+                            Click="btnVerticalDistanceMinus_Click"
+                            MouseEnter="eyeGazeHandler">
                             <Button.Background>
                                 <ImageBrush
                                 ImageSource="Images/Backgrounds/Buttons.jpeg"
@@ -1195,7 +1311,8 @@
                             Height="45"
                             BorderBrush="Transparent"
                             BorderThickness="2"
-                            Click="btnVerticalDistancePlus_Click">
+                            Click="btnVerticalDistancePlus_Click"
+                            MouseEnter="eyeGazeHandler">
                             <Button.Background>
                                 <ImageBrush
                                 ImageSource="Images/Backgrounds/Buttons.jpeg"
@@ -1212,11 +1329,11 @@
                 </StackPanel>
 
                 <Border Style="{StaticResource SeparatorStyleHorizontal}"
-                            Grid.Row="4"
+                            Grid.Row="5"
                             VerticalAlignment="Bottom"/>
 
                 <!-- Keys Horizontal Distance-->
-                <StackPanel Grid.Row="5" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                <StackPanel Grid.Row="6" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Center">
                     <Label
                             Grid.Row="0"
                             Grid.Column="1"
@@ -1236,7 +1353,8 @@
                             Height="45"
                             BorderBrush="Transparent"
                             BorderThickness="2"
-                            Click="btnHorizontalDistanceMinus_Click">
+                            Click="btnHorizontalDistanceMinus_Click"
+                            MouseEnter="eyeGazeHandler">
                             <Button.Background>
                                 <ImageBrush
                                 ImageSource="Images/Backgrounds/Buttons.jpeg"
@@ -1272,7 +1390,8 @@
                             Height="45"
                             BorderBrush="Transparent"
                             BorderThickness="2"
-                            Click="btnHorizontalDistancePlus_Click">
+                            Click="btnHorizontalDistancePlus_Click"
+                            MouseEnter="eyeGazeHandler">
                             <Button.Background>
                                 <ImageBrush
                                 ImageSource="Images/Backgrounds/Buttons.jpeg"
