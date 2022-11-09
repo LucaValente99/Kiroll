@@ -13,7 +13,7 @@ namespace MyInstrument.DMIbox.TobiiBehaviors
     {
         public TBactivateButton()
         {
-            DCThresh = 8;
+            DCThresh = 15;
         }
         public override void Event_doubleClose()
         {               

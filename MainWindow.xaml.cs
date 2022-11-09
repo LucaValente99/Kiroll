@@ -114,6 +114,7 @@ namespace MyInstrument
         private readonly SolidColorBrush ActiveBrush = new SolidColorBrush(Colors.LightYellow);
         private readonly SolidColorBrush WarningBrush = new SolidColorBrush(Colors.DarkRed);
         private readonly SolidColorBrush DisableBrush = new SolidColorBrush(Colors.Transparent);
+        private readonly SolidColorBrush SelectionBrush = new SolidColorBrush(Colors.Yellow);
 
         //Icons and Backgrounds
         BitmapImage startIcon = new BitmapImage(
@@ -174,7 +175,7 @@ namespace MyInstrument
             }
             else
             {
-                if (Rack.DMIBox.IsPlaying)
+                if (txtPitch.Text != "_")
                 {
                     txtVelocityMouth.Text = Rack.UserSettings.NotePressure;
                 }
@@ -214,13 +215,29 @@ namespace MyInstrument
                 if (Click)
                 {
                     Rack.DMIBox.LastGazedButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                    if (Rack.DMIBox.LastGazedButton.Background == SelectionBrush)
+                    {
+                        oldBackGround = buttonBackground;
+                    }
+                    else
+                    {
+                        oldBackGround = Rack.DMIBox.LastGazedButton.Background;
+                    }
                     Click = false;
                 }
+
+                if (Rack.DMIBox.LastGazedButton == btnCtrlEye)
+                {
+                    btnCtrlEye.Background = SelectionBrush;
+                }
+                else
+                {
+                    btnCtrlEye.Background = ActiveBrush;
+                }
                 
-                btnCtrlEye.Background = ActiveBrush;
 
                 if (btnBlinkOn) 
-                {
+                {                  
                     txtBlink.Foreground = new SolidColorBrush(Colors.White);
                 }
                 else
@@ -228,22 +245,31 @@ namespace MyInstrument
                     txtBlink.Foreground = WarningBrush;
                 }
 
-
             }
             else
             {
                 btnCtrlEye.Background = buttonBackground;
                 txtBlink.Foreground = WarningBrush;
             }
-            // If doubleClose eyes behave happen click became True so a button will be clicked, the last gazed
-            
+            // If doubleClose eyes behave happen click became True so a button will be clicked, the last gazed          
    
         }
 
         // Each button (Start & Stop excluded) has this behave, if gazed, the button will be selected waiting to be clicked
+        private dynamic oldBackGround;
         private void eyeGazeHandler(object sender, MouseEventArgs e)
         {
-            Rack.DMIBox.LastGazedButton = (Button)sender;
+            if (Rack.UserSettings.EyeCtrl == _EyeCtrl.On)
+            {
+                Rack.DMIBox.LastGazedButton.Background = oldBackGround;
+                
+                Rack.DMIBox.LastGazedButton = (Button)sender;
+
+                oldBackGround = Rack.DMIBox.LastGazedButton.Background;
+
+                Rack.DMIBox.LastGazedButton.Background = SelectionBrush;
+            }           
+            
         }
 
         #region TopBar (Row0)
@@ -579,13 +605,16 @@ namespace MyInstrument
         {
             if (myInstrumentStarted)
             {
-                if (codeIndex > 0)
+                if (!btnSharpNotesOn)
                 {
-                    codeIndex--;
-                    txtCode.Text = comboCode[codeIndex];
-                    Rack.UserSettings.ScaleCode = txtCode.Text;
-                    //Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
-                }
+                    if (codeIndex > 0)
+                    {
+                        codeIndex--;
+                        txtCode.Text = comboCode[codeIndex];
+                        Rack.UserSettings.ScaleCode = txtCode.Text;
+                        //Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+                    }
+                }               
             }
         }
 
@@ -593,12 +622,15 @@ namespace MyInstrument
         {
             if (myInstrumentStarted)
             {
-                if (codeIndex < 3)
+                if (!btnSharpNotesOn)
                 {
-                    codeIndex++;
-                    txtCode.Text = comboCode[codeIndex];
-                    Rack.UserSettings.ScaleCode = txtCode.Text;
-                    //Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+                    if (codeIndex < 3)
+                    {
+                        codeIndex++;
+                        txtCode.Text = comboCode[codeIndex];
+                        Rack.UserSettings.ScaleCode = txtCode.Text;
+                        //Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+                    }
                 }
             }
         }

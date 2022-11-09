@@ -100,6 +100,7 @@ namespace MyInstrument.DMIbox
                 if (Rack.UserSettings.BreathControlModes == _BreathControlModes.Static)
                 {
                     pressure = 127;
+                    Rack.UserSettings.NotePressure = pressure.ToString();
                     SetPressure();
                 }
             }

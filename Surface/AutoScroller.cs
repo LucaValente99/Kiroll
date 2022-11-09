@@ -38,12 +38,12 @@ namespace MyInstrument.Surface
             this.filter = filter;
             this.scrollViewer = scrollViewer;
             this.proportionalHorizontal = proportional;
-            this.proportionalVertical = proportional - 200;
+            this.proportionalVertical = proportional - 225;
 
             // Setting scrollviewer dimensions
             lastSampledPoint = new Point();
             basePosition = scrollViewer.PointToScreen(new System.Windows.Point(0, 0));
-            scrollCenter = new System.Windows.Point(200, scrollViewer.ActualHeight / 2); // scrollViewer.ActualWidth / 2
+            scrollCenter = new System.Windows.Point(200, scrollViewer.ActualHeight / 2 + 30); // scrollViewer.ActualWidth / 2
 
             // Setting sampling timer
             samplerTimer.Interval = TimeSpan.FromMilliseconds(15);//1000; //1;
