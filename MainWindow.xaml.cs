@@ -278,6 +278,7 @@ namespace MyInstrument
         // Each button (Start & Stop excluded) has this behave, if gazed, the button will be selected waiting to be clicked
         
         private dynamic oldBackGround; // used to select correct button background when it is gazed, selected or unselected
+        public dynamic OldBackGround { get => oldBackGround; set => oldBackGround = value; }
         private void eyeGazeHandler(object sender, MouseEventArgs e)
         {
             if (Rack.UserSettings.EyeCtrl == _EyeCtrl.On)
@@ -413,10 +414,10 @@ namespace MyInstrument
                     Rack.DMIBox.TobiiModule.MouseEmulator.EyetrackerToMouse = true;
                     Rack.DMIBox.TobiiModule.MouseEmulator.CursorVisible = false;
 
-                    if (Rack.UserSettings.MyInstrumentControlMode == _MyInstrumentControlModes.Keyboard)
-                    {
-                        btnCtrlBreath.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
-                    }
+                    //if (Rack.UserSettings.MyInstrumentControlMode == _MyInstrumentControlModes.Keyboard)
+                    //{
+                    //    btnCtrlBreath.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                    //}
                 }
                 else
                 {
@@ -441,7 +442,7 @@ namespace MyInstrument
         {
             if (myInstrumentStarted)
             {
-                if (!btnKeyboardOn && !btnEyeOn)
+                if (!btnKeyboardOn)
                 {
                     btnKeyboardOn = true;
                     btnBreathOn = false;

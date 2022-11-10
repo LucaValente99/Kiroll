@@ -10,7 +10,8 @@ namespace MyInstrument.DMIbox.TobiiBehaviors
         }
         public override void Event_doubleClose()
         {               
-            if (Rack.UserSettings.EyeCtrl == _EyeCtrl.On)
+            if (Rack.UserSettings.EyeCtrl == _EyeCtrl.On && (Rack.UserSettings.MyInstrumentControlMode != _MyInstrumentControlModes.Breath 
+                || !Rack.DMIBox.SensorReader.Connect(Rack.DMIBox.MyInstrumentMainWindow.SensorPort)))
             {
                 if (!Rack.DMIBox.MyInstrumentMainWindow.Click)
                 {

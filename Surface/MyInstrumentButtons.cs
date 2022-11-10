@@ -62,8 +62,12 @@ namespace MyInstrument.Surface
             Rack.DMIBox.CheckedNote = this;
             Rack.DMIBox.SelectedNote = MusicConversions.ToAbsNote(key).ToMidiNote(octave);
 
-            //This is used to avoid 'play' and 'stop' behaviors of notes to happen at wrong moments
+            // This is used to avoid 'play' and 'stop' behaviors of notes to happen at wrong moments
             Rack.DMIBox.IsPlaying = false;
+
+            // If blow is used to click buttons, it should not work when user is playing keys
+            Rack.DMIBox.LastGazedButton.Background = Rack.DMIBox.MyInstrumentMainWindow.OldBackGround;
+            Rack.DMIBox.LastGazedButton = new Button();
 
             // If the keyboard that contains the note is valid, colors will be update and the movement will be started.
             if (Rack.DMIBox.CheckPlayability())

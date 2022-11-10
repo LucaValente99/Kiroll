@@ -175,6 +175,7 @@
     </Compile>
     <Compile Include="DMIbox\KeyboardBehaviors\KBsimulateBreathOn.cs" />
     <Compile Include="DMIbox\KeyboardBehaviors\KBEyeTrackerToMouse.cs" />
+    <Compile Include="DMIbox\SensorBehaviors\NBactivateButton.cs" />
     <Compile Include="DMIbox\SensorBehaviors\NBbreath.cs" />
     <Compile Include="DMIbox\TobiiBehaviors\TBactivateButton.cs" />
     <Compile Include="DMIbox\TobiiBehaviors\TBselectCode.cs" />

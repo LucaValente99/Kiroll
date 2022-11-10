@@ -48,6 +48,7 @@ namespace MyInstrument.DMIbox
                 Rack.DMIBox.TobiiModule.BlinkBehaviors.Add(new TBactivateButton());
 
                 Rack.DMIBox.SensorReader.SensorBehaviors.Add(new NBbreath(20, 28, 1.5f)); // 15 20 1.5f
+                Rack.DMIBox.SensorReader.SensorBehaviors.Add(new NBactivateButton(28)); 
 
                 // SURFACE INIT
                 Rack.DMIBox.AutoScroller = new AutoScroller(Rack.DMIBox.MyInstrumentMainWindow.scrlMyInstrument, 0, 300, new PointFilterMAExpDecaying(0.1f)); // OLD was 100, 0.1f
