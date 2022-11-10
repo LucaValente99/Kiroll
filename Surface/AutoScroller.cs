@@ -43,7 +43,7 @@ namespace MyInstrument.Surface
             // Setting scrollviewer dimensions
             lastSampledPoint = new Point();
             basePosition = scrollViewer.PointToScreen(new System.Windows.Point(0, 0));
-            scrollCenter = new System.Windows.Point(200, scrollViewer.ActualHeight / 2 + 30); // scrollViewer.ActualWidth / 2
+            scrollCenter = new System.Windows.Point(200, scrollViewer.ActualHeight / 2 + 100); // scrollViewer.ActualWidth / 2
 
             // Setting sampling timer
             samplerTimer.Interval = TimeSpan.FromMilliseconds(15);//1000; //1;
