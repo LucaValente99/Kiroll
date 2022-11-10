@@ -19,7 +19,7 @@
         <Style TargetType="Button" x:Key="RoundButton">
             <Style.Resources>
                 <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="20" />
+                    <Setter Property="CornerRadius" Value="25" />
                 </Style>
             </Style.Resources>
         </Style>
@@ -157,7 +157,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="70"></RowDefinition>
             <RowDefinition Height="1*"></RowDefinition>
-            <!--<RowDefinition Height="1*"></RowDefinition>-->
         </Grid.RowDefinitions>
 
         <!--#region Top Bar (Row 0)-->
@@ -263,8 +262,7 @@
                         HorizontalAlignment="Right"
                         Grid.Column="1"/>
                     <!--End Instrument Settings button-->
-
-                    <!--Note visualizer-->
+                   
                     <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,15,0">
 
                         <!--Eye Button-->
@@ -291,7 +289,8 @@
                                 VerticalAlignment="Center"/>
                         </Button>
 
-                        <!--End Breath Buttons-->
+                        <!--End Eye Buttons-->
+                        
                         <!--Note Visualizer-->
                         <StackPanel Margin="15,0,0,0" Orientation="Horizontal" 
                         VerticalAlignment="Center"
@@ -365,7 +364,7 @@
                    HorizontalAlignment="Right"
                    VerticalAlignment="Top"
                 ></Image>
-            <!--Right Top Bar Embellishment-->
+            <!--End Right Top Bar Embellishment-->
 
         </StackPanel>
         <!--#endregion End Top Bar (Row 0)-->
@@ -384,8 +383,8 @@
                                         Width="Auto" Height="Auto" Grid.Row="0"
                                         HorizontalScrollBarVisibility="Hidden" 
                                         VerticalScrollBarVisibility="Hidden">
-                    <!--Canvas allows to place elements by coordinates-->
 
+                    <!--Canvas allows to place elements by coordinates-->
                     <Canvas x:Name="canvasMyInstrument" VerticalAlignment="Stretch" 
                                     HorizontalAlignment="Stretch" Margin="0,0,0,0"
                                     Width="1518" Height="781">
@@ -397,7 +396,7 @@
             </Grid>
         </Border>
 
-        <!--MyInstrument's Setting_1 Window-->
+        <!-- #region MyInstrument's Setting_1 Window-->
         <Border Name="WindowInstrumentSettings_1" 
             Grid.Row="1"
             HorizontalAlignment="Left"
@@ -441,15 +440,15 @@
 
                 <Border Style="{StaticResource SeparatorStyleHorizontal}"
                             Grid.Row="0" VerticalAlignment="Bottom"/>
-                <!--Keyboard and Face Buttons-->
-
+                
+                <!--Keyboard and Breath Buttons-->
                 <StackPanel Grid.Row="1"  Orientation="Horizontal" VerticalAlignment="Center" 
                             HorizontalAlignment="Center">
-                    <!--Keyboard Buttons-->
+                    <!--Keyboard Button-->
                     <Button Style="{DynamicResource RoundButton}"                      
                             Name="btnCtrlKeyboard"
-                            Width="45"
-                            Height="45"
+                            Width="50"
+                            Height="50"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Stretch"
                             BorderBrush="White"
@@ -468,13 +467,13 @@
                                 Width="65"
                                 Height="auto" 
                                 VerticalAlignment="Center"/>
-                    <!--End Keyboard Buttons-->
+                    <!--End Keyboard Button-->
 
-                    <!--Breath Buttons-->
+                    <!--Breath Button-->
                     <Button Style="{DynamicResource RoundButton}"                      
                             Name="btnCtrlBreath"
-                            Width="45"
-                            Height="45"
+                            Width="50"
+                            Height="50"
                             Margin ="0,0,0,0"
                             VerticalAlignment="Stretch"
                             BorderBrush="White"
@@ -493,9 +492,9 @@
                                 Width="auto"
                                 Height="45" 
                                 VerticalAlignment="Center"/>
-                    <!--End Breath Buttons-->                   
+                    <!--End Breath Button-->                   
                 </StackPanel>
-                <!--end Keyboard and Face Buttons-->
+                <!--end Keyboard and Breath Buttons-->
 
                 <Border Style="{StaticResource SeparatorStyleHorizontal}"
                             Grid.Row="1"
@@ -514,8 +513,8 @@
                     <Button Style="{StaticResource RoundButton}"
                             Name="btnScaleMinus"
                             Margin="0,0,5,0"
-                            Width="45"
-                            Height="45"
+                            Width="50"
+                            Height="50"
                             BorderBrush="Transparent"
                             BorderThickness="2"
                             Click="btnScaleMinus_Click"
@@ -551,8 +550,8 @@
                     <Button Style="{StaticResource RoundButton}"
                             Name="btnScalePlus"
                             Margin="5,0,0,0"
-                            Width="45"
-                            Height="45"
+                            Width="50"
+                            Height="50"
                             BorderBrush="Transparent"
                             BorderThickness="2"
                             Click="btnScalePlus_Click"
@@ -589,8 +588,8 @@
                         <Button Style="{StaticResource RoundButton}"
                             Name="btnCodeMinus"
                             Margin="0,0,5,0"
-                            Width="45"
-                            Height="45"
+                            Width="50"
+                            Height="50"
                             BorderBrush="Transparent"
                             BorderThickness="2"
                             Click="btnCodeMinus_Click"
@@ -626,8 +625,8 @@
                         <Button Style="{StaticResource RoundButton}"
                             Name="btnCodePlus"
                             Margin="5,0,0,0"
-                            Width="45"
-                            Height="45"
+                            Width="50"
+                            Height="50"
                             BorderBrush="Transparent"
                             BorderThickness="2"
                             Click="btnCodePlus_Click"
@@ -646,6 +645,10 @@
                     <!--End Code-->
                     </StackPanel>
 
+                <Border Style="{StaticResource SeparatorStyleHorizontal}"
+                            Grid.Row="3"
+                            VerticalAlignment="Bottom"/>
+
                 <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center">
                     <!-- Octave-->
                     <Label
@@ -658,8 +661,8 @@
                     <Button Style="{StaticResource RoundButton}"
                             Name="btnOctaveMinus"
                             Margin="0,0,5,0"
-                            Width="45"
-                            Height="45"
+                            Width="50"
+                            Height="50"
                             BorderBrush="Transparent"
                             BorderThickness="2"
                             Click="btnOctaveMinus_Click"
@@ -695,8 +698,8 @@
                     <Button Style="{StaticResource RoundButton}"
                             Name="btnOctavePlus"
                             Margin="5,0,15,0"
-                            Width="45"
-                            Height="45"
+                            Width="50"
+                            Height="50"
                             BorderBrush="Transparent"
                             BorderThickness="2"
                             Click="btnOctavePlus_Click"
@@ -712,16 +715,14 @@
                                    Width="auto"
                                    Height="auto"/>
                     </Button>
-
+                    <!--End Octave-->
                 </StackPanel>
 
-                <!--End Octave-->
-
                 <Border Style="{StaticResource SeparatorStyleHorizontal}"
-                            Grid.Row="3"
+                            Grid.Row="4"
                             VerticalAlignment="Bottom"/>
 
-                <!--Sharp Notes and SLide Play buttons-->
+                <!--MIDI Port-->
 
                 <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Center">
 
@@ -736,8 +737,8 @@
                         <Button Style="{StaticResource RoundButton}"
                             Name="btnMidiPortMinus"
                             Margin="0,0,5,0"
-                            Width="45"
-                            Height="45"
+                            Width="50"
+                            Height="50"
                             BorderBrush="Transparent"
                             BorderThickness="2"
                             Click="btnMidiPortMinus_Click"
@@ -773,8 +774,8 @@
                         <Button Style="{StaticResource RoundButton}"
                             Name="btnMidiPortPlus"
                             Margin="5,0,0,0"
-                            Width="45"
-                            Height="45"
+                            Width="50"
+                            Height="50"
                             BorderBrush="Transparent"
                             BorderThickness="2"
                             Click="btnMidiPortPlus_Click"
@@ -791,26 +792,14 @@
                                    Height="auto"/>
                         </Button>
                     </StackPanel>
-
+                    <!--End MIDI Port-->
                 </StackPanel>
-
-                <Border Style="{StaticResource SeparatorStyleHorizontal}"
-                            Grid.Row="4"
-                            VerticalAlignment="Bottom"/>
-
-                <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Center">
-
-                    
-                    
-                </StackPanel>
-
-                <!--End Blink Scale and Slide Play buttons-->
 
                 <Border Style="{StaticResource SeparatorStyleHorizontal}"
                             Grid.Row="5"
                             VerticalAlignment="Bottom"/>
 
-                <!-- Blink Behaviors -->
+                <!-- Breath Port -->
                 <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Center"
                             VerticalAlignment="Center">
                     <Label
@@ -824,8 +813,8 @@
                         <Button Style="{StaticResource RoundButton}"
                             Name="btnBreathPortMinus"
                             Margin="0,0,5,0"
-                            Width="45"
-                            Height="45"
+                            Width="50"
+                            Height="50"
                             BorderBrush="Transparent"
                             BorderThickness="2"
                             Click="btnBreathPortMinus_Click"
@@ -861,8 +850,8 @@
                         <Button Style="{StaticResource RoundButton}"
                             Name="btnBreathPortPlus"
                             Margin="5,0,0,0"
-                            Width="45"
-                            Height="45"
+                            Width="50"
+                            Height="50"
                             BorderBrush="Transparent"
                             BorderThickness="2"
                             Click="btnBreathPortPlus_Click"
@@ -881,13 +870,13 @@
                     </StackPanel>
 
                 </StackPanel>
-                <!-- End Blink Behaviors-->
+                <!-- End Breath Port -->
             </Grid>
 
         </Border>
-        <!--End MyInstrument's Setting_1 Window-->
+        <!-- #endregion MyInstrument's Setting_1 Window-->
 
-        <!--MyInstrument's Setting_2 Window-->
+        <!-- #region MyInstrument's Setting_2 Window-->
         <Border Name="WindowInstrumentSettings_2" 
             Grid.Row="1"
             HorizontalAlignment="Right"
@@ -931,13 +920,13 @@
                 <Border Style="{StaticResource SeparatorStyleHorizontal}"
                             Grid.Row="0" VerticalAlignment="Bottom"/>
 
-                <!--MIDI Port-->
+                <!--Sharp Notes and SlidePlay Buttons-->
                 <StackPanel Grid.Row="1"  Orientation="Horizontal" HorizontalAlignment="Center">
 
                     <Button Style="{DynamicResource RoundButton}"                      
                             Name="btnSharpNotes"
-                            Width="45"
-                            Height="45"
+                            Width="50"
+                            Height="50"
                             Margin="25,0,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Stretch"
@@ -962,8 +951,8 @@
 
                     <Button Style="{DynamicResource RoundButton}"                      
                             Name="btnSlidePlay"
-                            Width="45"
-                            Height="45"
+                            Width="50"
+                            Height="50"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Stretch"
                             BorderBrush="White"
@@ -986,20 +975,20 @@
                         Foreground="White" Height="40">Slide Play</Label>
                                        
                 </StackPanel>
-                <!--end MIDI Port-->
+                <!--End Sharp Notes and SlidePlay Buttons-->
 
                 <Border Style="{StaticResource SeparatorStyleHorizontal}"
                         Grid.Row="1"
                         VerticalAlignment="Bottom"/>
 
-                <!-- Breath Port-->
+                <!-- Blink Behaviors -->
                 <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center"
                             VerticalAlignment="Center">
 
                     <Button Style="{DynamicResource RoundButton}"                      
                             Name="btnBlink"
-                            Width="45"
-                            Height="45"
+                            Width="50"
+                            Height="50"
                             Margin="0,0,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Stretch"
@@ -1026,8 +1015,8 @@
                         <Button Style="{StaticResource RoundButton}"
                             Name="btnBlinkMinus"
                             Margin="0,0,5,0"
-                            Width="45"
-                            Height="45"
+                            Width="50"
+                            Height="50"
                             BorderBrush="Transparent"
                             BorderThickness="2"
                             Click="btnBlinkMinus_Click"
@@ -1063,8 +1052,8 @@
                         <Button Style="{StaticResource RoundButton}"
                             Name="btnBlinkPlus"
                             Margin="5,0,0,0"
-                            Width="45"
-                            Height="45"
+                            Width="50"
+                            Height="50"
                             BorderBrush="Transparent"
                             BorderThickness="2"
                             Click="btnBlinkPlus_Click"
@@ -1081,11 +1070,8 @@
                                    Height="auto"/>
                         </Button>
                     </StackPanel>
-                    
-                    
-
                 </StackPanel>
-                <!-- End Breath Port-->
+                <!-- End Blink Behaviors -->
 
                 <Border Style="{StaticResource SeparatorStyleHorizontal}"
                         Grid.Row="2"
@@ -1095,11 +1081,10 @@
                 <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center"
                             VerticalAlignment="Center">
 
-                    <!--Metronome button-->
                     <Button Style="{DynamicResource RoundButton}"
                             x:Name="btnMetronome"
-                            Width="45"
-                            Height="45"
+                            Width="50"
+                            Height="50"
                             BorderBrush="White"
                             BorderThickness="2"
                             Margin="0,0,0,0"
@@ -1111,13 +1096,13 @@
                     </Button>
                     <Image Source="Images/Icons/Metronome.png"
                                 Width="40" Margin="0,0,30,0"/>
-                    <!--End Metronome button-->
+                    
                     <StackPanel Margin="0,0,0,0" Orientation="Horizontal" VerticalAlignment="Center">
                         <Button Style="{StaticResource RoundButton}"
                             Name="btnMetrnomeMinus"
                             Margin="0,0,5,0"
-                            Width="45"
-                            Height="45"
+                            Width="50"
+                            Height="50"
                             BorderBrush="Transparent"
                             BorderThickness="2"
                             Click="btnMetrnomeMinus_Click"
@@ -1153,8 +1138,8 @@
                         <Button Style="{StaticResource RoundButton}"
                             Name="btnMetrnomePlus"
                             Margin="5,0,0,0"
-                            Width="45"
-                            Height="45"
+                            Width="50"
+                            Height="50"
                             BorderBrush="Transparent"
                             BorderThickness="2"
                             Click="btnMetrnomePlus_Click"
@@ -1179,7 +1164,7 @@
                         VerticalAlignment="Bottom"/>
 
                 <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center">
-                    <!-- BSwitch -->
+                    <!-- BlowMode -->
                     <Label
                         Margin="0,0,10,0"
                         FontFamily="Papyrus"
@@ -1190,8 +1175,8 @@
                     <Button Style="{StaticResource RoundButton}"
                             Name="btnBSwitchMinus"
                             Margin="0,0,5,0"
-                            Width="45"
-                            Height="45"
+                            Width="50"
+                            Height="50"
                             BorderBrush="Transparent"
                             BorderThickness="2"
                             Click="btnBSwitchMinus_Click"
@@ -1227,8 +1212,8 @@
                     <Button Style="{StaticResource RoundButton}"
                             Name="btnBSwitcPlus"
                             Margin="5,0,15,0"
-                            Width="45"
-                            Height="45"
+                            Width="50"
+                            Height="50"
                             BorderBrush="Transparent"
                             BorderThickness="2"
                             Click="btnBSwitcPlus_Click"
@@ -1251,9 +1236,9 @@
                         Grid.Row="4"
                         VerticalAlignment="Bottom"/>
 
-                <!--End Octave-->
+                <!-- End BlowMode -->
 
-                <!-- Key Vertical Distance Slider-->
+                <!-- Key Vertical Distance-->
                 <StackPanel Grid.Row="5" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Label
                             Grid.Row="0"
@@ -1270,8 +1255,8 @@
                         <Button Style="{StaticResource RoundButton}"
                             Name="btnVerticalDistanceMinus"
                             Margin="0,0,5,0"
-                            Width="45"
-                            Height="45"
+                            Width="50"
+                            Height="50"
                             BorderBrush="Transparent"
                             BorderThickness="2"
                             Click="btnVerticalDistanceMinus_Click"
@@ -1307,8 +1292,8 @@
                         <Button Style="{StaticResource RoundButton}"
                             Name="btnVerticalDistancePlus"
                             Margin="5,0,0,0"
-                            Width="45"
-                            Height="45"
+                            Width="50"
+                            Height="50"
                             BorderBrush="Transparent"
                             BorderThickness="2"
                             Click="btnVerticalDistancePlus_Click"
@@ -1327,6 +1312,7 @@
                     </StackPanel>
 
                 </StackPanel>
+                <!-- End Key Vertical Distance-->
 
                 <Border Style="{StaticResource SeparatorStyleHorizontal}"
                             Grid.Row="5"
@@ -1349,8 +1335,8 @@
                         <Button Style="{StaticResource RoundButton}"
                             Name="btnHorizontalDistanceMinus"
                             Margin="0,0,5,0"
-                            Width="45"
-                            Height="45"
+                            Width="50"
+                            Height="50"
                             BorderBrush="Transparent"
                             BorderThickness="2"
                             Click="btnHorizontalDistanceMinus_Click"
@@ -1386,8 +1372,8 @@
                         <Button Style="{StaticResource RoundButton}"
                             Name="btnHorizontalDistancePlus"
                             Margin="5,0,0,0"
-                            Width="45"
-                            Height="45"
+                            Width="50"
+                            Height="50"
                             BorderBrush="Transparent"
                             BorderThickness="2"
                             Click="btnHorizontalDistancePlus_Click"
@@ -1409,6 +1395,9 @@
                 
             </Grid>
         </Border>
-        <!--End MyInstrument's Setting_2 Window-->
+        <!-- #endregion MyInstrument's Setting_2 Window-->
+        
+        <!--#endregion MyInstrument (Row 1)-->
+        
     </Grid>
 </Window>

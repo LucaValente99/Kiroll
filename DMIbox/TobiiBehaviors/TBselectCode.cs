@@ -1,14 +1,4 @@
-﻿using MyInstrument.DMIbox;
-using MyInstrument;
-using NeeqDMIs.Eyetracking.Tobii;
-using NeeqDMIs.Music;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls.Primitives;
+﻿using NeeqDMIs.Eyetracking.Tobii;
 
 namespace MyInstrument.DMIbox.TobiiBehaviors
 {

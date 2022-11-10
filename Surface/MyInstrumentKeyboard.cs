@@ -2,13 +2,8 @@
 using NeeqDMIs.Music;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media;
 using Brushes = System.Windows.Media.Brushes;
 using Color = System.Windows.Media.Color;
@@ -18,6 +13,7 @@ namespace MyInstrument.Surface
 {
     public class MyInstrumentKeyboard : StackPanel
     {
+        // Specific clors of each note
         public static Dictionary<string, Color> KeysColorCode = new Dictionary<string, Color>()
         {
             {"C", Colors.Red }, // C - Red
@@ -51,6 +47,7 @@ namespace MyInstrument.Surface
         // Useful for meeting the deviation in terms of octave in scales:
         // es. maj C# scale on 4th octave -> C#4, D#4, F4, F#4, G#4, A#4, C5. The last C in the scale will be in the superior octave, so { "C#", 1 }, that means "into the C# maj scale there is just one note
         // that needs to be increased about one octave".
+
         private Dictionary<string, int> deviationMaj = new Dictionary<string, int>() {
             {"C", 0 }, { "C#", 1 }, { "D", 1 }, { "D#", 2 }, { "E", 2 }, { "F", 3 }, { "F#", 3 }, {"G", 4 }, { "G#", 5 }, { "A", 5 }, { "A#", 6 }, { "B", 6 }
             };
@@ -63,10 +60,11 @@ namespace MyInstrument.Surface
         private Dictionary<string, int> deviationMin_mel = new Dictionary<string, int>() {
             {"C", 0 }, { "C#", 1 }, { "D", 1 }, { "D#", 2 }, { "E", 2 }, { "F", 3 }, { "F#", 3 }, {"G", 4 }, { "G#", 4 }, { "A", 5 }, { "A#", 6 }, { "B", 6 }
             };
-        private Dictionary<string, int> deviationChrom_12 = new Dictionary<string, int>() {
+        private Dictionary<string, int> deviationChrom = new Dictionary<string, int>() {
             {"C", 0 }, { "C#", 1 }, { "D", 2 }, { "D#", 3 }, { "E", 4 }, { "F", 5 }, { "F#", 6 }, {"G", 7 }, { "G#", 8 }, { "A", 9 }, { "A#", 10 }, { "B", 11 }
             };
 
+        // Scale-Code-Octave, used to build keyboards whit right notes
         private string comboScale = Rack.UserSettings.ScaleName;
         private string comboCode = Rack.UserSettings.ScaleCode;
         private string comboOctave = Rack.UserSettings.Octave;
@@ -74,6 +72,7 @@ namespace MyInstrument.Surface
         public string ComboCode { get => comboCode; set { comboCode = value; } }
         public string ComboOctave { get => comboOctave; set { comboOctave = value; } }
 
+        // ID, used to identify each keyboards outside the class
         private static int id = 0;
         public static int ID { get => id; set => id = value; }
 
@@ -101,7 +100,7 @@ namespace MyInstrument.Surface
             FillStackPanel();
         }
 
-        // Filling stack panels with associated keys 
+        // Filling keyboards with associated keys 
         private void FillStackPanel()
         {
             foreach (Button toolKey in CreateKeys())
@@ -200,7 +199,7 @@ namespace MyInstrument.Surface
             {
                 scale = new Scale(MusicConversions.ToAbsNote(ComboScale), MusicConversions.ToScaleCode("chrom"));
                 noteList = scale.NotesInScale;
-                deviation_chrom_12 = deviationChrom_12[noteList[0].ToStandardString()];
+                deviation_chrom_12 = deviationChrom[noteList[0].ToStandardString()];
 
                 for (int i = 0; i < 12; i++)
                 {
@@ -226,7 +225,7 @@ namespace MyInstrument.Surface
 
         // STATIC METHODS
 
-        // Getting the position of keyboard as child of the Canvas
+        // Getting the position of a specific keyboard
         public static Point GetPosition(string id)
         {
             StackPanel keyboard = Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Children[Int32.Parse(id.Substring(1))] as StackPanel;
@@ -236,14 +235,14 @@ namespace MyInstrument.Surface
             return new Point(x, y);
         }
 
-        // Getting the keyboard as child of the Canvas
+        // Getting a specific keyboard
         public static StackPanel GetKeyboard(string id)
         {
             StackPanel keyboard = Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Children[Int32.Parse(id.Substring(1))] as StackPanel;
             return keyboard;
         }
 
-        // Resetting the keyboard colors
+        // Resetting colors of a specific keyboard 
         public static void ResetColors(string id)
         {
             StackPanel keyboard = Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Children[Int32.Parse(id.Substring(1))] as StackPanel;
@@ -268,7 +267,7 @@ namespace MyInstrument.Surface
 
         }
 
-        // Updating the keyboard colors: all the notes in keyboard will turn balck (opacity: 0.5) except for the selected one.
+        // Updating colors of a specific keyboard: all the notes in keyboard will turn balck (opacity: 0.5) except for the selected one.
         public static void UpdateColors(string id, Button btn)
         {
             StackPanel keyboard = Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Children[Int32.Parse(id.Substring(1))] as StackPanel;
@@ -289,7 +288,7 @@ namespace MyInstrument.Surface
             }
         }
 
-        // Updating the opcaity of keyboard colors
+        // Updating the key opcaity of a specific keyboard
         public static void UpdateOpacity()
         {
             foreach (StackPanel keyboard in Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Children)

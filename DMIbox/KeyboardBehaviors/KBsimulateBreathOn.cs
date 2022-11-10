@@ -1,8 +1,5 @@
-﻿using MyInstrument.DMIbox;
-using NeeqDMIs.Keyboard;
+﻿using NeeqDMIs.Keyboard;
 using RawInputProcessor;
-using System.Windows;
-using System.Windows.Controls;
 
 namespace MyInstrument.DMIbox.KeyboardBehaviors
 {

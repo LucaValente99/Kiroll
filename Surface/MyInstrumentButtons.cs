@@ -4,13 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Shapes;
-using System.Drawing;
-using System.Windows.Documents;
 using Brushes = System.Windows.Media.Brushes;
-using System.Drawing.Drawing2D;
-
-
 
 namespace MyInstrument.Surface
 {
@@ -67,14 +61,18 @@ namespace MyInstrument.Surface
         {
             Rack.DMIBox.CheckedNote = this;
             Rack.DMIBox.SelectedNote = MusicConversions.ToAbsNote(key).ToMidiNote(octave);
+
+            //This is used to avoid 'play' and 'stop' behaviors of notes to happen at wrong moments
             Rack.DMIBox.IsPlaying = false;
 
             // If the keyboard that contains the note is valid, colors will be update and the movement will be started.
             if (Rack.DMIBox.CheckPlayability())
             {
+                //Note selection behaviors 
                 MyInstrumentKeyboard.ResetColors("_" + keyboardID);
                 MyInstrumentKeyboard.UpdateColors("_" + keyboardID, toolKey);             
 
+                //Movement of keyboards
                 if (Rack.DMIBox.MyInstrumentSurface.LastKeyboardSelected != keyboardID)
                 {
                     Rack.DMIBox.MyInstrumentSurface.LastKeyboardSelected = keyboardID;

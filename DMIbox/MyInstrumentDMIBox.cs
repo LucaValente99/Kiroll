@@ -187,7 +187,7 @@ namespace MyInstrument.DMIbox
 
         // This method helps to understand if the note selected, the one that will be played, is valid or not.
         // The logic is easy: when the application starts just the keyboard with id == "_0", so the first keboard on screen, could be played.
-        // After the first case only the keyboard after the last played could be played.
+        // After the first case only the keyboard with id greater than the previous one by one can be played.
         public bool CheckPlayability()
         {
             bool startingCase = myInstrumentSurface.LastKeyboardPlayed == "";           

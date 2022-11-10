@@ -1,8 +1,5 @@
-﻿using MyInstrument.DMIbox;
-using NeeqDMIs.ATmega;
-using NeeqDMIs.NithSensors;
+﻿using NeeqDMIs.NithSensors;
 using System.Globalization;
-using System.Runtime.ExceptionServices;
 
 namespace MyInstrument.DMIbox.SensorBehaviors
 {

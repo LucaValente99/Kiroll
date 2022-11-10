@@ -1,17 +1,9 @@
-﻿using MyInstrument.DMIbox;
-using NeeqDMIs.Eyetracking.PointFilters;
-using NeeqDMIs.Music;
+﻿using NeeqDMIs.Eyetracking.PointFilters;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Drawing;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Shapes;
 using System.Windows.Threading;
-using System.Drawing;
 
 namespace MyInstrument.Surface
 {
@@ -51,7 +43,6 @@ namespace MyInstrument.Surface
             samplerTimer.Start();
 
         }
-       
         private void ListenMouse(object sender, EventArgs e)
         {           
             if (GetMousePos().X > scrollCenter.X) // +15 to avoid a small mistake that causes the keyboard to go back
@@ -65,17 +56,6 @@ namespace MyInstrument.Surface
             lastMean = filter.GetOutput();               
 
             Scroll();
-
-            //if (MyInstrumentKeyboard.GetPosition(Rack.DMIBox.MyInstrumentSurface.MusicKeyboards[0].Name).X == 684)            
-            //{
-            //    Rack.DMIBox.MyInstrumentSurface.MoveKeyboards(Rack.UserSettings.KeyHorizontalDistance);
-            //}
-            //Rack.DMIBox.MyInstrumentMainWindow.btnInstrumentSettingLabel.Content = MyInstrumentKeyboard.GetPosition(Rack.DMIBox.MyInstrumentSurface.MusicKeyboards[1].Name).X;
-            //if (MyInstrumentKeyboard.GetPosition(Rack.DMIBox.MyInstrumentSurface.MusicKeyboards[1].Name).X == 684)
-            //{
-            //    Rack.DMIBox.MyInstrumentSurface.MoveKeyboards(Rack.UserSettings.KeyHorizontalDistance);
-            //}
-
         }
         private void Scroll()
         {
@@ -87,7 +67,6 @@ namespace MyInstrument.Surface
                 scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - Math.Pow((Ydifference / proportionalVertical), 2) * Math.Sign(Ydifference));
             }
         }
-
         private Point GetMousePos()
         {
             temp = scrollViewer.PointToScreen(Mouse.GetPosition(scrollViewer));

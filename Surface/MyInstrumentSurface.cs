@@ -3,8 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Threading;
 
 namespace MyInstrument.Surface
 {
@@ -40,7 +38,7 @@ namespace MyInstrument.Surface
             this.canvas = canvas;
         }
 
-        // Creating a stack panel (keyboard) list
+        // Creating a keyboard list
         private List<StackPanel> CreateMusicKeyboards()
         {
             int count = 0;
@@ -59,7 +57,7 @@ namespace MyInstrument.Surface
 
         }
 
-        // Drawing stack panels (keyboards) on the screen with the scale associated
+        // Drawing keyboards on the screen with the scale associated
         public void DrawOnCanvas()
         {
             // Each time this method is called the canvas is cleaned at first, then the new keyboards will be added
@@ -88,7 +86,7 @@ namespace MyInstrument.Surface
             MyInstrumentKeyboard.UpdateOpacity();
         }
 
-        // Cleaning the canvas
+        // Cleaning the canvas and resetting variables
         public void ClearSurface()
         {
             foreach (StackPanel instrumentKeyboard in musicKeyboards)
@@ -110,7 +108,7 @@ namespace MyInstrument.Surface
             musicKeyboards.Clear();
         }
         
-        // Setting distancce between keys
+        // Setting vertical distance between keys
         public void SetVerticalDistance(double distance)
         {
             double addVerticalDistance;
@@ -161,14 +159,6 @@ namespace MyInstrument.Surface
             }
             verticalDistance = addVerticalDistance;
         }
-
-        public void SetHorizontalDistance(double distance)
-        {
-            DrawOnCanvas();
-            Canvas.SetLeft(musicKeyboards[1], MyInstrumentKeyboard.GetPosition(musicKeyboards[0].Name).X + distance);
-            horizontalDistance = distance;        
-        }
-
 
         // These two variables helps to control which keyboard needs to move and when (afterEighthKeyboard), then where it needs to stop before moving (firstTime).
 
