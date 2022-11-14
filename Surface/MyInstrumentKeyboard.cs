@@ -17,16 +17,16 @@ namespace MyInstrument.Surface
         public static Dictionary<string, Color> KeysColorCode = new Dictionary<string, Color>()
         {
             {"C", Colors.Red }, // C - Red
-            {"C#", Colors.DarkRed }, // C# - DarkRed
+            {"C#", Colors.Red }, // C# - DarkRed
             {"D", Colors.Yellow }, // D - Yellow
-            {"D#", Colors.DarkGoldenrod }, // D# - DarkGoldenrod
+            {"D#", Colors.Yellow }, // D# - DarkGoldenrod
             {"E", Colors.Blue }, // E - Blue
             {"F", Colors.SaddleBrown }, // F - it should be black (email Ludovico)
-            {"F#", Colors.Brown }, // F# - it should be black (email Ludovico) 
-            {"G", Colors.Orange }, // G - Orange
+            {"F#", Colors.SaddleBrown }, // F# - it should be black (email Ludovico) 
+            {"G", Colors.DarkOrange }, // G - Orange
             {"G#", Colors.DarkOrange }, // G# - DarkOrange
             {"A", Colors.Green }, // A - Green
-            {"A#", Colors.DarkGreen }, // A# - DarkGreen
+            {"A#", Colors.Green }, // A# - DarkGreen
             {"B", Colors.Purple }, // B - Purple
         };       
 
@@ -258,7 +258,15 @@ namespace MyInstrument.Surface
                 {
                     key.Background = new SolidColorBrush(KeysColorCode[MusicConversions.ToAbsNote(key.Name).ToStandardString()]);
                 }
-                key.Opacity = 1;
+
+                if (key.Name[0] == 's')
+                {
+                    key.Opacity = 0.7;
+                }
+                else
+                {
+                    key.Opacity = 1;
+                }
                 key.Foreground = new SolidColorBrush(Colors.Black);
                 key.BorderThickness = new Thickness(3);
                 key.BorderBrush = new SolidColorBrush(Colors.Black);
@@ -284,6 +292,9 @@ namespace MyInstrument.Surface
                 {
                     key.BorderThickness = new Thickness(5);
                     key.BorderBrush = new SolidColorBrush(Colors.Beige);
+                    if (key.Name[0] == 's'){
+                        key.Opacity = 0.7;
+                    }
                 }
             }
         }
@@ -307,7 +318,14 @@ namespace MyInstrument.Surface
                     {
                         if (key.Opacity == 0.6)
                         {
-                            key.Opacity = 1;
+                            if (key.Name[0] == 's')
+                            {
+                                key.Opacity = 0.7;
+                            }
+                            else
+                            {
+                                key.Opacity = 1;
+                            }
                         }
                     }
                 }

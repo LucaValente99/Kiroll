@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Shapes;
 using Brushes = System.Windows.Media.Brushes;
 
 namespace MyInstrument.Surface
@@ -41,14 +42,34 @@ namespace MyInstrument.Surface
             toolKey.Width = 150; //170
             toolKey.Height = 84.2; //100
             toolKey.Background = brush;
-            toolKey.BorderThickness = new Thickness(3);
             toolKey.BorderBrush = Brushes.Black;
-            toolKey.Content = MusicConversions.ToAbsNote(key).ToStandardString();
+            toolKey.BorderThickness = new Thickness(3);
 
-            // Button content
-            toolKey.Foreground = Brushes.Black;
-            toolKey.FontSize = 30;
-            toolKey.FontWeight = FontWeights.Bold;
+            if (Rack.UserSettings.KeyName == _KeyName.On)
+            {
+                toolKey.Content = MusicConversions.ToAbsNote(key).ToStandardString();
+
+                // Button content
+                toolKey.Foreground = Brushes.Black;
+                toolKey.FontSize = 30;
+                toolKey.FontWeight = FontWeights.Bold;
+            }
+            else
+            {
+                toolKey.Content = ".";
+
+                // Button content
+                toolKey.Foreground = Brushes.Black;
+                toolKey.VerticalContentAlignment = VerticalAlignment.Top;
+                toolKey.FontSize = 40;
+                toolKey.FontWeight = FontWeights.Bold;
+            }          
+
+            if (key[0] == 's')
+            {
+                toolKey.Opacity = 0.7;
+            }
+
 
             toolKey.MouseEnter += SelectNote;                
 
@@ -56,10 +77,25 @@ namespace MyInstrument.Surface
             this.key = key;
             this.keyboardID = keyboardID.ToString();
         }
-
         private void SelectNote(object sender, MouseEventArgs e)
         {
+            //Rack.DMIBox.OldCheckedNote = Rack.DMIBox.CheckedNote;
             Rack.DMIBox.CheckedNote = this;
+
+            //if (Rack.DMIBox.OldCheckedNote != null)
+            //{
+            //    Point btn1Point = Rack.DMIBox.OldCheckedNote.ToolKey.TransformToAncestor(Rack.DMIBox.MyInstrumentMainWindow).Transform(new Point(0, 0));
+            //    Point btn2Point = toolKey.TransformToAncestor(Rack.DMIBox.MyInstrumentMainWindow).Transform(new Point(0, 0));
+            //    Line l = new Line();
+            //    l.Stroke = new SolidColorBrush(Colors.Black);
+            //    l.StrokeThickness = 2.0;
+            //    l.X1 = btn1Point.X + 65;
+            //    l.X2 = btn2Point.X + 65;
+            //    l.Y1 = btn1Point.Y - 30;
+            //    l.Y2 = btn2Point.Y - 30;
+            //    Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Children.Add(l);
+            //}
+
             Rack.DMIBox.SelectedNote = MusicConversions.ToAbsNote(key).ToMidiNote(octave);
 
             // This is used to avoid 'play' and 'stop' behaviors of notes to happen at wrong moments

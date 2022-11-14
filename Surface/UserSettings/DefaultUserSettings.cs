@@ -40,6 +40,7 @@ namespace MyInstrument.Surface.UserSettings
         public _BlinkModes BlinkModes { get; set; } = _BlinkModes.Off;
         public _EyeCtrl EyeCtrl { get; set; } = _EyeCtrl.Off;
         public _BreathControlModes BreathControlModes { get; set; } = _BreathControlModes.Dynamic;
+        public _KeyName KeyName { get; set; } = _KeyName.On;
             
     }
 }

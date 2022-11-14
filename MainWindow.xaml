@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyInstrument"
         Title="MainWindow"
-        Width="Auto"
-        Height="Auto"
+        Width="1920"
+        Height="1080"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
@@ -290,13 +290,38 @@
                         </Button>
 
                         <!--End Eye Buttons-->
-                        
+
+                        <!--Key Name-->
+                        <Button Style="{DynamicResource RoundButton}"                      
+                            Name="btnCtrlKeyName"
+                            Width="45"
+                            Height="45"
+                            Margin ="15,0,0,0"
+                            VerticalAlignment="Stretch"
+                            BorderBrush="Black"
+                            BorderThickness="3"
+                            Click="btnCtrlKeyName_Click"
+                            MouseEnter="eyeGazeHandler">
+                            <Button.Background>
+                                <ImageBrush x:Name="btnKeyNameImage"
+                                ImageSource="Images/Backgrounds/Buttons.jpeg"
+                                Stretch="None"
+                                TileMode="Tile" />
+                            </Button.Background>
+                            <Image Source="Images/Icons/KeyName.png"
+                                Margin="0,0,0,0"
+                                Width="auto"
+                                Height="27" 
+                                VerticalAlignment="Center"/>
+                        </Button>
+                        <!--End Key Name-->
+
                         <!--Note Visualizer-->
                         <StackPanel Margin="15,0,0,0" Orientation="Horizontal" 
                         VerticalAlignment="Center"
                         HorizontalAlignment="Center">
                             <Border
-                            Width="80"
+                            Width="65"
                             Height="40"
                             BorderBrush="Black"
                             BorderThickness="4,4,2,4"
@@ -315,7 +340,7 @@
                                 TextAlignment="Center" />
                             </Border>
                             <Border
-                            Width="80"
+                            Width="65"
                             Height="40"
                             BorderBrush="Black"
                             BorderThickness="2,4,2,4">
@@ -333,7 +358,7 @@
                                 TextAlignment="Center" />
                             </Border>
                             <Border
-                                Width="80"
+                                Width="65"
                                 Height="40"
                                 BorderBrush="Black"
                                 BorderThickness="2,4,4,4" 
@@ -357,6 +382,7 @@
                 </Grid>
 
             </Border>
+            
             <!--Right Top Bar Embellishment-->
             <Image Source="Images/Embellishments/LeftRight_TopBar.png"
                     Margin="10,5,0,5"
@@ -365,7 +391,7 @@
                    VerticalAlignment="Top"
                 ></Image>
             <!--End Right Top Bar Embellishment-->
-
+            
         </StackPanel>
         <!--#endregion End Top Bar (Row 0)-->
 
@@ -500,15 +526,15 @@
                             Grid.Row="1"
                             VerticalAlignment="Bottom"/>
 
-                <!--Scale-->
+                <!--Key-->
                 <StackPanel Grid.Row="2"  Orientation="Horizontal" HorizontalAlignment="Center">
 
                     <Label
-                        Margin="40,0,15,0"
+                        Margin="55,0,15,0"
                         FontFamily="Papyrus"
                         FontWeight="Bold"
                         FontSize="20"
-                        Foreground="White" Height="36">Scale</Label>
+                        Foreground="White" Height="39">Key</Label>
 
                     <Button Style="{StaticResource RoundButton}"
                             Name="btnScaleMinus"
@@ -569,7 +595,7 @@
                     </Button>
 
                 </StackPanel>
-                <!--End Scale-->
+                <!--End Key-->
 
                 <Border Style="{StaticResource SeparatorStyleHorizontal}"
                             Grid.Row="2"
@@ -577,13 +603,13 @@
 
                 <StackPanel Grid.Row="3"  Orientation="Horizontal" HorizontalAlignment="Center">
 
-                    <!--Code-->
+                    <!--Scale-->
                         <Label
                         Margin="40,0,15,0"
                         FontFamily="Papyrus"
                         FontWeight="Bold"
                         FontSize="20"
-                        Foreground="White" Height="36">Code</Label>
+                        Foreground="White" Height="36">Scale</Label>
 
                         <Button Style="{StaticResource RoundButton}"
                             Name="btnCodeMinus"
@@ -642,7 +668,7 @@
                                    Width="auto"
                                    Height="auto"/>
                         </Button>
-                    <!--End Code-->
+                    <!--End Scale-->
                     </StackPanel>
 
                 <Border Style="{StaticResource SeparatorStyleHorizontal}"

@@ -36,6 +36,7 @@ namespace MyInstrument.Surface.UserSettings
         _BlinkModes BlinkModes { get; set; }
         _EyeCtrl EyeCtrl { get; set; }
         _BreathControlModes BreathControlModes { get; set; } 
+        _KeyName KeyName { get; set; }
 
     }
 }

@@ -31,7 +31,7 @@ namespace MyInstrument
         private bool btnSlidePlayOn = false;
         private bool btnSharpNotesOn = false;
         private bool btnBlinkOn = false;
-        private bool btnBlowkOn = false;
+        private bool btnKeyNameOn = true;
         private bool btnEyeOn = false;
         private bool playMetronome = false;
 
@@ -233,7 +233,7 @@ namespace MyInstrument
                 // If doubleClose eyes behave happen click became True so a button will be clicked, the last gazed          
                 if (Click)
                 {
-                    Rack.DMIBox.LastGazedButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                    Rack.DMIBox.LastGazedButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));                  
 
                     //Background changes of gazed buttons
                     if (Rack.DMIBox.LastGazedButton.Background == SelectionBrush)
@@ -243,7 +243,8 @@ namespace MyInstrument
                     else
                     {
                         oldBackGround = Rack.DMIBox.LastGazedButton.Background;
-                    }
+                    }                                 
+
                     Click = false;
                 }
 
@@ -290,6 +291,13 @@ namespace MyInstrument
                 oldBackGround = Rack.DMIBox.LastGazedButton.Background;
 
                 Rack.DMIBox.LastGazedButton.Background = SelectionBrush;
+
+                // This avoid playing a key while clicking on button              
+                if (Rack.DMIBox.SelectedNote != NeeqDMIs.Music.MidiNotes.NaN)
+                {
+                    Rack.DMIBox.CheckedNote = null;
+                }              
+
             }           
             
         }
@@ -317,6 +325,11 @@ namespace MyInstrument
                 btnStart.Background = ActiveBrush;
                 btnStartLabel.Content = "Running...";
 
+                if (Rack.UserSettings.KeyName == _KeyName.On)
+                {
+                    btnCtrlKeyName.Background = ActiveBrush;
+                }         
+
                 // Enabling Scale-Octave-Code & slider
                 txtScale.Text = Rack.UserSettings.ScaleName;
                 txtCode.Text = Rack.UserSettings.ScaleCode;
@@ -342,6 +355,7 @@ namespace MyInstrument
             else
             {
                 myInstrumentStarted = false;
+
                 // Graphic changes             
                 btnStartImage.Source = startIcon;
                 btnStart.Background = DisableBrush;
@@ -350,6 +364,7 @@ namespace MyInstrument
                 txtBreathPort.Text = "";
                 txtMetronome.Text = "";
                 btnMetronome.Background = buttonBackground;
+                btnCtrlKeyName.Background = buttonBackground;
 
                 // Disabling Scale-Octave-Code, slider & Metronome, Blink & Blow Behaviors
                 // lstScaleChanger.IsEnabled = false;
@@ -425,6 +440,27 @@ namespace MyInstrument
                     Rack.UserSettings.EyeCtrl = _EyeCtrl.Off;
                     Rack.DMIBox.TobiiModule.MouseEmulator.EyetrackerToMouse = false;
                     Rack.DMIBox.TobiiModule.MouseEmulator.CursorVisible = true;
+                }
+            }
+        }
+
+        private void btnCtrlKeyName_Click(object sender, RoutedEventArgs e)
+        {
+            if (myInstrumentStarted)
+            {
+                if (!btnKeyNameOn)
+                {
+                    btnKeyNameOn = true;
+                    Rack.UserSettings.KeyName = _KeyName.On;
+                    btnCtrlKeyName.Background = ActiveBrush;
+                    Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+                }
+                else
+                {
+                    btnKeyNameOn = false;
+                    Rack.UserSettings.KeyName = _KeyName.Off;
+                    btnCtrlKeyName.Background = buttonBackground;
+                    Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
                 }
             }
         }
@@ -919,7 +955,7 @@ namespace MyInstrument
                     Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
                 }
             }
-        }      
+        }
 
         #endregion Instrument Settings 2
 

@@ -31,6 +31,12 @@
         Off
     }
 
+    public enum _KeyName
+    {
+        On,
+        Off
+    }
+
     public enum _BlinkModes
     {
         Scale,
