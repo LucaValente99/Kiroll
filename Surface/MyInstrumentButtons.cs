@@ -79,23 +79,7 @@ namespace MyInstrument.Surface
         }
         private void SelectNote(object sender, MouseEventArgs e)
         {
-            //Rack.DMIBox.OldCheckedNote = Rack.DMIBox.CheckedNote;
             Rack.DMIBox.CheckedNote = this;
-
-            //if (Rack.DMIBox.OldCheckedNote != null)
-            //{
-            //    Point btn1Point = Rack.DMIBox.OldCheckedNote.ToolKey.TransformToAncestor(Rack.DMIBox.MyInstrumentMainWindow).Transform(new Point(0, 0));
-            //    Point btn2Point = toolKey.TransformToAncestor(Rack.DMIBox.MyInstrumentMainWindow).Transform(new Point(0, 0));
-            //    Line l = new Line();
-            //    l.Stroke = new SolidColorBrush(Colors.Black);
-            //    l.StrokeThickness = 2.0;
-            //    l.X1 = btn1Point.X + 65;
-            //    l.X2 = btn2Point.X + 65;
-            //    l.Y1 = btn1Point.Y - 30;
-            //    l.Y2 = btn2Point.Y - 30;
-            //    Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Children.Add(l);
-            //}
-
             Rack.DMIBox.SelectedNote = MusicConversions.ToAbsNote(key).ToMidiNote(octave);
 
             // This is used to avoid 'play' and 'stop' behaviors of notes to happen at wrong moments

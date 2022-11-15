@@ -40,9 +40,6 @@ namespace MyInstrument.DMIbox
         private MyInstrumentButtons checkedNote = null;
         public MyInstrumentButtons CheckedNote { get => checkedNote; set => checkedNote = value; }
 
-        //private MyInstrumentButtons oldCheckedNote = null;
-        //public MyInstrumentButtons OldCheckedNote { get => oldCheckedNote; set => oldCheckedNote = value; }
-
         // Main classes instantiated when the application starts, into MyInstrumentSetup class
         public MainWindow MyInstrumentMainWindow { get; set; }
         public KeyboardModule KeyboardModule { get; set; }    
@@ -160,7 +157,15 @@ namespace MyInstrument.DMIbox
 
                     myInstrumentSurface.LastKeyboardPlayed = checkedNote.KeyboardID;
 
-                    Rack.UserSettings.NoteName = checkedNote.Key + checkedNote.Octave;
+                    if (checkedNote.Key.Contains("s"))
+                    {
+                        Rack.UserSettings.NoteName = checkedNote.Key[1] + "#" + checkedNote.Octave;
+                    }
+                    else
+                    {
+                        Rack.UserSettings.NoteName = checkedNote.Key + checkedNote.Octave;
+                    }
+                    
                     Rack.UserSettings.NotePitch = ((int)selectedNote).ToString();
                     Rack.UserSettings.NoteVelocity = velocity.ToString();
                 }
@@ -170,7 +175,7 @@ namespace MyInstrument.DMIbox
         // Stopping the last played note 
         public void StopSelectedNote()
         {
-            if (MidiModule.IsMidiOk() && isPlaying == true && 
+            if (MidiModule.IsMidiOk() && isPlaying == true &&
                 Rack.UserSettings.MyInstrumentControlMode != _MyInstrumentControlModes.NaN &&
                 !MyInstrumentMainWindow.MyInstrumentSettingsOpened)
             {                

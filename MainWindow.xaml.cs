@@ -104,17 +104,13 @@ namespace MyInstrument
 
         //Blink Behaviors
         private int blinkIndex = 0;
-        public int BlinkIndex { get => blinkIndex; set => blinkIndex = value; }
-
         private Dictionary<int, string> blinkBehaviors = new Dictionary<int, string>()
         {
-            { 0, "Scale" }, { 1, "Octave" }, { 2, "Code" }
+            { 0, "Key" }, { 1, "Octave" }, { 2, "Scale" }
         };
 
         //Blow Behaviors
         private int blowIndex = 0;
-        public int BlowIndex { get => blowIndex; set => blowIndex = value; }
-
         private Dictionary<int, string> blowBehaviors = new Dictionary<int, string>()
         {
             { 0, "Dynamic" }, { 1, "Static" }
@@ -200,7 +196,7 @@ namespace MyInstrument
                 {
                     txtVelocityMouth.Text = "_";
                 }
-            }
+        }
 
             // When Scale, Code or Octave will change 'DrawOnCanvas' will be called.
             // This is necessary cause is not possible to access canvas when using blink behaviors.
@@ -769,13 +765,13 @@ namespace MyInstrument
                     txtBlink.Text = blinkBehaviors[blinkIndex];
                     switch (blinkBehaviors[blinkIndex])
                     {
-                        case "Scale":
+                        case "Key":
                             Rack.UserSettings.BlinkModes = _BlinkModes.Scale;
                             break;
                         case "Octave":
                             Rack.UserSettings.BlinkModes = _BlinkModes.Octave;
                             break;
-                        case "Code":
+                        case "Scale":
                             Rack.UserSettings.BlinkModes = _BlinkModes.Code;
                             break;
                     }
@@ -793,13 +789,13 @@ namespace MyInstrument
                     txtBlink.Text = blinkBehaviors[blinkIndex];
                     switch (blinkBehaviors[blinkIndex])
                     {
-                        case "Scale":
+                        case "Key":
                             Rack.UserSettings.BlinkModes = _BlinkModes.Scale;
                             break;
                         case "Octave":
                             Rack.UserSettings.BlinkModes = _BlinkModes.Octave;
                             break;
-                        case "Code":
+                        case "Scale":
                             Rack.UserSettings.BlinkModes = _BlinkModes.Code;
                             break;
                     }
