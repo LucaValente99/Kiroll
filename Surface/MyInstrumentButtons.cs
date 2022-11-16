@@ -44,6 +44,7 @@ namespace MyInstrument.Surface
             toolKey.Background = brush;
             toolKey.BorderBrush = Brushes.Black;
             toolKey.BorderThickness = new Thickness(3);
+            //toolKey.Style = (Style)FindResource("OverButton");
 
             if (Rack.UserSettings.KeyName == _KeyName.On)
             {
