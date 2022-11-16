@@ -131,8 +131,8 @@ namespace MyInstrument.DMIbox
         public void ResetModulationAndPressure()
         {
             breathOn = false;
-            Pressure = 127;
-            Velocity = 127;
+            pressure = 127;
+            velocity = 127;
         }
 
         // Playing the selected note

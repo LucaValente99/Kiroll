@@ -1,4 +1,5 @@
 ﻿using NeeqDMIs.Eyetracking.Tobii;
+using System.Windows;
 
 namespace MyInstrument.DMIbox.TobiiBehaviors
 {
@@ -34,7 +35,7 @@ namespace MyInstrument.DMIbox.TobiiBehaviors
         public override void Event_rightClose()
         {
             if (Rack.UserSettings.EyeCtrl == _EyeCtrl.On)
-            {
+             {
                 if (Rack.UserSettings.BlinkModes == _BlinkModes.Scale)
                 {
                     if (Rack.DMIBox.MyInstrumentMainWindow.ScaleIndex < 11)

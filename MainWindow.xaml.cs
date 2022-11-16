@@ -1,5 +1,6 @@
 ﻿using MyInstrument.DMIbox;
 using MyInstrument.Surface;
+using NeeqDMIs.ErrorLogging;
 using System;
 using System.Collections.Generic;
 using System.Media;
@@ -153,6 +154,7 @@ namespace MyInstrument
         public MainWindow()
         {
             InitializeComponent();
+            TraceAdder.AddTrace();
 
             metronomeTimer = new Timer();
             updater = new Timer();
@@ -312,7 +314,6 @@ namespace MyInstrument
         {
             if (!myInstrumentStarted)
             {
-
                 MyInstrumentSetup myInstrumentSetup = new MyInstrumentSetup(this);
                 myInstrumentSetup.Setup();              
 
@@ -735,13 +736,13 @@ namespace MyInstrument
 
                     switch (txtBlink.Text)
                     {
-                        case "Scale":
+                        case "Key":
                             Rack.UserSettings.BlinkModes = _BlinkModes.Scale;
                             break;
                         case "Octave":
                             Rack.UserSettings.BlinkModes = _BlinkModes.Octave;
                             break;
-                        case "Code":
+                        case "Scale":
                             Rack.UserSettings.BlinkModes = _BlinkModes.Code;
                             break;
                     }

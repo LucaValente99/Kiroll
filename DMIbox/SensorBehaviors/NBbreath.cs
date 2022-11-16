@@ -30,7 +30,10 @@ namespace MyInstrument.DMIbox.SensorBehaviors
 
                 }          
 
-                Rack.DMIBox.Pressure = (int) (b * sensitivity);
+                if (Rack.DMIBox.MidiModule.IsMidiOk())
+                {
+                    Rack.DMIBox.Pressure = (int)(b * sensitivity);
+                }
 
                 if (b > onThresh)
                 {
