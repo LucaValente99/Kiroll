@@ -5,19 +5,18 @@
          StartupUri="MainWindow.xaml">
     <Application.Resources>
 
-        <!--Button Over style
-        <Style x:Key="OverButton" TargetType="Button">
+        <!--Button Letter Over style-->
+        <Style x:Key="OverButtonLetter" TargetType="Button">
             <Setter Property="OverridesDefaultStyle" Value="True"/>
-            <Setter Property="Margin" Value="5"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border Name="border" 
-                        BorderThickness="3"
+                        BorderThickness="2"
                         BorderBrush="Transparent" 
-                        CornerRadius="3" 
+                        CornerRadius="10" 
                         Background="{TemplateBinding Background}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <ContentPresenter Name="content" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
@@ -28,7 +27,31 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        End Button Over style-->
-        
+        <!--End Button Letter Over style-->
+
+        <!--Button Dot Over style-->
+        <Style x:Key="OverButtonDot" TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border" 
+                        BorderThickness="2"
+                        BorderBrush="Transparent" 
+                        CornerRadius="10" 
+                        Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="Black" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!--End Button Dot Over style-->
+
     </Application.Resources>
 </Application>

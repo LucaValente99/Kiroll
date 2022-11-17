@@ -198,7 +198,7 @@ namespace MyInstrument
                 {
                     txtVelocityMouth.Text = "_";
                 }
-        }
+            }
 
             // When Scale, Code or Octave will change 'DrawOnCanvas' will be called.
             // This is necessary cause is not possible to access canvas when using blink behaviors.
@@ -231,7 +231,7 @@ namespace MyInstrument
                 // If doubleClose eyes behave happen click became True so a button will be clicked, the last gazed          
                 if (Click)
                 {
-                    Rack.DMIBox.LastGazedButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));                  
+                    Rack.DMIBox.LastGazedButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
 
                     //Background changes of gazed buttons
                     if (Rack.DMIBox.LastGazedButton.Background == SelectionBrush)
@@ -241,7 +241,7 @@ namespace MyInstrument
                     else
                     {
                         oldBackGround = Rack.DMIBox.LastGazedButton.Background;
-                    }                                 
+                    }
 
                     Click = false;
                 }
@@ -255,10 +255,10 @@ namespace MyInstrument
                 {
                     btnCtrlEye.Background = ActiveBrush;
                 }
-                
 
-                if (btnBlinkOn) 
-                {                  
+
+                if (btnBlinkOn)
+                {
                     txtBlink.Foreground = new SolidColorBrush(Colors.White);
                 }
                 else
@@ -272,10 +272,51 @@ namespace MyInstrument
                 btnCtrlEye.Background = buttonBackground;
                 txtBlink.Foreground = WarningBrush;
             }
+
+            StackPanel sp;
+
+            if (Rack.DMIBox.MyInstrumentSurface.LastKeyboardPlayed == "")
+            {
+                sp = MyInstrumentKeyboard.GetKeyboard("_0");
+            }
+            else
+            {
+                sp = MyInstrumentKeyboard.GetKeyboard("_" + ((Convert.ToInt32(Rack.DMIBox.MyInstrumentSurface.LastKeyboardPlayed) + 1) % 16).ToString());
+            }
+
+
+            if (letBlink)
+                {
+                    if (sp.Opacity > 0.5 && !flag)
+                    {
+                        sp.Opacity -= 0.02;
+                    }
+                    else if (sp.Opacity <= 0.5 && !flag)
+                    {
+                        flag = true;
+                    }
+                    else if (flag && sp.Opacity < 1)
+                    {
+                        sp.Opacity += 0.02;
+                    }
+                    else if (flag && sp.Opacity >= 1)
+                    {
+                        flag = false;
+                    }
+                }
+                else
+                {
+                    sp.Opacity = 1;
+                }               
+            
         }
+        bool flag = false;
+
+        bool letBlink = false;
+        public bool LetBlink { get => letBlink; set => letBlink = value; }
 
         // Each button (Start & Stop excluded) has this behave, if gazed, the button will be selected waiting to be clicked
-        
+
         private dynamic oldBackGround; // used to select correct button background when it is gazed, selected or unselected
         public dynamic OldBackGround { get => oldBackGround; set => oldBackGround = value; }
         private void eyeGazeHandler(object sender, MouseEventArgs e)
@@ -373,8 +414,9 @@ namespace MyInstrument
                 txtHorizontalDistance.Text = "";
                 txtBlink.Text = "";
                 txtBSwitc.Text = "";
-                playMetronome = false;  
-                         
+                playMetronome = false;
+                letBlink = false;
+
                 // Resetting surface
                 Rack.DMIBox.MyInstrumentSurface.ClearSurface();
 
@@ -481,6 +523,8 @@ namespace MyInstrument
                     btnBreathOn = false;
                     btnCtrlKeyboard.IsEnabled = false;
                     btnCtrlBreath.IsEnabled = true;
+                    btnCtrlKeyboard.Background = ActiveBrush;
+                    btnCtrlBreath.Background = buttonBackground;
                     txtBSwitc.Foreground = WarningBrush;
 
                     Rack.UserSettings.MyInstrumentControlMode = _MyInstrumentControlModes.Keyboard;
@@ -499,6 +543,8 @@ namespace MyInstrument
                     btnKeyboardOn = false;
                     btnCtrlBreath.IsEnabled = false;
                     btnCtrlKeyboard.IsEnabled = true;
+                    btnCtrlBreath.Background = ActiveBrush;
+                    btnCtrlKeyboard.Background = buttonBackground;
                     txtBSwitc.Foreground = new SolidColorBrush(Colors.White);
 
                     Rack.UserSettings.MyInstrumentControlMode = _MyInstrumentControlModes.Breath;

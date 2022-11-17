@@ -24,7 +24,7 @@ namespace MyInstrument.Surface.UserSettings
         public double KeyVerticaDistance { get; set; } = 20;
         public double KeyHorizontalDistance { get; set; } = 300;
         public double KeyboardHeight { get; set; } = 590;
-        public int CanvasWidth { get; set; } = 1518;
+        public int CanvasWidth { get; set; } = 1520; //1518
 
         // MIDI and Sensor default settings
         public int SensorPort { get; set; } = 4;

@@ -5,7 +5,9 @@ using NeeqDMIs.MIDI;
 using NeeqDMIs.Music;
 using NeeqDMIs.NithSensors;
 using System;
+using System.Drawing;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace MyInstrument.DMIbox
 {
@@ -151,6 +153,7 @@ namespace MyInstrument.DMIbox
                     }
                    
                     MidiModule.PlayNote((int)selectedNote, velocity);
+
                     isPlaying = true;
 
                     oldMidiNote = selectedNote;
@@ -168,6 +171,15 @@ namespace MyInstrument.DMIbox
                     
                     Rack.UserSettings.NotePitch = ((int)selectedNote).ToString();
                     Rack.UserSettings.NoteVelocity = velocity.ToString();
+                    
+                }
+                else
+                {
+                    if (!(Rack.UserSettings.SlidePlayMode == _SlidePlayModes.On &&
+                        CheckedNote.KeyboardID == MyInstrumentSurface.LastKeyboardPlayed))
+                    {
+                        MyInstrumentMainWindow.LetBlink = true;
+                    }               
                 }
             }
         }

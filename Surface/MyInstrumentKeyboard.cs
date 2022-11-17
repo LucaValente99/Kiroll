@@ -94,7 +94,7 @@ namespace MyInstrument.Surface
             {
                 Rack.UserSettings.KeyboardHeight = 590; //700
                 musicKeyboard.Height = Rack.UserSettings.KeyboardHeight;
-                Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Height = 781; //927
+                Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Height = 783; //927
             }          
             
             FillStackPanel();
@@ -247,17 +247,9 @@ namespace MyInstrument.Surface
         {
             StackPanel keyboard = Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Children[Int32.Parse(id.Substring(1))] as StackPanel;
 
-            int i = 0;
             foreach (Button key in keyboard.Children)
             {
-                if (keyboard.Children.Count == 7)
-                {
-                    key.Background = new SolidColorBrush(KeysColorCode[MusicConversions.ToAbsNote(key.Name).ToStandardString()]);
-                }
-                else
-                {
-                    key.Background = new SolidColorBrush(KeysColorCode[MusicConversions.ToAbsNote(key.Name).ToStandardString()]);
-                }
+                key.Background = new SolidColorBrush(KeysColorCode[MusicConversions.ToAbsNote(key.Name).ToStandardString()]);
 
                 if (key.Name[0] == 's')
                 {
@@ -270,7 +262,6 @@ namespace MyInstrument.Surface
                 key.Foreground = new SolidColorBrush(Colors.Black);
                 key.BorderThickness = new Thickness(3);
                 key.BorderBrush = new SolidColorBrush(Colors.Black);
-                i++;
             }
 
         }
@@ -290,8 +281,6 @@ namespace MyInstrument.Surface
                 }
                 else
                 {
-                    key.BorderThickness = new Thickness(5);
-                    key.BorderBrush = new SolidColorBrush(Colors.Beige);
                     if (key.Name[0] == 's'){
                         key.Opacity = 0.7;
                     }
