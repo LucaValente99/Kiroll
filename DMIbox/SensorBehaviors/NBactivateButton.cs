@@ -27,17 +27,20 @@ namespace MyInstrument.DMIbox.SensorBehaviors
 
                 }
 
-                if (b > onThresh)
+                if (Rack.DMIBox.LastGazedButton != null && Rack.UserSettings.NoteName == "_")
                 {
-                    if (!Rack.DMIBox.MyInstrumentMainWindow.Click && letClickAgain)
+                    if (b > onThresh)
                     {
-                        letClickAgain= false;
-                        Rack.DMIBox.MyInstrumentMainWindow.Click = true;
+                        if (!Rack.DMIBox.MyInstrumentMainWindow.Click && letClickAgain)
+                        {
+                            letClickAgain = false;
+                            Rack.DMIBox.MyInstrumentMainWindow.Click = true;
+                        }
                     }
-                }
-                else
-                {
-                    letClickAgain = true;
+                    else
+                    {
+                        letClickAgain = true;
+                    }
                 }
             }
 

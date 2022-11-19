@@ -22,7 +22,7 @@ namespace MyInstrument.DMIbox
         public bool IsPlaying { get => isPlaying; set => isPlaying = value; }
 
         // Used to click buttons using eye tracker
-        private Button lastGazedButton = new Button();
+        private Button lastGazedButton = null;
         public Button LastGazedButton { get => lastGazedButton; set => lastGazedButton = value; }
 
         // MIDI & Sensors
@@ -193,7 +193,7 @@ namespace MyInstrument.DMIbox
             {                
                 MidiModule.StopNote((int)selectedNote);
                 isPlaying = false;                                                                                         
-                checkedNote = null;
+                //checkedNote = null;
             }
             else
             {

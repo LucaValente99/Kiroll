@@ -4,13 +4,13 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Shapes;
 using Brushes = System.Windows.Media.Brushes;
 
 namespace MyInstrument.Surface
 {
     public class MyInstrumentButtons : Button
     {
+        #region Class attributes
         private Button toolKey;
         public Button ToolKey
         {
@@ -33,17 +33,16 @@ namespace MyInstrument.Surface
 
         private string keyboardID;
         public string KeyboardID { get { return keyboardID; } set { keyboardID = value; } }
+
+        #endregion
         public MyInstrumentButtons(string key, int octave,  SolidColorBrush brush, int keyboardID) : base()
         {
-
             // Playable key
             toolKey = new Button();
             toolKey.Name = key;
             toolKey.Width = 150; //170
             toolKey.Height = 84.2; //100
-            toolKey.Background = brush;
-            toolKey.BorderBrush = Brushes.Black;
-            toolKey.BorderThickness = new Thickness(3);         
+            toolKey.Background = brush;        
 
             if (Rack.UserSettings.KeyName == _KeyName.On)
             {
@@ -52,7 +51,7 @@ namespace MyInstrument.Surface
 
                 // Button content
                 toolKey.Foreground = Brushes.Black;
-                toolKey.FontSize = 30;
+                toolKey.FontSize = 25;
                 toolKey.FontWeight = FontWeights.Bold;
             }
             else
@@ -80,8 +79,10 @@ namespace MyInstrument.Surface
         }
         private void SelectNote(object sender, MouseEventArgs e)
         {
+            // Selection is enabled just when instrument settings are not opened
             if (Rack.DMIBox.MyInstrumentMainWindow.MyInstrumentSettingsOpened == false)
             {
+                #region OpacityGazedKey
                 if (Rack.DMIBox.CheckedNote != null)
                 {
                     //Resetting the key opacity of the last gazed key
@@ -90,9 +91,8 @@ namespace MyInstrument.Surface
                         Rack.DMIBox.CheckedNote.ToolKey.Opacity = 1;
                         //Rack.DMIBox.CheckedNote.ToolKey.Foreground = Brushes.Black;
                     }
-                }
+                }                
 
-                Rack.DMIBox.CheckedNote = this;
                 //Reducing the key opacity to understand where the user are looking at,
                 //just for keys that are not dark or just played (keyboard already played)
                 if (toolKey.Opacity != 0.5 && KeyboardID != Rack.DMIBox.MyInstrumentSurface.LastKeyboardPlayed)
@@ -100,20 +100,33 @@ namespace MyInstrument.Surface
                     toolKey.Opacity = 0.4;
                     //toolKey.Foreground = Brushes.White;
                 }
+                #endregion
 
+                Rack.DMIBox.CheckedNote = this;
                 Rack.DMIBox.SelectedNote = MusicConversions.ToAbsNote(key).ToMidiNote(octave);
 
-                // This is used to avoid 'play' and 'stop' behaviors of notes to happen at wrong moments
+                // IsPlaying & LastGazedNote
+                #region VariousChecks
+
+                // This is used to avoid 'play' and 'stop' behaviors of notes to happen at wrong moments.
+                // In fact when a key is playing, the user could already select a new key from another keyboard, just
+                // looking at it. So this variable helps to understand if calling the StopSelectedNote method (written into DMIbox)
+                // on the new key selected or the old key which may still be playing.
                 Rack.DMIBox.IsPlaying = false;
 
-                // If blow is used to click buttons, it should not work when user is playing keys
-                Rack.DMIBox.LastGazedButton.Background = Rack.DMIBox.MyInstrumentMainWindow.OldBackGround;
-                Rack.DMIBox.LastGazedButton = new Button();
+                // If blow is used to click buttons, it should not work when user is playing keys.
+                if (Rack.DMIBox.LastGazedButton != null)
+                {
+                    Rack.DMIBox.LastGazedButton.Background = Rack.DMIBox.MyInstrumentMainWindow.OldBackGround;
+                    Rack.DMIBox.LastGazedButton = null;
+                }
+                #endregion
 
-                // If the keyboard that contains the note is valid, colors will be update and the movement will be started.
+                // If the keyboard that contains the key is valid, colors will be update and the movement will be started.
+                #region RightKeyboardGazed
                 if (Rack.DMIBox.CheckPlayability())
                 {
-                    //Note selection behaviors 
+                    //Updating keys colors if the user gaze at the playable keyboard 
                     MyInstrumentKeyboard.ResetColors("_" + keyboardID);
                     MyInstrumentKeyboard.UpdateColors("_" + keyboardID, toolKey);
 
@@ -124,14 +137,19 @@ namespace MyInstrument.Surface
                         Rack.DMIBox.MyInstrumentSurface.MoveKeyboards(Rack.UserSettings.KeyHorizontalDistance);
                     }
                     
+                    //If the user gaze at the right keyboard the blinkKeyboardBehave should stop
                     Rack.DMIBox.MyInstrumentMainWindow.LetBlink = false;
                 }
-
+                #endregion
+                
+                // Managing selection of key whe SlidePlay is ON
+                #region SlidePlay
                 if (Rack.UserSettings.SlidePlayMode == _SlidePlayModes.On && Rack.DMIBox.BreathOn == true)
                 {
                     MyInstrumentKeyboard.GetKeyboard("_" + keyboardID).Opacity = 1;
                     Rack.DMIBox.PlaySelectedNote();
                 }
+                #endregion
             }
         }
     }

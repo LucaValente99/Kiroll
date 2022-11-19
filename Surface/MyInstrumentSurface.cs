@@ -101,6 +101,7 @@ namespace MyInstrument.Surface
             lastKeyboardSelected = "";
             afterEighthKeyboard = false;
             firstTime = false;
+            Rack.DMIBox.CheckedNote = null;
 
             // This needs to make checkPlayability works on DMIbox (keyboardID == (lastKeyboardPlayed + 1) % 16)
             MyInstrumentKeyboard.ID = 0;

@@ -36,23 +36,18 @@ namespace MyInstrument
         private bool btnEyeOn = false;
         private bool playMetronome = false;
 
-        //Used to track doubleClose eyes behave
-        private bool click = false;
-        public bool Click { 
-            
-            get => click; 
-            set { 
-                    if (value != click)
-                    {
-                        click = value;
-                    }
-            }
-        }
+        #endregion        
 
+        // Variables to control blinkKeyboard behave
+        #region BlinkKeyboard_variables
+        StackPanel blinkKeyboard;
+        bool flag = false;
+        bool letBlink = false;
+        public bool LetBlink { get => letBlink; set => letBlink = value; }
         #endregion
 
-        // Sensors params
-        #region SensorParams
+        // Sensors params and behaviors
+        #region SensorParams&behaviors
         public int SensorPort
         {
             get { return Rack.UserSettings.SensorPort; }
@@ -64,10 +59,27 @@ namespace MyInstrument
                 }
             }
         }
+
+        //Used to track doubleClose eyes behave
+        private bool click = false;
+        public bool Click
+        {
+
+            get => click;
+            set
+            {
+                if (value != click)
+                {
+                    click = value;
+                }
+            }
+        }
+
         #endregion
 
         // Dictionaries used to select Scale, Octave and Code
         #region Scale-Octave-Code
+
         private int scaleIndex = 0;
         private int oldScaleIndex = 0;
         public int ScaleIndex { get => scaleIndex; set => scaleIndex = value; }
@@ -118,13 +130,14 @@ namespace MyInstrument
         };
         #endregion
 
-        // Colors and backgrounds of buttons
+        //Colors and backgrounds are used to highlight activation or deactivation of features clicking on the relevant buttons
         #region ColorsAndBackgrounds
-        //Colors used to highlight activation or deactivation of features clicking on the relevant buttons
+
         private readonly SolidColorBrush ActiveBrush = new SolidColorBrush(Colors.LightYellow);
         private readonly SolidColorBrush WarningBrush = new SolidColorBrush(Colors.DarkRed);
         private readonly SolidColorBrush DisableBrush = new SolidColorBrush(Colors.Transparent);
-        private readonly SolidColorBrush SelectionBrush = new SolidColorBrush(Colors.Yellow);
+        // SelectionBrush is used just when eyetracker control is ON, because the mouse could not be seen anymore.
+        private readonly SolidColorBrush SelectionBrush = new SolidColorBrush(Colors.Yellow); 
 
         //Icons and Backgrounds
         BitmapImage startIcon = new BitmapImage(
@@ -154,11 +167,12 @@ namespace MyInstrument
         public MainWindow()
         {
             InitializeComponent();
-            TraceAdder.AddTrace();
+
+            TraceAdder.AddTrace(); // Used to log errors
 
             metronomeTimer = new Timer();
             updater = new Timer();
-
+            // "(1.0 / (Rack.UserSettings.BPMmetronome / 60.0)) * 1000" is used to convert BPM into ms (milliseconds).
             metronomeTimer.Interval = Convert.ToInt32((1.0 / (Rack.UserSettings.BPMmetronome / 60.0)) * 1000);
             updater.Interval = 10;
 
@@ -168,6 +182,8 @@ namespace MyInstrument
             metronomeTimer.Start();
            
         }
+
+        #region Timers Behaviors
         private void Metronome(object sender, EventArgs e)
         {
             if (playMetronome)
@@ -181,6 +197,9 @@ namespace MyInstrument
         private void Update(object sender, EventArgs e)
         {
             //Graphic changes on Note Visualizer
+
+            #region NoteVisualizer_graphicChanges
+
             txtPitch.Text = Rack.UserSettings.NotePitch;
             txtNoteName.Text = Rack.UserSettings.NoteName;
 
@@ -192,22 +211,28 @@ namespace MyInstrument
             {
                 if (txtPitch.Text != "_")
                 {
-                    txtVelocityMouth.Text = Rack.UserSettings.NotePressure;
+                    txtVelocityMouth.Text = Rack.UserSettings.NotePressure; // Intensity of user blow
                 }
                 else
                 {
+                    // If the user is not blowing "_" will be showned
                     txtVelocityMouth.Text = "_";
                 }
             }
+
+            #endregion
 
             // When Scale, Code or Octave will change 'DrawOnCanvas' will be called.
             // This is necessary cause is not possible to access canvas when using blink behaviors.
             // Canvas is in fact managed by a different thread that avoid the access to.
 
+            #region ComboScale-Octave-Code
+            // oldScaleIndex, oldOctaveIndex and oldCodeIndex are used to track when scaleIndex change
             if (oldScaleIndex != scaleIndex)
             {
                 oldScaleIndex = scaleIndex;
                 txtScale.Text = comboScale[scaleIndex];
+                Rack.UserSettings.ScaleName = txtScale.Text;
                 Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
             }
 
@@ -215,6 +240,7 @@ namespace MyInstrument
             {
                 oldOctaveIndex = octaveIndex;
                 txtOctave.Text = comboOctave[octaveIndex];
+                Rack.UserSettings.Octave = txtOctave.Text;
                 Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
             }
 
@@ -222,44 +248,43 @@ namespace MyInstrument
             {
                 oldCodeIndex = codeIndex;
                 txtCode.Text = comboCode[codeIndex];
+                Rack.UserSettings.ScaleCode = txtCode.Text;
                 Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
             }
+            #endregion
 
             // Behaviors when EyeCtrl is On
+
+            #region EyeCtrlON
             if (Rack.UserSettings.EyeCtrl == _EyeCtrl.On)
             {
-                // If doubleClose eyes behave happen click became True so a button will be clicked, the last gazed          
-                if (Click)
+                if (Rack.DMIBox.LastGazedButton != null)
                 {
-                    Rack.DMIBox.LastGazedButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                    // If doubleClose eyes behave (TBactivateButton) or blow behave (TBactivateButton) 
+                    // happens click became True so a button will be clicked, the last gazed
 
-                    //Background changes of gazed buttons
-                    if (Rack.DMIBox.LastGazedButton.Background == SelectionBrush)
+                    if (Click)
                     {
-                        oldBackGround = buttonBackground;
+                        Rack.DMIBox.LastGazedButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+
+                        //Background changes of gazed buttons
+                        if (Rack.DMIBox.LastGazedButton.Background == SelectionBrush)
+                        {
+                            oldBackGround = buttonBackground;
+                        }
+                        else
+                        {
+                            oldBackGround = Rack.DMIBox.LastGazedButton.Background;
+                        }
+
+                        Click = false;
                     }
-                    else
-                    {
-                        oldBackGround = Rack.DMIBox.LastGazedButton.Background;
-                    }
-
-                    Click = false;
                 }
 
-                //Background changes of gazed buttons spcific for btnCtrlEye
-                if (Rack.DMIBox.LastGazedButton == btnCtrlEye)
-                {
-                    btnCtrlEye.Background = SelectionBrush;
-                }
-                else
-                {
-                    btnCtrlEye.Background = ActiveBrush;
-                }
-
-
+                // BlinkBehaviors will work when EyeCtrl is ON
                 if (btnBlinkOn)
                 {
-                    txtBlink.Foreground = new SolidColorBrush(Colors.White);
+                    txtBlink.Foreground = new SolidColorBrush(Colors.White); ;
                 }
                 else
                 {
@@ -273,49 +298,54 @@ namespace MyInstrument
                 txtBlink.Foreground = WarningBrush;
             }
 
-            StackPanel sp;
+            #endregion
 
-            if (Rack.DMIBox.MyInstrumentSurface.LastKeyboardPlayed == "")
+            // When user plays a wrong keyboard, the right one will blink
+
+            #region BlinkKeyboard_behave
+
+            string lastKeyboardPlayed = Rack.DMIBox.MyInstrumentSurface.LastKeyboardPlayed;
+
+            // Selecting the keyboard that has to blink
+            if (lastKeyboardPlayed == "")
             {
-                sp = MyInstrumentKeyboard.GetKeyboard("_0");
+                blinkKeyboard = MyInstrumentKeyboard.GetKeyboard("_0");
             }
             else
             {
-                sp = MyInstrumentKeyboard.GetKeyboard("_" + ((Convert.ToInt32(Rack.DMIBox.MyInstrumentSurface.LastKeyboardPlayed) + 1) % 16).ToString());
+                blinkKeyboard = MyInstrumentKeyboard.GetKeyboard("_" + ((Convert.ToInt32(lastKeyboardPlayed) + 1) % 16).ToString());
             }
 
-
+            // If the user is on the right keyboard, that one should stop blinking, so Opacity will be restored
             if (letBlink)
                 {
-                    if (sp.Opacity > 0.5 && !flag)
+                    if (blinkKeyboard.Opacity > 0.5 && !flag)
                     {
-                        sp.Opacity -= 0.02;
+                        blinkKeyboard.Opacity -= 0.02;
                     }
-                    else if (sp.Opacity <= 0.5 && !flag)
+                    else if (blinkKeyboard.Opacity <= 0.5 && !flag)
                     {
                         flag = true;
                     }
-                    else if (flag && sp.Opacity < 1)
+                    else if (flag && blinkKeyboard.Opacity < 1)
                     {
-                        sp.Opacity += 0.02;
+                        blinkKeyboard.Opacity += 0.02;
                     }
-                    else if (flag && sp.Opacity >= 1)
+                    else if (flag && blinkKeyboard.Opacity >= 1)
                     {
                         flag = false;
                     }
                 }
                 else
                 {
-                    sp.Opacity = 1;
-                }               
-            
+                    blinkKeyboard.Opacity = 1;
+                }
+            #endregion
         }
-        bool flag = false;
 
-        bool letBlink = false;
-        public bool LetBlink { get => letBlink; set => letBlink = value; }
+        #endregion
 
-        // Each button (Start & Stop excluded) has this behave, if gazed, the button will be selected waiting to be clicked
+        // Each setting button (Start & Stop excluded) has this behave, if gazed, the button will be selected waiting to be clicked
 
         private dynamic oldBackGround; // used to select correct button background when it is gazed, selected or unselected
         public dynamic OldBackGround { get => oldBackGround; set => oldBackGround = value; }
@@ -323,18 +353,23 @@ namespace MyInstrument
         {
             if (Rack.UserSettings.EyeCtrl == _EyeCtrl.On)
             {
-                Rack.DMIBox.LastGazedButton.Background = oldBackGround;
+                // Giving to the last gazed button the old background that he had before being gazed
+                if (Rack.DMIBox.LastGazedButton != null)
+                {
+                    Rack.DMIBox.LastGazedButton.Background = oldBackGround;
+                }
                 
                 Rack.DMIBox.LastGazedButton = (Button)sender;
 
+                // Memorizing the background of gazed button before changing it
                 oldBackGround = Rack.DMIBox.LastGazedButton.Background;
 
                 Rack.DMIBox.LastGazedButton.Background = SelectionBrush;
 
                 // This avoid playing a key while clicking on button              
                 if (Rack.DMIBox.SelectedNote != NeeqDMIs.Music.MidiNotes.NaN)
-                {
-                    Rack.DMIBox.CheckedNote = null;
+                {                   
+                    Rack.DMIBox.CheckedNote = null; //checkedNote != null is a condition to play a key
                 }              
 
             }           
@@ -350,7 +385,7 @@ namespace MyInstrument
             Rack.DMIBox.Dispose();
             Close();
         }
-       
+      
         private void btnStart_Click(object sender, RoutedEventArgs e)
         {
             if (!myInstrumentStarted)
@@ -368,7 +403,7 @@ namespace MyInstrument
                     btnCtrlKeyName.Background = ActiveBrush;
                 }         
 
-                // Enabling Scale-Octave-Code & slider
+                // Enabling various settings
                 txtScale.Text = Rack.UserSettings.ScaleName;
                 txtCode.Text = Rack.UserSettings.ScaleCode;
                 txtOctave.Text = Rack.UserSettings.Octave;
@@ -381,7 +416,7 @@ namespace MyInstrument
                 CheckMidiPort();
 
                 // Breath Sensor
-                UpdateSensorConnection();
+                CheckSensorPort();
 
                 //Metronome                
                 CheckMetronome();
@@ -392,7 +427,7 @@ namespace MyInstrument
             }
             else
             {
-                myInstrumentStarted = false;
+                myInstrumentStarted = false; // disabling all settings
 
                 // Graphic changes             
                 btnStartImage.Source = startIcon;
@@ -404,9 +439,7 @@ namespace MyInstrument
                 btnMetronome.Background = buttonBackground;
                 btnCtrlKeyName.Background = buttonBackground;
 
-                // Disabling Scale-Octave-Code, slider & Metronome, Blink & Blow Behaviors
-                // lstScaleChanger.IsEnabled = false;
-                // lstScaleChanger.SelectedIndex = comboScale["_"];
+                // Disabling various settings, metronome and blinkKeyboards behave
                 txtScale.Text = "";
                 txtCode.Text = "";
                 txtOctave.Text = "";
@@ -436,6 +469,8 @@ namespace MyInstrument
                 btnInstrumentSettingImage.Source = closeSettingsIcon;
                 btnInstrumentSettings.Background = ActiveBrush;
                 btnInstrumentSettingLabel.Content = "Close Settings";
+
+                // This changes the opacity of keybaords when settings are opened
                 if (myInstrumentStarted)
                 {
                     MyInstrumentKeyboard.UpdateOpacity();
@@ -444,12 +479,14 @@ namespace MyInstrument
             else
             {
                 myInstrumentSettingsOpened = false;
+
                 // Graphic changes
                 WindowInstrumentSettings_1.Visibility = Visibility.Hidden;
                 WindowInstrumentSettings_2.Visibility = Visibility.Hidden;
                 btnInstrumentSettingImage.Source = settingsIcon;
                 btnInstrumentSettings.Background = DisableBrush;
                 btnInstrumentSettingLabel.Content = "Instrument Settings";
+                
                 if (myInstrumentStarted)
                 {
                     MyInstrumentKeyboard.UpdateOpacity();
@@ -468,10 +505,7 @@ namespace MyInstrument
                     Rack.DMIBox.TobiiModule.MouseEmulator.EyetrackerToMouse = true;
                     Rack.DMIBox.TobiiModule.MouseEmulator.CursorVisible = false;
 
-                    //if (Rack.UserSettings.MyInstrumentControlMode == _MyInstrumentControlModes.Keyboard)
-                    //{
-                    //    btnCtrlBreath.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
-                    //}
+                    btnCtrlEye.Background = ActiveBrush;
                 }
                 else
                 {
@@ -479,6 +513,8 @@ namespace MyInstrument
                     Rack.UserSettings.EyeCtrl = _EyeCtrl.Off;
                     Rack.DMIBox.TobiiModule.MouseEmulator.EyetrackerToMouse = false;
                     Rack.DMIBox.TobiiModule.MouseEmulator.CursorVisible = true;
+
+                    btnCtrlEye.Background = DisableBrush;
                 }
             }
         }
@@ -503,7 +539,6 @@ namespace MyInstrument
                 }
             }
         }
-
 
         #endregion Start, Exit and Setting buttons
 
@@ -558,13 +593,9 @@ namespace MyInstrument
         {
             if (myInstrumentStarted)
             {
-                if (scaleIndex > 0)
-                {
-                    scaleIndex--;
-                    txtScale.Text = comboScale[scaleIndex];
-                    Rack.UserSettings.ScaleName = txtScale.Text;
-                    //Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
-                }
+                if (scaleIndex > 0)               
+                    scaleIndex--;                    
+                
             }
         }
 
@@ -572,13 +603,8 @@ namespace MyInstrument
         {
             if (myInstrumentStarted)
             {
-                if (scaleIndex < 11)
-                {
-                    scaleIndex++;
-                    txtScale.Text = comboScale[scaleIndex];
-                    Rack.UserSettings.ScaleName = txtScale.Text;
-                    //Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
-                }
+                if (scaleIndex < 11)                
+                    scaleIndex++;                                
             }
         }
 
@@ -588,13 +614,8 @@ namespace MyInstrument
             {
                 if (!btnSharpNotesOn)
                 {
-                    if (codeIndex > 0)
-                    {
-                        codeIndex--;
-                        txtCode.Text = comboCode[codeIndex];
-                        Rack.UserSettings.ScaleCode = txtCode.Text;
-                        //Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
-                    }
+                    if (codeIndex > 0)                    
+                        codeIndex--;                  
                 }
             }
         }
@@ -606,12 +627,7 @@ namespace MyInstrument
                 if (!btnSharpNotesOn)
                 {
                     if (codeIndex < 3)
-                    {
                         codeIndex++;
-                        txtCode.Text = comboCode[codeIndex];
-                        Rack.UserSettings.ScaleCode = txtCode.Text;
-                        //Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
-                    }
                 }
             }
         }
@@ -620,13 +636,8 @@ namespace MyInstrument
         {
             if (myInstrumentStarted)
             {
-                if (octaveIndex > 0)
-                {
-                    octaveIndex--;
-                    txtOctave.Text = comboOctave[octaveIndex];
-                    Rack.UserSettings.Octave = txtOctave.Text;
-                    //Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
-                }
+                if (octaveIndex > 0)                
+                    octaveIndex--;                                
             }
         }
 
@@ -634,13 +645,8 @@ namespace MyInstrument
         {
             if (myInstrumentStarted)
             {
-                if (octaveIndex < 4)
-                {
-                    octaveIndex++;
-                    txtOctave.Text = comboOctave[octaveIndex];
-                    Rack.UserSettings.Octave = txtOctave.Text;
-                    //Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
-                }
+                if (octaveIndex < 4)              
+                    octaveIndex++;               
             }
         }
 
@@ -668,7 +674,7 @@ namespace MyInstrument
             }
         }
 
-        // this just changes MIDI port selector graphic
+        // this just changes MIDIport selector graphic
         private void CheckMidiPort()
         {
             txtMidiPort.Text = "MP" + Rack.DMIBox.MidiModule.OutDevice.ToString();
@@ -688,7 +694,7 @@ namespace MyInstrument
             {
                 SensorPort--;
                 //Graphic changes
-                UpdateSensorConnection();
+                CheckSensorPort();
             }
         }
 
@@ -698,12 +704,12 @@ namespace MyInstrument
             {
                 SensorPort++;
                 //Graphic changes
-                UpdateSensorConnection();
+                CheckSensorPort();
             }
         }
 
-        // this just changes sensor port selector graphic
-        private void UpdateSensorConnection()
+        // this just changes SensorPort selector graphic
+        private void CheckSensorPort()
         {          
             txtBreathPort.Text = "COM" + SensorPort.ToString();
 
@@ -772,7 +778,6 @@ namespace MyInstrument
 
         private void btnBlink_Click(object sender, RoutedEventArgs e)
         {
-
             if (myInstrumentStarted)
             {
                 if (!btnBlinkOn)
@@ -951,7 +956,7 @@ namespace MyInstrument
         {
             if (myInstrumentStarted)
             {
-                if (Rack.UserSettings.KeyVerticaDistance > 4)
+                if (Rack.UserSettings.KeyVerticaDistance >= 5)
                 {
                     Rack.UserSettings.KeyVerticaDistance -= 5;
                     txtVerticalDistance.Text = Rack.UserSettings.KeyVerticaDistance.ToString();
@@ -964,7 +969,7 @@ namespace MyInstrument
         {
             if (myInstrumentStarted)
             {
-                if (Rack.UserSettings.KeyVerticaDistance < 26)
+                if (Rack.UserSettings.KeyVerticaDistance <= 25)
                 {
                     Rack.UserSettings.KeyVerticaDistance += 5;
                     txtVerticalDistance.Text = Rack.UserSettings.KeyVerticaDistance.ToString();
