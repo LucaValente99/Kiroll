@@ -26,19 +26,19 @@ namespace MyInstrument.DMIbox
 
         public void Setup()
         {           
-
             if (firstTime)
             {
                 // MIDI
                 Rack.DMIBox.MidiModule = new MidiModuleNAudio(1, 1);
                 Rack.DMIBox.MidiModule.OutDevice = 1;
 
-                // Breath Sensor 
+                // BREATH SENSOR 
                 Rack.DMIBox.SensorReader = new NithModule();
 
                 Rack.DMIBox.KeyboardModule = new KeyboardModule(new WindowInteropHelper(Rack.DMIBox.MyInstrumentMainWindow).Handle, RawInputCaptureMode.ForegroundAndBackground);
                 Rack.DMIBox.TobiiModule = new TobiiModule(GazePointDataMode.Unfiltered);
 
+                //BEHAVIORS - Keyboard, Tobii, Breath
                 Rack.DMIBox.KeyboardModule.KeyboardBehaviors.Add(new KBEyeTrackerToMouse());
                 Rack.DMIBox.KeyboardModule.KeyboardBehaviors.Add(new KBsimulateBreathOn());
 

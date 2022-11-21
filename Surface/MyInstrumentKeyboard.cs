@@ -13,16 +13,17 @@ namespace MyInstrument.Surface
 {
     public class MyInstrumentKeyboard : StackPanel
     {
-        // Specific clors of each note
+        #region Class attributes
+        // Specific color of each key
         public static Dictionary<string, Color> KeysColorCode = new Dictionary<string, Color>()
         {
             {"C", Colors.Red }, // C - Red
             {"C#", Colors.Red }, // C# - DarkRed
             {"D", Colors.Yellow }, // D - Yellow
-            {"D#", Colors.Yellow }, // D# - DarkGoldenrod
+            {"D#", Colors.Yellow }, // D# - DarkYellow
             {"E", Colors.Blue }, // E - Blue
-            {"F", Colors.SaddleBrown }, // F - it should be black (email Ludovico)
-            {"F#", Colors.SaddleBrown }, // F# - it should be black (email Ludovico) 
+            {"F", Colors.SaddleBrown }, // F - SaddleBrown
+            {"F#", Colors.SaddleBrown }, // F# - DarkerSaddleBrown
             {"G", Colors.DarkOrange }, // G - Orange
             {"G#", Colors.DarkOrange }, // G# - DarkOrange
             {"A", Colors.Green }, // A - Green
@@ -76,6 +77,7 @@ namespace MyInstrument.Surface
         private static int id = 0;
         public static int ID { get => id; set => id = value; }
 
+        #endregion
         public MyInstrumentKeyboard() : base()
         {
             musicKeyboard = new StackPanel();
@@ -84,6 +86,7 @@ namespace MyInstrument.Surface
             musicKeyboard.Width = 150; //170
             musicKeyboard.Name = "_" + id.ToString();
 
+            // Managing keyboards and canvas height depdening on sharp notes presence
             if (Rack.UserSettings.SharpNotesMode == _SharpNotesModes.On)
             {
                 Rack.UserSettings.KeyboardHeight = 1011; //1200
@@ -124,9 +127,11 @@ namespace MyInstrument.Surface
 
             if (Rack.UserSettings.SharpNotesMode == _SharpNotesModes.Off)
             {
+                // Retrieve a specific scale
                 scale = new Scale(MusicConversions.ToAbsNote(ComboScale), MusicConversions.ToScaleCode(ComboCode));
                 noteList = scale.NotesInScale;
 
+                // Memorizing deviation for scale retrieved using the first key of the scale as Index in dictionaries
                 deviation_maj = deviationMaj[noteList[0].ToStandardString()];
                 deviation_min_nat = deviationMin_nat[noteList[0].ToStandardString()];
                 deviation_min_arm = deviationMin_arm[noteList[0].ToStandardString()];
@@ -134,12 +139,12 @@ namespace MyInstrument.Surface
 
                 for (int i = 0; i < 7; i++)
                 {                    
-                    // Taking right color from the list dependign on note
+                    // Taking right color from the list dependign on key
                     SolidColorBrush brush = new SolidColorBrush(KeysColorCode[noteList[i].ToStandardString()]);
 
                     if (ComboCode == "maj")
                     {
-                        if (i >= 7 - deviation_maj)
+                        if (i >= 7 - deviation_maj) // If True the key will have the higher octave
                         {
                             MyInstrumentButtons toolKey = new MyInstrumentButtons(noteList[i].ToString(), int.Parse(ComboOctave) + 1, brush, id);
                             toolKeys.Add(toolKey.ToolKey);
@@ -152,9 +157,9 @@ namespace MyInstrument.Surface
 
                     }
 
-                    if (ComboCode == "min")
+                    if (ComboCode == "min") 
                     {
-                        if (i >= 7 - deviation_min_nat)
+                        if (i >= 7 - deviation_min_nat) // If True the key will have the higher octave
                         {
                             MyInstrumentButtons toolKey = new MyInstrumentButtons(noteList[i].ToString(), int.Parse(ComboOctave) + 1, brush, id);
                             toolKeys.Add(toolKey.ToolKey);
@@ -168,7 +173,7 @@ namespace MyInstrument.Surface
 
                     if (ComboCode == "min_arm")
                     {
-                        if (i >= 7 - deviation_min_arm)
+                        if (i >= 7 - deviation_min_arm) // If True the key will have the higher octave
                         {
                             MyInstrumentButtons toolKey = new MyInstrumentButtons(noteList[i].ToString(), int.Parse(ComboOctave) + 1, brush, id);
                             toolKeys.Add(toolKey.ToolKey);
@@ -182,7 +187,7 @@ namespace MyInstrument.Surface
 
                     if (ComboCode == "min_mel")
                     {
-                        if (i >= 7 - deviation_min_mel)
+                        if (i >= 7 - deviation_min_mel) // If True the key will have the higher octave
                         {
                             MyInstrumentButtons toolKey = new MyInstrumentButtons(noteList[i].ToString(), int.Parse(ComboOctave) + 1, brush, id);
                             toolKeys.Add(toolKey.ToolKey);
@@ -205,7 +210,7 @@ namespace MyInstrument.Surface
                 {
                     SolidColorBrush brush = new SolidColorBrush(KeysColorCode[noteList[i].ToStandardString()]);
 
-                    if (i >= 12 - deviation_chrom_12)
+                    if (i >= 12 - deviation_chrom_12) // If True the key will have the higher octave
                     {
                         MyInstrumentButtons toolKey = new MyInstrumentButtons(noteList[i].ToString(), int.Parse(ComboOctave) + 1, brush, id);
                         toolKeys.Add(toolKey.ToolKey);
@@ -224,11 +229,13 @@ namespace MyInstrument.Surface
         }
 
         // STATIC METHODS
-
+        #region STATIC METHODS
         // Getting the position of a specific keyboard
         public static Point GetPosition(string id)
         {
-            StackPanel keyboard = Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Children[Int32.Parse(id.Substring(1))] as StackPanel;
+            int id_int = Int32.Parse(id.Substring(1));
+
+            StackPanel keyboard = Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Children[id_int] as StackPanel;
             int x = (int)Canvas.GetLeft(keyboard);
             int y = (int)Canvas.GetTop(keyboard);
 
@@ -238,14 +245,18 @@ namespace MyInstrument.Surface
         // Getting a specific keyboard
         public static StackPanel GetKeyboard(string id)
         {
-            StackPanel keyboard = Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Children[Int32.Parse(id.Substring(1))] as StackPanel;
+            int id_int = Int32.Parse(id.Substring(1));
+
+            StackPanel keyboard = Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Children[id_int] as StackPanel;
             return keyboard;
         }
 
         // Resetting colors of a specific keyboard 
         public static void ResetColors(string id)
         {
-            StackPanel keyboard = Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Children[Int32.Parse(id.Substring(1))] as StackPanel;
+            int id_int = Int32.Parse(id.Substring(1));
+
+            StackPanel keyboard = Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Children[id_int] as StackPanel;
 
             foreach (Button key in keyboard.Children)
             {
@@ -260,16 +271,17 @@ namespace MyInstrument.Surface
                     key.Opacity = 1;
                 }
                 key.Foreground = new SolidColorBrush(Colors.Black);
-                key.BorderThickness = new Thickness(3);
-                key.BorderBrush = new SolidColorBrush(Colors.Black);
             }
 
         }
 
-        // Updating colors of a specific keyboard: all the notes in keyboard will turn balck (opacity: 0.5) except for the selected one.
+        // Updating colors of a specific keyboard: all the notes in keyboard will turn black (opacity: 0.5)
+        // except for the selected one.
         public static void UpdateColors(string id, Button btn)
         {
-            StackPanel keyboard = Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Children[Int32.Parse(id.Substring(1))] as StackPanel;
+            int id_int = Int32.Parse(id.Substring(1));
+
+            StackPanel keyboard = Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Children[id_int] as StackPanel;
 
             foreach (Button key in keyboard.Children)
             {
@@ -295,7 +307,6 @@ namespace MyInstrument.Surface
             {
                 foreach (Button key in keyboard.Children)
                 {
-
                     if (Rack.DMIBox.MyInstrumentMainWindow.MyInstrumentSettingsOpened)
                     {
                         if (key.Opacity == 1)
@@ -322,5 +333,5 @@ namespace MyInstrument.Surface
         }
 
     }
-
+    #endregion
 }

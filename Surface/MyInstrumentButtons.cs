@@ -82,6 +82,7 @@ namespace MyInstrument.Surface
             // Selection is enabled just when instrument settings are not opened
             if (Rack.DMIBox.MyInstrumentMainWindow.MyInstrumentSettingsOpened == false)
             {
+                // Changing the opacity of the gazed note
                 #region OpacityGazedKey
                 if (Rack.DMIBox.CheckedNote != null)
                 {
@@ -122,8 +123,8 @@ namespace MyInstrument.Surface
                 }
                 #endregion
 
-                // If the keyboard that contains the key is valid, colors will be update and the movement will be started.
-                #region RightKeyboardGazed
+                // If the keyboard that contains the gazed key is valid, colors will be update and the movement will be started.
+                #region RightKeyboardGazed-Movement
                 if (Rack.DMIBox.CheckPlayability())
                 {
                     //Updating keys colors if the user gaze at the playable keyboard 
@@ -134,7 +135,7 @@ namespace MyInstrument.Surface
                     if (Rack.DMIBox.MyInstrumentSurface.LastKeyboardSelected != keyboardID)
                     {
                         Rack.DMIBox.MyInstrumentSurface.LastKeyboardSelected = keyboardID;
-                        Rack.DMIBox.MyInstrumentSurface.MoveKeyboards(Rack.UserSettings.KeyHorizontalDistance);
+                        Rack.DMIBox.MyInstrumentSurface.MoveKeyboards();
                     }
                     
                     //If the user gaze at the right keyboard the blinkKeyboardBehave should stop

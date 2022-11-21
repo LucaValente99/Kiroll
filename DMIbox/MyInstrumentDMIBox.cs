@@ -5,23 +5,25 @@ using NeeqDMIs.MIDI;
 using NeeqDMIs.Music;
 using NeeqDMIs.NithSensors;
 using System;
-using System.Drawing;
 using System.Windows.Controls;
-using System.Windows.Media;
 
 namespace MyInstrument.DMIbox
 {
     public class MyInstrumentDMIBox 
     {
+        #region Class attributes
+
+        // These variables are used to manage main params to play keys
         private bool breathOn = false;
         private int velocity = 127;
         private int pressure = 0;
 
-        // Used to track when a note and relative keyboard is playing
+        // Used to track when a key and relative keyboard is playing and what keyboard stop
+        // See SelectNote -> VariosCheck in MyInstrumentButtons for more info
         private bool isPlaying = false;
         public bool IsPlaying { get => isPlaying; set => isPlaying = value; }
 
-        // Used to click buttons using eye tracker
+        // Used to keep track of last gazed button when eye ctrl is ON
         private Button lastGazedButton = null;
         public Button LastGazedButton { get => lastGazedButton; set => lastGazedButton = value; }
 
@@ -49,6 +51,8 @@ namespace MyInstrument.DMIbox
 
         private MyInstrumentSurface myInstrumentSurface;
         public MyInstrumentSurface MyInstrumentSurface { get => myInstrumentSurface; set => myInstrumentSurface = value; }
+
+        #endregion
 
         // Playing a note when user blows
         public bool BreathOn
@@ -140,13 +144,13 @@ namespace MyInstrument.DMIbox
         // Playing the selected note
         public void PlaySelectedNote()
         {
-            if (MidiModule.IsMidiOk() && checkedNote!= null && 
-                Rack.UserSettings.MyInstrumentControlMode != _MyInstrumentControlModes.NaN &&
-                !MyInstrumentMainWindow.MyInstrumentSettingsOpened)
+            if (MidiModule.IsMidiOk() && checkedNote!= null && // check for MIDI channel and if a valid note is selected
+                Rack.UserSettings.MyInstrumentControlMode != _MyInstrumentControlModes.NaN && // check for control mode set
+                !MyInstrumentMainWindow.MyInstrumentSettingsOpened) // check for settings, if they are open instrument won't play
             {
                 if (CheckPlayability())
                 {
-                    // Check for slideplay - if it is on Stop the old note to start the new one
+                    // Check for slideplay - if it is on Stop the old note, then start the new one
                     if (oldMidiNote != MidiNotes.NaN && Rack.UserSettings.SlidePlayMode == _SlidePlayModes.On)
                     {
                         MidiModule.StopNote((int)oldMidiNote);
@@ -160,6 +164,7 @@ namespace MyInstrument.DMIbox
 
                     myInstrumentSurface.LastKeyboardPlayed = checkedNote.KeyboardID;
 
+                    #region UpdateNoteVisualizer
                     if (checkedNote.Key.Contains("s"))
                     {
                         Rack.UserSettings.NoteName = checkedNote.Key[1] + "#" + checkedNote.Octave;
@@ -171,10 +176,13 @@ namespace MyInstrument.DMIbox
                     
                     Rack.UserSettings.NotePitch = ((int)selectedNote).ToString();
                     Rack.UserSettings.NoteVelocity = velocity.ToString();
-                    
+                    #endregion
                 }
                 else
                 {
+                    // When the user tries to play an invalid key, the right keyboard should flash
+                    // Setting the LetBlink variable to True helps Update() into MyInstrumentMainWindow,
+                    // to start the keyboardBlink behavior
                     if (!(Rack.UserSettings.SlidePlayMode == _SlidePlayModes.On &&
                         CheckedNote.KeyboardID == MyInstrumentSurface.LastKeyboardPlayed))
                     {
@@ -186,20 +194,21 @@ namespace MyInstrument.DMIbox
 
         // Stopping the last played note 
         public void StopSelectedNote()
-        {
-            if (MidiModule.IsMidiOk() && isPlaying == true &&
-                Rack.UserSettings.MyInstrumentControlMode != _MyInstrumentControlModes.NaN &&
-                !MyInstrumentMainWindow.MyInstrumentSettingsOpened)
+        {   
+            if (MidiModule.IsMidiOk()) // check for MIDI channel
             {                
-                MidiModule.StopNote((int)selectedNote);
-                isPlaying = false;                                                                                         
-                //checkedNote = null;
+                if (isPlaying == true) // See SelectNote -> VariosCheck in MyInstrumentButtons for more info on isPlaying
+                {
+                    MidiModule.StopNote((int)selectedNote);
+                    isPlaying = false;
+                }
+                else
+                {
+                    MidiModule.StopNote((int)oldMidiNote);
+                }
             }
-            else
-            {
-                MidiModule.StopNote((int)oldMidiNote);
-            }
-
+            
+            // Update NoteVisualizer
             Rack.UserSettings.NoteName = "_";
             Rack.UserSettings.NotePitch = "_";
             Rack.UserSettings.NoteVelocity = "_";
@@ -208,6 +217,7 @@ namespace MyInstrument.DMIbox
         // This method helps to understand if the note selected, the one that will be played, is valid or not.
         // The logic is easy: when the application starts just the keyboard with id == "_0", so the first keboard on screen, could be played.
         // After the first case only the keyboard with id greater than the previous one by one can be played.
+        // So if i play the keyboard with id "_6", the next playable one will be that with id "_7"
         public bool CheckPlayability()
         {
             bool startingCase = myInstrumentSurface.LastKeyboardPlayed == "";           

@@ -162,7 +162,7 @@
 
     <Grid>
         <Grid.Background>
-            <ImageBrush ImageSource="/Images/Backgrounds/Main2.jpg" ></ImageBrush>
+            <ImageBrush ImageSource="/Images/Backgrounds/Main.jpg" ></ImageBrush>
         </Grid.Background>
 
         <Grid.RowDefinitions>
@@ -188,7 +188,7 @@
             BorderBrush="Black"
             BorderThickness="3">
                 <Border.Background>
-                    <ImageBrush ImageSource="/Images/Backgrounds/TopBar2.jpg" TileMode="Tile" />
+                    <ImageBrush ImageSource="/Images/Backgrounds/TopBar.jpg" TileMode="Tile" />
                 </Border.Background>
 
                 <Grid>
@@ -273,7 +273,7 @@
                         HorizontalAlignment="Right"
                         Grid.Column="1"/>
                     <!--End Instrument Settings button-->
-                   
+
                     <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,15,0">
 
                         <!--Eye Button-->
@@ -388,12 +388,12 @@
                                     TextAlignment="Center" />
                             </Border>
                         </StackPanel>
-                        <!--End Note Visualizer-->                        
+                        <!--End Note Visualizer-->
                     </StackPanel>
                 </Grid>
 
             </Border>
-            
+
             <!--Right Top Bar Embellishment-->
             <Image Source="Images/Embellishments/LeftRight_TopBar.png"
                     Margin="10,5,0,5"
@@ -402,7 +402,7 @@
                    VerticalAlignment="Top"
                 ></Image>
             <!--End Right Top Bar Embellishment-->
-            
+
         </StackPanel>
         <!--#endregion End Top Bar (Row 0)-->
 
@@ -412,14 +412,17 @@
                 Width="auto" Height="auto" BorderThickness="3" 
                 CornerRadius="8" BorderBrush="Black">
             <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="117*"/>
+                    <ColumnDefinition Width="1787*"/>
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="12*" />
                 </Grid.RowDefinitions>
-                <ScrollViewer x:Name="scrlMyInstrument" VerticalAlignment="Stretch" 
-                                        HorizontalAlignment="Stretch" Margin="0,0,0,0" 
+                <ScrollViewer x:Name="scrlMyInstrument" 
                                         Width="Auto" Height="Auto" Grid.Row="0"
                                         HorizontalScrollBarVisibility="Hidden" 
-                                        VerticalScrollBarVisibility="Hidden">
+                                        VerticalScrollBarVisibility="Hidden" Grid.ColumnSpan="2">
 
                     <!--Canvas allows to place elements by coordinates-->
                     <Canvas x:Name="canvasMyInstrument" VerticalAlignment="Stretch" 
@@ -447,7 +450,7 @@
             Visibility="Hidden">
 
             <Border.Background>
-                <ImageBrush ImageSource="/Images/Backgrounds/TopBar2.jpg" TileMode="Tile" />
+                <ImageBrush ImageSource="/Images/Backgrounds/TopBar.jpg" TileMode="Tile" />
             </Border.Background>
 
             <Grid>
@@ -460,7 +463,7 @@
                     <RowDefinition Height="1*"></RowDefinition>
                     <RowDefinition Height="1*"></RowDefinition>
                     <RowDefinition Height="1*"></RowDefinition>
-                    
+
                 </Grid.RowDefinitions>
 
                 <!--Title-->
@@ -477,7 +480,7 @@
 
                 <Border Style="{StaticResource SeparatorStyleHorizontal}"
                             Grid.Row="0" VerticalAlignment="Bottom"/>
-                
+
                 <!--Keyboard and Breath Buttons-->
                 <StackPanel Grid.Row="1"  Orientation="Horizontal" VerticalAlignment="Center" 
                             HorizontalAlignment="Center">
@@ -529,7 +532,7 @@
                                 Width="auto"
                                 Height="45" 
                                 VerticalAlignment="Center"/>
-                    <!--End Breath Button-->                   
+                    <!--End Breath Button-->
                 </StackPanel>
                 <!--end Keyboard and Breath Buttons-->
 
@@ -615,14 +618,14 @@
                 <StackPanel Grid.Row="3"  Orientation="Horizontal" HorizontalAlignment="Center">
 
                     <!--Scale-->
-                        <Label
+                    <Label
                         Margin="40,0,15,0"
                         FontFamily="Papyrus"
                         FontWeight="Bold"
                         FontSize="20"
                         Foreground="White" Height="36">Scale</Label>
 
-                        <Button Style="{StaticResource RoundButton}"
+                    <Button Style="{StaticResource RoundButton}"
                             Name="btnCodeMinus"
                             Margin="0,0,5,0"
                             Width="50"
@@ -631,25 +634,25 @@
                             BorderThickness="2"
                             Click="btnCodeMinus_Click"
                             MouseEnter="eyeGazeHandler">
-                            <Button.Background>
-                                <ImageBrush
+                        <Button.Background>
+                            <ImageBrush
                                 ImageSource="Images/Backgrounds/Buttons.jpeg"
                                 Stretch="None"
                                 TileMode="Tile" />
-                            </Button.Background>
+                        </Button.Background>
 
-                            <Image Source="Images/Icons/Left_arrow.png"
+                        <Image Source="Images/Icons/Left_arrow.png"
                                    Width="auto"
                                    Height="auto"/>
-                        </Button>
-                        <Border
+                    </Button>
+                    <Border
                             Width="100"
                             Height="40"
                             Background="Black"
                             BorderBrush="WhiteSmoke"
                             BorderThickness="2"
                             Visibility="Visible">
-                            <TextBlock
+                        <TextBlock
                                 Name="txtCode"
                                 Background="Black"
                                 FontFamily="Digital-7 Italic"
@@ -658,8 +661,8 @@
                                 Text=""
                                 VerticalAlignment="Center"
                                 TextAlignment="Center" />
-                        </Border>
-                        <Button Style="{StaticResource RoundButton}"
+                    </Border>
+                    <Button Style="{StaticResource RoundButton}"
                             Name="btnCodePlus"
                             Margin="5,0,0,0"
                             Width="50"
@@ -668,19 +671,19 @@
                             BorderThickness="2"
                             Click="btnCodePlus_Click"
                             MouseEnter="eyeGazeHandler">
-                            <Button.Background>
-                                <ImageBrush
+                        <Button.Background>
+                            <ImageBrush
                                 ImageSource="Images/Backgrounds/Buttons.jpeg"
                                 Stretch="None"
                                 TileMode="Tile" />
-                            </Button.Background>
+                        </Button.Background>
 
-                            <Image Source="Images/Icons/Right_arrow.png"
+                        <Image Source="Images/Icons/Right_arrow.png"
                                    Width="auto"
                                    Height="auto"/>
-                        </Button>
+                    </Button>
                     <!--End Scale-->
-                    </StackPanel>
+                </StackPanel>
 
                 <Border Style="{StaticResource SeparatorStyleHorizontal}"
                             Grid.Row="3"
@@ -927,7 +930,7 @@
             Visibility="Hidden">
 
             <Border.Background>
-                <ImageBrush ImageSource="/Images/Backgrounds/TopBar2.jpg" TileMode="Tile" />
+                <ImageBrush ImageSource="/Images/Backgrounds/TopBar.jpg" TileMode="Tile" />
             </Border.Background>
 
             <Grid>
@@ -1010,7 +1013,7 @@
                         FontWeight="Bold"
                         FontSize="20"
                         Foreground="White" Height="40">Slide Play</Label>
-                                       
+
                 </StackPanel>
                 <!--End Sharp Notes and SlidePlay Buttons-->
 
@@ -1133,7 +1136,7 @@
                     </Button>
                     <Image Source="Images/Icons/Metronome.png"
                                 Width="40" Margin="0,0,30,0"/>
-                    
+
                     <StackPanel Margin="0,0,0,0" Orientation="Horizontal" VerticalAlignment="Center">
                         <Button Style="{StaticResource RoundButton}"
                             Name="btnMetrnomeMinus"
@@ -1366,7 +1369,7 @@
                             FontSize="20"
                             HorizontalAlignment="Center"
                             Foreground="White">"Keys horizontal distance"</Label>
-                    
+
                     <StackPanel Margin="0,0,0,0" Orientation="Horizontal" HorizontalAlignment="Center">
 
                         <Button Style="{StaticResource RoundButton}"
@@ -1429,12 +1432,12 @@
                     </StackPanel>
                 </StackPanel>
                 <!-- End Keys Horizontal Distance-->
-                
+
             </Grid>
         </Border>
         <!-- #endregion MyInstrument's Setting_2 Window-->
-        
+
         <!--#endregion MyInstrument (Row 1)-->
-        
+
     </Grid>
 </Window>

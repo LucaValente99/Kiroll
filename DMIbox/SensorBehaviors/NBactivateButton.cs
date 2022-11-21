@@ -5,6 +5,8 @@ namespace MyInstrument.DMIbox.SensorBehaviors
 {
     public class NBactivateButton : INithSensorBehavior
     {
+        // This variable helps to understand when it's possible to click again. In fact if the user gaze different
+        // buttons consecutively continuing to blow, he won't enable them if he doesn't stop blowing first.
         private bool letClickAgain = true;
         private int onThresh;
         public NBactivateButton(int onThresh)
@@ -27,6 +29,8 @@ namespace MyInstrument.DMIbox.SensorBehaviors
 
                 }
 
+                // Since NoteName == "_" we know that the user is not playing any key, necessary condition to
+                // click a button using breath control.
                 if (Rack.DMIBox.LastGazedButton != null && Rack.UserSettings.NoteName == "_")
                 {
                     if (b > onThresh)

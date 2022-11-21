@@ -234,13 +234,10 @@
   <ItemGroup>
     <Resource Include="Images\Backgrounds\Buttons.jpeg" />
     <Resource Include="Images\Backgrounds\Main.jpg" />
-    <Resource Include="Images\Backgrounds\Main2.jpg" />
     <Resource Include="Images\Backgrounds\TopBar.jpg" />
-    <Resource Include="Images\Backgrounds\TopBar2.jpg" />
     <Resource Include="Images\Embellishments\LeftRight_TopBar.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Images\Embellishments\LeftRight_TopBar_2.png" />
     <Resource Include="Images\Icons\Clean.png" />
     <Resource Include="Images\Icons\CloseSettings_1.png" />
     <Resource Include="Images\Icons\CloseSettings_2.png" />
