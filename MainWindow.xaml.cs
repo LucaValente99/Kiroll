@@ -162,7 +162,7 @@ namespace MyInstrument
         private Timer metronomeTimer;
 
         // Metronome sound
-        private SoundPlayer metronome = new SoundPlayer(@"D:\Universita\Tirocinio_tesi\1_Tirocinio\MyInstrument\Audio\Metronome.wav");
+        private MediaPlayer metronome = new MediaPlayer();     
 
         public MainWindow()
         {
@@ -188,10 +188,12 @@ namespace MyInstrument
         {
             if (playMetronome)
             {
+                metronome.Open(new Uri(Environment.CurrentDirectory + @"\..\..\Audio\Metronome.wav"));
                 metronome.Play();
             }
-            else { 
+            else {                
                 metronome.Stop();
+                metronome.Close();
             }
         }
         private void Update(object sender, EventArgs e)
