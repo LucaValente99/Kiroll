@@ -137,7 +137,7 @@ namespace MyInstrument.Surface
                 deviation_min_arm = deviationMin_arm[noteList[0].ToStandardString()];
                 deviation_min_mel = deviationMin_mel[noteList[0].ToStandardString()];
 
-                for (int i = 0; i < 7; i++)
+                for (int i = 6; i >= 0; i--)
                 {                    
                     // Taking right color from the list dependign on key
                     SolidColorBrush brush = new SolidColorBrush(KeysColorCode[noteList[i].ToStandardString()]);
@@ -206,7 +206,7 @@ namespace MyInstrument.Surface
                 noteList = scale.NotesInScale;
                 deviation_chrom_12 = deviationChrom[noteList[0].ToStandardString()];
 
-                for (int i = 0; i < 12; i++)
+                for (int i = 11; i >= 0; i--)
                 {
                     SolidColorBrush brush = new SolidColorBrush(KeysColorCode[noteList[i].ToStandardString()]);
 
