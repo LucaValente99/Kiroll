@@ -342,13 +342,13 @@
                                 </Border.Background>
                                 <TextBlock
                                 HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
+                                VerticalAlignment="Bottom"
                                 x:Name="txtPitch"
                                 FontFamily="Digital-7 Italic"
                                 FontSize="25"
                                 Text="_"
                                 Foreground="White"
-                                TextAlignment="Center" />
+                                TextAlignment="Center" Margin="0,0,0,5" />
                             </Border>
                             <Border
                             Width="65"

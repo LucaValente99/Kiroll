@@ -172,8 +172,8 @@ namespace MyInstrument
 
             metronomeTimer = new Timer();
             updater = new Timer();
-            // "(1.0 / (Rack.UserSettings.BPMmetronome / 60.0)) * 1000" is used to convert BPM into ms (milliseconds).
-            metronomeTimer.Interval = Convert.ToInt32((1.0 / (Rack.UserSettings.BPMmetronome / 60.0)) * 1000);
+            // " (1000 * 60) / (Rack.UserSettings.BPMmetronome" is used to convert BPM into ms (milliseconds).
+            metronomeTimer.Interval = Convert.ToInt32(1000 * 60 / (Rack.UserSettings.BPMmetronome));
             updater.Interval = 10;
 
             metronomeTimer.Tick += Metronome;
@@ -881,7 +881,7 @@ namespace MyInstrument
             if (myInstrumentStarted)
             {
                 Rack.UserSettings.BPMmetronome--;
-                metronomeTimer.Interval = Convert.ToInt32((1.0 / (Rack.UserSettings.BPMmetronome / 60.0)) * 1000);
+                metronomeTimer.Interval = Convert.ToInt32(1000 * 60 / (Rack.UserSettings.BPMmetronome)); ;
                 CheckMetronome();
             }
         }
@@ -891,7 +891,7 @@ namespace MyInstrument
             if (myInstrumentStarted)
             {
                 Rack.UserSettings.BPMmetronome++;
-                metronomeTimer.Interval = Convert.ToInt32((1.0 / (Rack.UserSettings.BPMmetronome / 60.0)) * 1000);
+                metronomeTimer.Interval = Convert.ToInt32(1000 * 60 / (Rack.UserSettings.BPMmetronome)); ;
                 CheckMetronome();
             }
         }
