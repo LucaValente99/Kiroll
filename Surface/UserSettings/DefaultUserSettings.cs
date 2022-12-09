@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MyInstrument.DMIbox;
+using Kiroll.DMIbox;
 
-namespace MyInstrument.Surface.UserSettings
+namespace Kiroll.Surface.UserSettings
 {
     class DefaultUserSettings : IUserSettings
     {       
@@ -34,7 +34,7 @@ namespace MyInstrument.Surface.UserSettings
         public double BPMmetronome { get; set; } = 90.0;
 
         // SwitchableSelectors default settings
-        public _MyInstrumentControlModes MyInstrumentControlMode { get; set; } = _MyInstrumentControlModes.NaN;
+        public _KirollControlModes KirollControlMode { get; set; } = _KirollControlModes.NaN;
         public _SlidePlayModes SlidePlayMode { get; set; } = _SlidePlayModes.Off;
         public _SharpNotesModes SharpNotesMode { get; set; } = _SharpNotesModes.Off;
         public _BlinkModes BlinkModes { get; set; } = _BlinkModes.Off;

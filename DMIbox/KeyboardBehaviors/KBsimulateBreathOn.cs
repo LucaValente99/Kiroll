@@ -1,7 +1,7 @@
 ﻿using NeeqDMIs.Keyboard;
 using RawInputProcessor;
 
-namespace MyInstrument.DMIbox.KeyboardBehaviors
+namespace Kiroll.DMIbox.KeyboardBehaviors
 {
     public class KBsimulateBreathOn : IKeyboardBehavior
     {
@@ -14,7 +14,7 @@ namespace MyInstrument.DMIbox.KeyboardBehaviors
         {
             returnVal = 0;
 
-            if (Rack.UserSettings.MyInstrumentControlMode == _MyInstrumentControlModes.Keyboard)
+            if (Rack.UserSettings.KirollControlMode == _KirollControlModes.Keyboard)
             {
                 if (e.VirtualKey == (ushort)keyBreathOn && e.KeyPressState == KeyPressState.Down)
                 {

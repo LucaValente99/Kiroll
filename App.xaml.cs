@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Threading;
 
-namespace MyInstrument
+namespace Kiroll
 {
     /// <summary>
     /// Interaction logic for App.xaml

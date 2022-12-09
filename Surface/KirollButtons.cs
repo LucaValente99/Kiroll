@@ -1,4 +1,4 @@
-﻿using MyInstrument.DMIbox;
+﻿using Kiroll.DMIbox;
 using NeeqDMIs.Music;
 using System.Windows;
 using System.Windows.Controls;
@@ -6,9 +6,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Brushes = System.Windows.Media.Brushes;
 
-namespace MyInstrument.Surface
+namespace Kiroll.Surface
 {
-    public class MyInstrumentButtons : Button
+    public class KirollButtons : Button
     {
         #region Class attributes
         private Button toolKey;
@@ -35,7 +35,7 @@ namespace MyInstrument.Surface
         public string KeyboardID { get { return keyboardID; } set { keyboardID = value; } }
 
         #endregion
-        public MyInstrumentButtons(string key, int octave,  SolidColorBrush brush, int keyboardID) : base()
+        public KirollButtons(string key, int octave,  SolidColorBrush brush, int keyboardID) : base()
         {
             // Playable key
             toolKey = new Button();
@@ -80,7 +80,7 @@ namespace MyInstrument.Surface
         private void SelectNote(object sender, MouseEventArgs e)
         {
             // Selection is enabled just when instrument settings are not opened
-            if (Rack.DMIBox.MyInstrumentMainWindow.MyInstrumentSettingsOpened == false)
+            if (Rack.DMIBox.KirollMainWindow.KirollSettingsOpened == false)
             {
                 // Changing the opacity of the gazed note
                 #region OpacityGazedKey
@@ -96,7 +96,7 @@ namespace MyInstrument.Surface
 
                 //Reducing the key opacity to understand where the user are looking at,
                 //just for keys that are not dark or just played (keyboard already played)
-                if (toolKey.Opacity != 0.5 && KeyboardID != Rack.DMIBox.MyInstrumentSurface.LastKeyboardPlayed)
+                if (toolKey.Opacity != 0.5 && KeyboardID != Rack.DMIBox.KirollSurface.LastKeyboardPlayed)
                 {
                     toolKey.Opacity = 0.4;
                     //toolKey.Foreground = Brushes.White;
@@ -118,7 +118,7 @@ namespace MyInstrument.Surface
                 // If blow is used to click buttons, it should not work when user is playing keys.
                 if (Rack.DMIBox.LastGazedButton != null)
                 {
-                    Rack.DMIBox.LastGazedButton.Background = Rack.DMIBox.MyInstrumentMainWindow.OldBackGround;
+                    Rack.DMIBox.LastGazedButton.Background = Rack.DMIBox.KirollMainWindow.OldBackGround;
                     Rack.DMIBox.LastGazedButton = null;
                 }
                 #endregion
@@ -128,18 +128,18 @@ namespace MyInstrument.Surface
                 if (Rack.DMIBox.CheckPlayability())
                 {
                     //Updating keys colors if the user gaze at the playable keyboard 
-                    MyInstrumentKeyboard.ResetColors("_" + keyboardID);
-                    MyInstrumentKeyboard.UpdateColors("_" + keyboardID, toolKey);
+                    KirollKeyboard.ResetColors("_" + keyboardID);
+                    KirollKeyboard.UpdateColors("_" + keyboardID, toolKey);
 
                     //Movement of keyboards
-                    if (Rack.DMIBox.MyInstrumentSurface.LastKeyboardSelected != keyboardID)
+                    if (Rack.DMIBox.KirollSurface.LastKeyboardSelected != keyboardID)
                     {
-                        Rack.DMIBox.MyInstrumentSurface.LastKeyboardSelected = keyboardID;
-                        Rack.DMIBox.MyInstrumentSurface.MoveKeyboards();
+                        Rack.DMIBox.KirollSurface.LastKeyboardSelected = keyboardID;
+                        Rack.DMIBox.KirollSurface.MoveKeyboards();
                     }
                     
                     //If the user gaze at the right keyboard the blinkKeyboardBehave should stop
-                    Rack.DMIBox.MyInstrumentMainWindow.LetBlink = false;
+                    Rack.DMIBox.KirollMainWindow.LetBlink = false;
                 }
                 #endregion
                 
@@ -147,7 +147,7 @@ namespace MyInstrument.Surface
                 #region SlidePlay
                 if (Rack.UserSettings.SlidePlayMode == _SlidePlayModes.On && Rack.DMIBox.BreathOn == true)
                 {
-                    MyInstrumentKeyboard.GetKeyboard("_" + keyboardID).Opacity = 1;
+                    KirollKeyboard.GetKeyboard("_" + keyboardID).Opacity = 1;
                     Rack.DMIBox.PlaySelectedNote();
                 }
                 #endregion

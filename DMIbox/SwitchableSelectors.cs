@@ -1,7 +1,7 @@
-﻿namespace MyInstrument.DMIbox
+﻿namespace Kiroll.DMIbox
 {
 
-    public enum _MyInstrumentControlModes
+    public enum _KirollControlModes
     {
         Keyboard,
         Breath,

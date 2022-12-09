@@ -1,7 +1,7 @@
 ﻿using NeeqDMIs.NithSensors;
 using System.Globalization;
 
-namespace MyInstrument.DMIbox.SensorBehaviors
+namespace Kiroll.DMIbox.SensorBehaviors
 {
     public class NBbreath : INithSensorBehavior
     {
@@ -17,7 +17,7 @@ namespace MyInstrument.DMIbox.SensorBehaviors
 
         public void HandleData(NithSensorData val)
         {
-            if (Rack.UserSettings.MyInstrumentControlMode == _MyInstrumentControlModes.Breath)
+            if (Rack.UserSettings.KirollControlMode == _KirollControlModes.Breath)
             {
                 float b = 0;
 

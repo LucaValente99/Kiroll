@@ -1,6 +1,6 @@
 ﻿using NeeqDMIs.Eyetracking.Tobii;
 
-namespace MyInstrument.DMIbox.TobiiBehaviors
+namespace Kiroll.DMIbox.TobiiBehaviors
 {
     internal class TBactivateButton : ATobiiBlinkBehavior
     {
@@ -10,12 +10,12 @@ namespace MyInstrument.DMIbox.TobiiBehaviors
         }
         public override void Event_doubleClose()
         {               
-            if (Rack.UserSettings.EyeCtrl == _EyeCtrl.On && (Rack.UserSettings.MyInstrumentControlMode != _MyInstrumentControlModes.Breath 
-                || !Rack.DMIBox.SensorReader.Connect(Rack.DMIBox.MyInstrumentMainWindow.SensorPort)))
+            if (Rack.UserSettings.EyeCtrl == _EyeCtrl.On && (Rack.UserSettings.KirollControlMode != _KirollControlModes.Breath 
+                || !Rack.DMIBox.SensorReader.Connect(Rack.DMIBox.KirollMainWindow.SensorPort)))
             {
-                if (!Rack.DMIBox.MyInstrumentMainWindow.Click)
+                if (!Rack.DMIBox.KirollMainWindow.Click)
                 {
-                    Rack.DMIBox.MyInstrumentMainWindow.Click = true;
+                    Rack.DMIBox.KirollMainWindow.Click = true;
                 }
             }                            
         }

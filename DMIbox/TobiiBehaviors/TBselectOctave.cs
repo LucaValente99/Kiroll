@@ -1,6 +1,6 @@
 ﻿using NeeqDMIs.Eyetracking.Tobii;
 
-namespace MyInstrument.DMIbox.TobiiBehaviors
+namespace Kiroll.DMIbox.TobiiBehaviors
 {
     public class TBselectOctave : ATobiiBlinkBehavior
     {
@@ -20,10 +20,10 @@ namespace MyInstrument.DMIbox.TobiiBehaviors
             {
                 if (Rack.UserSettings.BlinkModes == _BlinkModes.Octave)
                 {
-                    if (Rack.DMIBox.MyInstrumentMainWindow.OctaveIndex > 0)
+                    if (Rack.DMIBox.KirollMainWindow.OctaveIndex > 0)
                     {
-                        Rack.DMIBox.MyInstrumentMainWindow.OctaveIndex--;
-                        Rack.UserSettings.Octave = Rack.DMIBox.MyInstrumentMainWindow.ComboOctave[Rack.DMIBox.MyInstrumentMainWindow.OctaveIndex];
+                        Rack.DMIBox.KirollMainWindow.OctaveIndex--;
+                        Rack.UserSettings.Octave = Rack.DMIBox.KirollMainWindow.ComboOctave[Rack.DMIBox.KirollMainWindow.OctaveIndex];
                     }
                 }
             }        
@@ -37,10 +37,10 @@ namespace MyInstrument.DMIbox.TobiiBehaviors
             {
                 if (Rack.UserSettings.BlinkModes == _BlinkModes.Octave)
                 {
-                    if (Rack.DMIBox.MyInstrumentMainWindow.CodeIndex < 4)
+                    if (Rack.DMIBox.KirollMainWindow.CodeIndex < 4)
                     {
-                        Rack.DMIBox.MyInstrumentMainWindow.OctaveIndex++;
-                        Rack.UserSettings.Octave = Rack.DMIBox.MyInstrumentMainWindow.ComboOctave[Rack.DMIBox.MyInstrumentMainWindow.OctaveIndex];
+                        Rack.DMIBox.KirollMainWindow.OctaveIndex++;
+                        Rack.UserSettings.Octave = Rack.DMIBox.KirollMainWindow.ComboOctave[Rack.DMIBox.KirollMainWindow.OctaveIndex];
                     }
                 }
             }            

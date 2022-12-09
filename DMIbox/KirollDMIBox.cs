@@ -1,4 +1,4 @@
-﻿using MyInstrument.Surface;
+﻿using Kiroll.Surface;
 using NeeqDMIs.Eyetracking.Tobii;
 using NeeqDMIs.Keyboard;
 using NeeqDMIs.MIDI;
@@ -7,9 +7,9 @@ using NeeqDMIs.NithSensors;
 using System;
 using System.Windows.Controls;
 
-namespace MyInstrument.DMIbox
+namespace Kiroll.DMIbox
 {
-    public class MyInstrumentDMIBox 
+    public class KirollDMIBox 
     {
         #region Class attributes
 
@@ -19,7 +19,7 @@ namespace MyInstrument.DMIbox
         private int pressure = 0;
 
         // Used to track when a key and relative keyboard is playing and what keyboard stop
-        // See SelectNote -> VariosCheck in MyInstrumentButtons for more info
+        // See SelectNote -> VariosCheck in KirollButtons for more info
         private bool isPlaying = false;
         public bool IsPlaying { get => isPlaying; set => isPlaying = value; }
 
@@ -41,16 +41,16 @@ namespace MyInstrument.DMIbox
         public MidiNotes OldMidiNote { get => oldMidiNote; set => oldMidiNote = value; }
 
         // Used to update note visualizer when a note is played
-        private MyInstrumentButtons checkedNote = null;
-        public MyInstrumentButtons CheckedNote { get => checkedNote; set => checkedNote = value; }
+        private KirollButtons checkedNote = null;
+        public KirollButtons CheckedNote { get => checkedNote; set => checkedNote = value; }
 
-        // Main classes instantiated when the application starts, into MyInstrumentSetup class
-        public MainWindow MyInstrumentMainWindow { get; set; }
+        // Main classes instantiated when the application starts, into KirollSetup class
+        public MainWindow KirollMainWindow { get; set; }
         public KeyboardModule KeyboardModule { get; set; }    
         public AutoScroller AutoScroller { get; set; }
 
-        private MyInstrumentSurface myInstrumentSurface;
-        public MyInstrumentSurface MyInstrumentSurface { get => myInstrumentSurface; set => myInstrumentSurface = value; }
+        private KirollSurface kirollSurface;
+        public KirollSurface KirollSurface { get => kirollSurface; set => kirollSurface = value; }
 
         #endregion
 
@@ -145,8 +145,8 @@ namespace MyInstrument.DMIbox
         public void PlaySelectedNote()
         {
             if (MidiModule.IsMidiOk() && checkedNote!= null && // check for MIDI channel and if a valid note is selected
-                Rack.UserSettings.MyInstrumentControlMode != _MyInstrumentControlModes.NaN && // check for control mode set
-                !MyInstrumentMainWindow.MyInstrumentSettingsOpened) // check for settings, if they are open instrument won't play
+                Rack.UserSettings.KirollControlMode != _KirollControlModes.NaN && // check for control mode set
+                !KirollMainWindow.KirollSettingsOpened) // check for settings, if they are open instrument won't play
             {
                 if (CheckPlayability())
                 {
@@ -162,7 +162,7 @@ namespace MyInstrument.DMIbox
 
                     oldMidiNote = selectedNote;
 
-                    myInstrumentSurface.LastKeyboardPlayed = checkedNote.KeyboardID;
+                    KirollSurface.LastKeyboardPlayed = checkedNote.KeyboardID;
 
                     #region UpdateNoteVisualizer
                     if (checkedNote.Key.Contains("s"))
@@ -181,12 +181,12 @@ namespace MyInstrument.DMIbox
                 else
                 {
                     // When the user tries to play an invalid key, the right keyboard should flash
-                    // Setting the LetBlink variable to True helps Update() into MyInstrumentMainWindow,
+                    // Setting the LetBlink variable to True helps Update() into KirollMainWindow,
                     // to start the keyboardBlink behavior
                     if (!(Rack.UserSettings.SlidePlayMode == _SlidePlayModes.On &&
-                        CheckedNote.KeyboardID == MyInstrumentSurface.LastKeyboardPlayed))
+                        CheckedNote.KeyboardID == KirollSurface.LastKeyboardPlayed))
                     {
-                        MyInstrumentMainWindow.LetBlink = true;
+                        KirollMainWindow.LetBlink = true;
                     }               
                 }
             }
@@ -197,7 +197,7 @@ namespace MyInstrument.DMIbox
         {   
             if (MidiModule.IsMidiOk()) // check for MIDI channel
             {                
-                if (isPlaying == true) // See SelectNote -> VariosCheck in MyInstrumentButtons for more info on isPlaying
+                if (isPlaying == true) // See SelectNote -> VariosCheck in KirollButtons for more info on isPlaying
                 {
                     MidiModule.StopNote((int)selectedNote);
                     isPlaying = false;
@@ -220,7 +220,7 @@ namespace MyInstrument.DMIbox
         // So if i play the keyboard with id "_6", the next playable one will be that with id "_7"
         public bool CheckPlayability()
         {
-            bool startingCase = myInstrumentSurface.LastKeyboardPlayed == "";           
+            bool startingCase = KirollSurface.LastKeyboardPlayed == "";           
 
             if (startingCase)
             {
@@ -228,7 +228,7 @@ namespace MyInstrument.DMIbox
                 return firstNoteToPlay;
             }
 
-            int lastKeyboardPlayed = Convert.ToInt32(myInstrumentSurface.LastKeyboardPlayed);
+            int lastKeyboardPlayed = Convert.ToInt32(KirollSurface.LastKeyboardPlayed);
             int keyboardID = Convert.ToInt32(checkedNote.KeyboardID);
 
             return keyboardID == (lastKeyboardPlayed + 1) % 16;

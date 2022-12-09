@@ -1,7 +1,7 @@
-﻿using MyInstrument.DMIbox.KeyboardBehaviors;
-using MyInstrument.DMIbox.SensorBehaviors;
-using MyInstrument.DMIbox.TobiiBehaviors;
-using MyInstrument.Surface;
+﻿using Kiroll.DMIbox.KeyboardBehaviors;
+using Kiroll.DMIbox.SensorBehaviors;
+using Kiroll.DMIbox.TobiiBehaviors;
+using Kiroll.Surface;
 using NeeqDMIs.Eyetracking.PointFilters;
 using NeeqDMIs.Eyetracking.Tobii;
 using NeeqDMIs.Keyboard;
@@ -11,17 +11,17 @@ using RawInputProcessor;
 using System.Windows.Interop;
 using Tobii.Interaction.Framework;
 
-namespace MyInstrument.DMIbox
+namespace Kiroll.DMIbox
 {
-    internal class MyInstrumentSetup
+    internal class KirollSetup
     {
         // Used to track the first time the instrument is started: lots of objects need to be instantiated
         // just one time (this is due to the possibilitiy to start and stop the instrument).
 
         private static bool firstTime = true;
-        public MyInstrumentSetup(MainWindow window)
+        public KirollSetup(MainWindow window)
         {
-            Rack.DMIBox.MyInstrumentMainWindow = window;
+            Rack.DMIBox.KirollMainWindow = window;
         }
 
         public void Setup()
@@ -35,7 +35,7 @@ namespace MyInstrument.DMIbox
                 // BREATH SENSOR 
                 Rack.DMIBox.SensorReader = new NithModule();
 
-                Rack.DMIBox.KeyboardModule = new KeyboardModule(new WindowInteropHelper(Rack.DMIBox.MyInstrumentMainWindow).Handle, RawInputCaptureMode.ForegroundAndBackground);
+                Rack.DMIBox.KeyboardModule = new KeyboardModule(new WindowInteropHelper(Rack.DMIBox.KirollMainWindow).Handle, RawInputCaptureMode.ForegroundAndBackground);
                 Rack.DMIBox.TobiiModule = new TobiiModule(GazePointDataMode.Unfiltered);
 
                 //BEHAVIORS - Keyboard, Tobii, Breath
@@ -51,13 +51,13 @@ namespace MyInstrument.DMIbox
                 Rack.DMIBox.SensorReader.SensorBehaviors.Add(new NBactivateButton(28)); 
 
                 // SURFACE INIT
-                Rack.DMIBox.AutoScroller = new AutoScroller(Rack.DMIBox.MyInstrumentMainWindow.scrlMyInstrument, 0, 300, new PointFilterMAExpDecaying(0.1f)); // OLD was 100, 0.1f
-                Rack.DMIBox.MyInstrumentSurface = new MyInstrumentSurface(Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument);
+                Rack.DMIBox.AutoScroller = new AutoScroller(Rack.DMIBox.KirollMainWindow.scrlKiroll, 0, 300, new PointFilterMAExpDecaying(0.1f)); // OLD was 100, 0.1f
+                Rack.DMIBox.KirollSurface = new KirollSurface(Rack.DMIBox.KirollMainWindow.canvasKiroll);
 
                 firstTime = false;
             }
             
-            Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+            Rack.DMIBox.KirollSurface.DrawOnCanvas();
         }
     }
 }

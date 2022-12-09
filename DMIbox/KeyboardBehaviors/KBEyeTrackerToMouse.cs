@@ -1,7 +1,7 @@
 ﻿using NeeqDMIs.Keyboard;
 using RawInputProcessor;
 
-namespace MyInstrument.DMIbox.KeyboardBehaviors
+namespace Kiroll.DMIbox.KeyboardBehaviors
 {
     public class KBEyeTrackerToMouse : IKeyboardBehavior
     {

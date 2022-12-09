@@ -1,5 +1,5 @@
-﻿using MyInstrument.DMIbox;
-using MyInstrument.Surface;
+﻿using Kiroll.DMIbox;
+using Kiroll.Surface;
 using NeeqDMIs.ErrorLogging;
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Timer = System.Windows.Forms.Timer;
 
-namespace MyInstrument
+namespace Kiroll
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -22,11 +22,11 @@ namespace MyInstrument
         // Bool variables for checking activation and deactivation of buttons
         #region BoolVariables
 
-        private bool myInstrumentStarted = false;
+        private bool KirollStarted = false;
         
         //If settings are opened the instrument will not play and keyboard opacity will be set to 0.6;
-        private bool myInstrumentSettingsOpened = false;
-        public bool MyInstrumentSettingsOpened { get => myInstrumentSettingsOpened; }
+        private bool kirollSettingsOpened = false;
+        public bool KirollSettingsOpened { get => kirollSettingsOpened; }
         private bool btnKeyboardOn = false;
         private bool btnBreathOn = false;
         private bool btnSlidePlayOn = false;
@@ -205,7 +205,7 @@ namespace MyInstrument
             txtPitch.Text = Rack.UserSettings.NotePitch;
             txtNoteName.Text = Rack.UserSettings.NoteName;
 
-            if (Rack.UserSettings.MyInstrumentControlMode == _MyInstrumentControlModes.Keyboard)
+            if (Rack.UserSettings.KirollControlMode == _KirollControlModes.Keyboard)
             {
                 txtVelocityMouth.Text = Rack.UserSettings.NoteVelocity;
             }
@@ -235,7 +235,7 @@ namespace MyInstrument
                 oldScaleIndex = scaleIndex;
                 txtScale.Text = comboScale[scaleIndex];
                 Rack.UserSettings.ScaleName = txtScale.Text;
-                Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+                Rack.DMIBox.KirollSurface.DrawOnCanvas();
             }
 
             if (oldOctaveIndex != octaveIndex)
@@ -243,7 +243,7 @@ namespace MyInstrument
                 oldOctaveIndex = octaveIndex;
                 txtOctave.Text = comboOctave[octaveIndex];
                 Rack.UserSettings.Octave = txtOctave.Text;
-                Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+                Rack.DMIBox.KirollSurface.DrawOnCanvas();
             }
 
             if (oldCodeIndex != codeIndex)
@@ -251,7 +251,7 @@ namespace MyInstrument
                 oldCodeIndex = codeIndex;
                 txtCode.Text = comboCode[codeIndex];
                 Rack.UserSettings.ScaleCode = txtCode.Text;
-                Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+                Rack.DMIBox.KirollSurface.DrawOnCanvas();
             }
             #endregion
 
@@ -306,16 +306,16 @@ namespace MyInstrument
 
             #region BlinkKeyboard_behave
 
-            string lastKeyboardPlayed = Rack.DMIBox.MyInstrumentSurface.LastKeyboardPlayed;
+            string lastKeyboardPlayed = Rack.DMIBox.KirollSurface.LastKeyboardPlayed;
 
             // Selecting the keyboard that has to blink
             if (lastKeyboardPlayed == "")
             {
-                blinkKeyboard = MyInstrumentKeyboard.GetKeyboard("_0");
+                blinkKeyboard = KirollKeyboard.GetKeyboard("_0");
             }
             else
             {
-                blinkKeyboard = MyInstrumentKeyboard.GetKeyboard("_" + ((Convert.ToInt32(lastKeyboardPlayed) + 1) % 16).ToString());
+                blinkKeyboard = KirollKeyboard.GetKeyboard("_" + ((Convert.ToInt32(lastKeyboardPlayed) + 1) % 16).ToString());
             }
 
             // If the user is on the right keyboard, that one should stop blinking, so Opacity will be restored
@@ -390,10 +390,10 @@ namespace MyInstrument
       
         private void btnStart_Click(object sender, RoutedEventArgs e)
         {
-            if (!myInstrumentStarted)
+            if (!KirollStarted)
             {
-                MyInstrumentSetup myInstrumentSetup = new MyInstrumentSetup(this);
-                myInstrumentSetup.Setup();              
+                KirollSetup KirollSetup = new KirollSetup(this);
+                KirollSetup.Setup();              
 
                 // Graphic changes
                 btnStartImage.Source = pauseIcon;
@@ -425,11 +425,11 @@ namespace MyInstrument
                
                 updater.Start();               
 
-                myInstrumentStarted = true;   
+                KirollStarted = true;   
             }
             else
             {
-                myInstrumentStarted = false; // disabling all settings
+                KirollStarted = false; // disabling all settings
 
                 // Graphic changes             
                 btnStartImage.Source = startIcon;
@@ -453,7 +453,7 @@ namespace MyInstrument
                 letBlink = false;
 
                 // Resetting surface
-                Rack.DMIBox.MyInstrumentSurface.ClearSurface();
+                Rack.DMIBox.KirollSurface.ClearSurface();
 
                 updater.Stop();
             }
@@ -461,9 +461,9 @@ namespace MyInstrument
 
         private void btnInstrumentSettings_Click(object sender, RoutedEventArgs e)
         {
-            if (!myInstrumentSettingsOpened)
+            if (!KirollSettingsOpened)
             {
-                myInstrumentSettingsOpened = true;
+                kirollSettingsOpened = true;
 
                 // Graphic changes
                 WindowInstrumentSettings_1.Visibility = Visibility.Visible;
@@ -473,14 +473,14 @@ namespace MyInstrument
                 btnInstrumentSettingLabel.Content = "Close Settings";
 
                 // This changes the opacity of keybaords when settings are opened
-                if (myInstrumentStarted)
+                if (KirollStarted)
                 {
-                    MyInstrumentKeyboard.UpdateOpacity();
+                    KirollKeyboard.UpdateOpacity();
                 }               
             }
             else
             {
-                myInstrumentSettingsOpened = false;
+                kirollSettingsOpened = false;
 
                 // Graphic changes
                 WindowInstrumentSettings_1.Visibility = Visibility.Hidden;
@@ -489,16 +489,16 @@ namespace MyInstrument
                 btnInstrumentSettings.Background = DisableBrush;
                 btnInstrumentSettingLabel.Content = "Instrument Settings";
                 
-                if (myInstrumentStarted)
+                if (KirollStarted)
                 {
-                    MyInstrumentKeyboard.UpdateOpacity();
+                    KirollKeyboard.UpdateOpacity();
                 }
             }
         }
 
         private void btnCtrlEye_Click(object sender, RoutedEventArgs e)
         {
-            if (myInstrumentStarted)
+            if (KirollStarted)
             {
                 if (!btnEyeOn)
                 {
@@ -523,21 +523,21 @@ namespace MyInstrument
 
         private void btnCtrlKeyName_Click(object sender, RoutedEventArgs e)
         {
-            if (myInstrumentStarted)
+            if (KirollStarted)
             {
                 if (!btnKeyNameOn)
                 {
                     btnKeyNameOn = true;
                     Rack.UserSettings.KeyName = _KeyName.On;
                     btnCtrlKeyName.Background = ActiveBrush;
-                    Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+                    Rack.DMIBox.KirollSurface.DrawOnCanvas();
                 }
                 else
                 {
                     btnKeyNameOn = false;
                     Rack.UserSettings.KeyName = _KeyName.Off;
                     btnCtrlKeyName.Background = buttonBackground;
-                    Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+                    Rack.DMIBox.KirollSurface.DrawOnCanvas();
                 }
             }
         }
@@ -552,7 +552,7 @@ namespace MyInstrument
 
         private void btnCtrlKeyboard_Click(object sender, RoutedEventArgs e)
         {
-            if (myInstrumentStarted)
+            if (KirollStarted)
             {
                 if (!btnKeyboardOn)
                 {
@@ -564,7 +564,7 @@ namespace MyInstrument
                     btnCtrlBreath.Background = buttonBackground;
                     txtBSwitc.Foreground = WarningBrush;
 
-                    Rack.UserSettings.MyInstrumentControlMode = _MyInstrumentControlModes.Keyboard;
+                    Rack.UserSettings.KirollControlMode = _KirollControlModes.Keyboard;
                     Rack.DMIBox.ResetModulationAndPressure();
                 }
             }           
@@ -572,7 +572,7 @@ namespace MyInstrument
 
         private void btnCtrlBreath_Click(object sender, RoutedEventArgs e)
         {
-            if (myInstrumentStarted)
+            if (KirollStarted)
             {
                 if (!btnBreathOn)
                 {
@@ -584,7 +584,7 @@ namespace MyInstrument
                     btnCtrlKeyboard.Background = buttonBackground;
                     txtBSwitc.Foreground = new SolidColorBrush(Colors.White);
 
-                    Rack.UserSettings.MyInstrumentControlMode = _MyInstrumentControlModes.Breath;
+                    Rack.UserSettings.KirollControlMode = _KirollControlModes.Breath;
                     Rack.DMIBox.ResetModulationAndPressure();
                 }
             }
@@ -593,7 +593,7 @@ namespace MyInstrument
 
         private void btnScaleMinus_Click(object sender, RoutedEventArgs e)
         {
-            if (myInstrumentStarted)
+            if (KirollStarted)
             {
                 if (scaleIndex > 0)               
                     scaleIndex--;                    
@@ -603,7 +603,7 @@ namespace MyInstrument
 
         private void btnScalePlus_Click(object sender, RoutedEventArgs e)
         {
-            if (myInstrumentStarted)
+            if (KirollStarted)
             {
                 if (scaleIndex < 11)                
                     scaleIndex++;                                
@@ -612,7 +612,7 @@ namespace MyInstrument
 
         public void btnCodeMinus_Click(object sender, RoutedEventArgs e)
         {
-            if (myInstrumentStarted)
+            if (KirollStarted)
             {
                 if (!btnSharpNotesOn)
                 {
@@ -624,7 +624,7 @@ namespace MyInstrument
 
         private void btnCodePlus_Click(object sender, RoutedEventArgs e)
         {
-            if (myInstrumentStarted)
+            if (KirollStarted)
             {
                 if (!btnSharpNotesOn)
                 {
@@ -636,7 +636,7 @@ namespace MyInstrument
 
         private void btnOctaveMinus_Click(object sender, RoutedEventArgs e)
         {
-            if (myInstrumentStarted)
+            if (KirollStarted)
             {
                 if (octaveIndex > 0)                
                     octaveIndex--;                                
@@ -645,7 +645,7 @@ namespace MyInstrument
 
         private void btnOctavePlus_Click(object sender, RoutedEventArgs e)
         {
-            if (myInstrumentStarted)
+            if (KirollStarted)
             {
                 if (octaveIndex < 4)              
                     octaveIndex++;               
@@ -654,7 +654,7 @@ namespace MyInstrument
 
         private void btnMidiPortMinus_Click(object sender, RoutedEventArgs e)
         {
-            if (myInstrumentStarted)
+            if (KirollStarted)
             {
                 Rack.UserSettings.MIDIPort--;
                 Rack.DMIBox.MidiModule.OutDevice = Rack.UserSettings.MIDIPort;
@@ -666,7 +666,7 @@ namespace MyInstrument
 
         private void btnMidiPortPlus_Click(object sender, RoutedEventArgs e)
         {
-            if (myInstrumentStarted)
+            if (KirollStarted)
             {
                 Rack.UserSettings.MIDIPort++;
                 Rack.DMIBox.MidiModule.OutDevice = Rack.UserSettings.MIDIPort;
@@ -692,7 +692,7 @@ namespace MyInstrument
 
         private void btnBreathPortMinus_Click(object sender, RoutedEventArgs e)
         {
-            if (myInstrumentStarted)
+            if (KirollStarted)
             {
                 SensorPort--;
                 //Graphic changes
@@ -702,7 +702,7 @@ namespace MyInstrument
 
         private void btnBreathPortPlus_Click(object sender, RoutedEventArgs e)
         {
-            if (myInstrumentStarted)
+            if (KirollStarted)
             {
                 SensorPort++;
                 //Graphic changes
@@ -731,7 +731,7 @@ namespace MyInstrument
 
         private void btnSharpNotes_Click(object sender, RoutedEventArgs e)
         {
-            if (myInstrumentStarted)
+            if (KirollStarted)
             {
                 if (!btnSharpNotesOn)
                 {
@@ -739,7 +739,7 @@ namespace MyInstrument
 
                     btnSharpNotes.Background = ActiveBrush;
                     Rack.UserSettings.SharpNotesMode = _SharpNotesModes.On;
-                    Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+                    Rack.DMIBox.KirollSurface.DrawOnCanvas();
                 }
                 else
                 {
@@ -747,7 +747,7 @@ namespace MyInstrument
 
                     btnSharpNotes.Background = buttonBackground;
                     Rack.UserSettings.SharpNotesMode = _SharpNotesModes.Off;
-                    Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+                    Rack.DMIBox.KirollSurface.DrawOnCanvas();
 
                 }
             }
@@ -755,7 +755,7 @@ namespace MyInstrument
 
         private void btnSlidePlay_Click(object sender, RoutedEventArgs e)
         {
-            if (myInstrumentStarted)
+            if (KirollStarted)
             {
                 if (!btnSlidePlayOn)
                 {
@@ -780,7 +780,7 @@ namespace MyInstrument
 
         private void btnBlink_Click(object sender, RoutedEventArgs e)
         {
-            if (myInstrumentStarted)
+            if (KirollStarted)
             {
                 if (!btnBlinkOn)
                 {
@@ -811,7 +811,7 @@ namespace MyInstrument
 
         private void btnBlinkMinus_Click(object sender, RoutedEventArgs e)
         {
-            if (myInstrumentStarted)
+            if (KirollStarted)
             {
                 if (blinkIndex > 0)
                 {
@@ -835,7 +835,7 @@ namespace MyInstrument
 
         private void btnBlinkPlus_Click(object sender, RoutedEventArgs e)
         {
-            if (myInstrumentStarted)
+            if (KirollStarted)
             {
                 if (blinkIndex < 2)
                 {
@@ -859,7 +859,7 @@ namespace MyInstrument
 
         private void btnMetronome_Click(object sender, RoutedEventArgs e)
         {
-            if (myInstrumentStarted)
+            if (KirollStarted)
             {
                 if (!playMetronome)
                 {
@@ -878,7 +878,7 @@ namespace MyInstrument
 
         private void btnMetrnomeMinus_Click(object sender, RoutedEventArgs e)
         {
-            if (myInstrumentStarted)
+            if (KirollStarted)
             {
                 Rack.UserSettings.BPMmetronome--;
                 metronomeTimer.Interval = Convert.ToInt32(1000 * 60 / (Rack.UserSettings.BPMmetronome)); ;
@@ -888,7 +888,7 @@ namespace MyInstrument
 
         private void btnMetrnomePlus_Click(object sender, RoutedEventArgs e)
         {
-            if (myInstrumentStarted)
+            if (KirollStarted)
             {
                 Rack.UserSettings.BPMmetronome++;
                 metronomeTimer.Interval = Convert.ToInt32(1000 * 60 / (Rack.UserSettings.BPMmetronome)); ;
@@ -913,7 +913,7 @@ namespace MyInstrument
 
         private void btnBSwitchMinus_Click(object sender, RoutedEventArgs e)
         {
-            if (myInstrumentStarted)
+            if (KirollStarted)
             {
                 if (blowIndex > 0)
                 {
@@ -934,7 +934,7 @@ namespace MyInstrument
 
         private void btnBSwitcPlus_Click(object sender, RoutedEventArgs e)
         {
-            if (myInstrumentStarted)
+            if (KirollStarted)
             {
                 if (blowIndex < 1)
                 {
@@ -956,26 +956,26 @@ namespace MyInstrument
         // Setting vertical distance between keys in keyboards
         private void btnVerticalDistanceMinus_Click(object sender, RoutedEventArgs e)
         {
-            if (myInstrumentStarted)
+            if (KirollStarted)
             {
                 if (Rack.UserSettings.KeyVerticaDistance >= 5)
                 {
                     Rack.UserSettings.KeyVerticaDistance -= 5;
                     txtVerticalDistance.Text = Rack.UserSettings.KeyVerticaDistance.ToString();
-                    Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+                    Rack.DMIBox.KirollSurface.DrawOnCanvas();
                 }
             }
         }
 
         private void btnVerticalDistancePlus_Click(object sender, RoutedEventArgs e)
         {
-            if (myInstrumentStarted)
+            if (KirollStarted)
             {
                 if (Rack.UserSettings.KeyVerticaDistance <= 25)
                 {
                     Rack.UserSettings.KeyVerticaDistance += 5;
                     txtVerticalDistance.Text = Rack.UserSettings.KeyVerticaDistance.ToString();
-                    Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+                    Rack.DMIBox.KirollSurface.DrawOnCanvas();
                 }
             }
         }
@@ -983,26 +983,26 @@ namespace MyInstrument
         // Setting horizontal distance between keyboards
         private void btnHorizontalDistanceMinus_Click(object sender, RoutedEventArgs e)
         {
-            if (myInstrumentStarted)
+            if (KirollStarted)
             {
                 if (Rack.UserSettings.KeyHorizontalDistance > 200)
                 {
                     Rack.UserSettings.KeyHorizontalDistance -= 100;
                     txtHorizontalDistance.Text = Rack.UserSettings.KeyHorizontalDistance.ToString();
-                    Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+                    Rack.DMIBox.KirollSurface.DrawOnCanvas();
                 }
             }
         }
 
         private void btnHorizontalDistancePlus_Click(object sender, RoutedEventArgs e)
         {
-            if (myInstrumentStarted)
+            if (KirollStarted)
             {
                 if (Rack.UserSettings.KeyHorizontalDistance < 600)
                 {
                     Rack.UserSettings.KeyHorizontalDistance += 100;
                     txtHorizontalDistance.Text = Rack.UserSettings.KeyHorizontalDistance.ToString();
-                    Rack.DMIBox.MyInstrumentSurface.DrawOnCanvas();
+                    Rack.DMIBox.KirollSurface.DrawOnCanvas();
                 }
             }
         }

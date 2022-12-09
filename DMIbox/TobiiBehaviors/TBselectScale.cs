@@ -1,7 +1,7 @@
 ﻿using NeeqDMIs.Eyetracking.Tobii;
 using System.Windows;
 
-namespace MyInstrument.DMIbox.TobiiBehaviors
+namespace Kiroll.DMIbox.TobiiBehaviors
 {
     public class TBselectScale : ATobiiBlinkBehavior
     {
@@ -21,10 +21,10 @@ namespace MyInstrument.DMIbox.TobiiBehaviors
             {
                 if (Rack.UserSettings.BlinkModes == _BlinkModes.Scale)
                 {
-                    if (Rack.DMIBox.MyInstrumentMainWindow.ScaleIndex > 0)
+                    if (Rack.DMIBox.KirollMainWindow.ScaleIndex > 0)
                     {
-                        Rack.DMIBox.MyInstrumentMainWindow.ScaleIndex--;
-                        Rack.UserSettings.ScaleName = Rack.DMIBox.MyInstrumentMainWindow.ComboScale[Rack.DMIBox.MyInstrumentMainWindow.ScaleIndex];
+                        Rack.DMIBox.KirollMainWindow.ScaleIndex--;
+                        Rack.UserSettings.ScaleName = Rack.DMIBox.KirollMainWindow.ComboScale[Rack.DMIBox.KirollMainWindow.ScaleIndex];
                     }
                 }
             }            
@@ -38,10 +38,10 @@ namespace MyInstrument.DMIbox.TobiiBehaviors
              {
                 if (Rack.UserSettings.BlinkModes == _BlinkModes.Scale)
                 {
-                    if (Rack.DMIBox.MyInstrumentMainWindow.ScaleIndex < 11)
+                    if (Rack.DMIBox.KirollMainWindow.ScaleIndex < 11)
                     {
-                        Rack.DMIBox.MyInstrumentMainWindow.ScaleIndex++;
-                        Rack.UserSettings.ScaleName = Rack.DMIBox.MyInstrumentMainWindow.ComboScale[Rack.DMIBox.MyInstrumentMainWindow.ScaleIndex];
+                        Rack.DMIBox.KirollMainWindow.ScaleIndex++;
+                        Rack.UserSettings.ScaleName = Rack.DMIBox.KirollMainWindow.ComboScale[Rack.DMIBox.KirollMainWindow.ScaleIndex];
                     }
                 }
             }           

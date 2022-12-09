@@ -1,6 +1,6 @@
 ﻿using NeeqDMIs.Eyetracking.Tobii;
 
-namespace MyInstrument.DMIbox.TobiiBehaviors
+namespace Kiroll.DMIbox.TobiiBehaviors
 {
     public class TBselectCode : ATobiiBlinkBehavior
     {
@@ -20,10 +20,10 @@ namespace MyInstrument.DMIbox.TobiiBehaviors
             {
                 if (Rack.UserSettings.BlinkModes == _BlinkModes.Code)
                 {
-                    if (Rack.DMIBox.MyInstrumentMainWindow.CodeIndex > 0)
+                    if (Rack.DMIBox.KirollMainWindow.CodeIndex > 0)
                     {
-                        Rack.DMIBox.MyInstrumentMainWindow.CodeIndex--;
-                        Rack.UserSettings.ScaleCode = Rack.DMIBox.MyInstrumentMainWindow.ComboCode[Rack.DMIBox.MyInstrumentMainWindow.CodeIndex];
+                        Rack.DMIBox.KirollMainWindow.CodeIndex--;
+                        Rack.UserSettings.ScaleCode = Rack.DMIBox.KirollMainWindow.ComboCode[Rack.DMIBox.KirollMainWindow.CodeIndex];
                     }
                 }
             }           
@@ -37,10 +37,10 @@ namespace MyInstrument.DMIbox.TobiiBehaviors
             {
                 if (Rack.UserSettings.BlinkModes == _BlinkModes.Code)
                 {
-                    if (Rack.DMIBox.MyInstrumentMainWindow.CodeIndex < 3)
+                    if (Rack.DMIBox.KirollMainWindow.CodeIndex < 3)
                     {
-                        Rack.DMIBox.MyInstrumentMainWindow.CodeIndex++;
-                        Rack.UserSettings.ScaleCode = Rack.DMIBox.MyInstrumentMainWindow.ComboCode[Rack.DMIBox.MyInstrumentMainWindow.CodeIndex];
+                        Rack.DMIBox.KirollMainWindow.CodeIndex++;
+                        Rack.UserSettings.ScaleCode = Rack.DMIBox.KirollMainWindow.ComboCode[Rack.DMIBox.KirollMainWindow.CodeIndex];
                     }
                 }
             }           

@@ -1,7 +1,7 @@
-﻿using MyInstrument.DMIbox;
+﻿using Kiroll.DMIbox;
 
 
-namespace MyInstrument.Surface.UserSettings
+namespace Kiroll.Surface.UserSettings
 {
     public interface IUserSettings
     {
@@ -30,7 +30,7 @@ namespace MyInstrument.Surface.UserSettings
         double BPMmetronome { get; set; }
 
         // SwitchableSelectors settings
-        _MyInstrumentControlModes MyInstrumentControlMode { get; set; }
+        _KirollControlModes KirollControlMode { get; set; }
         _SlidePlayModes SlidePlayMode { get; set; }
         _SharpNotesModes SharpNotesMode { get; set; }
         _BlinkModes BlinkModes { get; set; }

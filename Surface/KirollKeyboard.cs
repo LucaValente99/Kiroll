@@ -1,4 +1,4 @@
-﻿using MyInstrument.DMIbox;
+﻿using Kiroll.DMIbox;
 using NeeqDMIs.Music;
 using System;
 using System.Collections.Generic;
@@ -9,9 +9,9 @@ using Brushes = System.Windows.Media.Brushes;
 using Color = System.Windows.Media.Color;
 using Point = System.Drawing.Point;
 
-namespace MyInstrument.Surface
+namespace Kiroll.Surface
 {
-    public class MyInstrumentKeyboard : StackPanel
+    public class KirollKeyboard : StackPanel
     {
         #region Class attributes
         // Specific color of each key
@@ -78,7 +78,7 @@ namespace MyInstrument.Surface
         public static int ID { get => id; set => id = value; }
 
         #endregion
-        public MyInstrumentKeyboard() : base()
+        public KirollKeyboard() : base()
         {
             musicKeyboard = new StackPanel();
             musicKeyboard.Orientation = Orientation.Vertical;
@@ -91,13 +91,13 @@ namespace MyInstrument.Surface
             {
                 Rack.UserSettings.KeyboardHeight = 1011; //1200
                 musicKeyboard.Height = Rack.UserSettings.KeyboardHeight;
-                Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Height = 1338; //1588
+                Rack.DMIBox.KirollMainWindow.canvasKiroll.Height = 1338; //1588
             }
             else
             {
                 Rack.UserSettings.KeyboardHeight = 590; //700
                 musicKeyboard.Height = Rack.UserSettings.KeyboardHeight;
-                Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Height = 783; //927
+                Rack.DMIBox.KirollMainWindow.canvasKiroll.Height = 783; //927
             }          
             
             FillStackPanel();
@@ -146,12 +146,12 @@ namespace MyInstrument.Surface
                     {
                         if (i >= 7 - deviation_maj) // If True the key will have the higher octave
                         {
-                            MyInstrumentButtons toolKey = new MyInstrumentButtons(noteList[i].ToString(), int.Parse(ComboOctave) + 1, brush, id);
+                            KirollButtons toolKey = new KirollButtons(noteList[i].ToString(), int.Parse(ComboOctave) + 1, brush, id);
                             toolKeys.Add(toolKey.ToolKey);
                         }
                         else
                         {
-                            MyInstrumentButtons toolKey = new MyInstrumentButtons(noteList[i].ToString(), int.Parse(ComboOctave), brush, id);
+                            KirollButtons toolKey = new KirollButtons(noteList[i].ToString(), int.Parse(ComboOctave), brush, id);
                             toolKeys.Add(toolKey.ToolKey);
                         }
 
@@ -161,12 +161,12 @@ namespace MyInstrument.Surface
                     {
                         if (i >= 7 - deviation_min_nat) // If True the key will have the higher octave
                         {
-                            MyInstrumentButtons toolKey = new MyInstrumentButtons(noteList[i].ToString(), int.Parse(ComboOctave) + 1, brush, id);
+                            KirollButtons toolKey = new KirollButtons(noteList[i].ToString(), int.Parse(ComboOctave) + 1, brush, id);
                             toolKeys.Add(toolKey.ToolKey);
                         }
                         else
                         {
-                            MyInstrumentButtons toolKey = new MyInstrumentButtons(noteList[i].ToString(), int.Parse(ComboOctave), brush, id);
+                            KirollButtons toolKey = new KirollButtons(noteList[i].ToString(), int.Parse(ComboOctave), brush, id);
                             toolKeys.Add(toolKey.ToolKey);
                         }
                     }
@@ -175,12 +175,12 @@ namespace MyInstrument.Surface
                     {
                         if (i >= 7 - deviation_min_arm) // If True the key will have the higher octave
                         {
-                            MyInstrumentButtons toolKey = new MyInstrumentButtons(noteList[i].ToString(), int.Parse(ComboOctave) + 1, brush, id);
+                            KirollButtons toolKey = new KirollButtons(noteList[i].ToString(), int.Parse(ComboOctave) + 1, brush, id);
                             toolKeys.Add(toolKey.ToolKey);
                         }
                         else
                         {
-                            MyInstrumentButtons toolKey = new MyInstrumentButtons(noteList[i].ToString(), int.Parse(ComboOctave), brush, id);
+                            KirollButtons toolKey = new KirollButtons(noteList[i].ToString(), int.Parse(ComboOctave), brush, id);
                             toolKeys.Add(toolKey.ToolKey);
                         }
                     }
@@ -189,12 +189,12 @@ namespace MyInstrument.Surface
                     {
                         if (i >= 7 - deviation_min_mel) // If True the key will have the higher octave
                         {
-                            MyInstrumentButtons toolKey = new MyInstrumentButtons(noteList[i].ToString(), int.Parse(ComboOctave) + 1, brush, id);
+                            KirollButtons toolKey = new KirollButtons(noteList[i].ToString(), int.Parse(ComboOctave) + 1, brush, id);
                             toolKeys.Add(toolKey.ToolKey);
                         }
                         else
                         {
-                            MyInstrumentButtons toolKey = new MyInstrumentButtons(noteList[i].ToString(), int.Parse(ComboOctave), brush, id);
+                            KirollButtons toolKey = new KirollButtons(noteList[i].ToString(), int.Parse(ComboOctave), brush, id);
                             toolKeys.Add(toolKey.ToolKey);
                         }
                     }
@@ -212,12 +212,12 @@ namespace MyInstrument.Surface
 
                     if (i >= 12 - deviation_chrom_12) // If True the key will have the higher octave
                     {
-                        MyInstrumentButtons toolKey = new MyInstrumentButtons(noteList[i].ToString(), int.Parse(ComboOctave) + 1, brush, id);
+                        KirollButtons toolKey = new KirollButtons(noteList[i].ToString(), int.Parse(ComboOctave) + 1, brush, id);
                         toolKeys.Add(toolKey.ToolKey);
                     }
                     else
                     {
-                        MyInstrumentButtons toolKey = new MyInstrumentButtons(noteList[i].ToString(), int.Parse(ComboOctave), brush, id);
+                        KirollButtons toolKey = new KirollButtons(noteList[i].ToString(), int.Parse(ComboOctave), brush, id);
                         toolKeys.Add(toolKey.ToolKey);
                     }                  
                 }
@@ -235,7 +235,7 @@ namespace MyInstrument.Surface
         {
             int id_int = Int32.Parse(id.Substring(1));
 
-            StackPanel keyboard = Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Children[id_int] as StackPanel;
+            StackPanel keyboard = Rack.DMIBox.KirollMainWindow.canvasKiroll.Children[id_int] as StackPanel;
             int x = (int)Canvas.GetLeft(keyboard);
             int y = (int)Canvas.GetTop(keyboard);
 
@@ -247,7 +247,7 @@ namespace MyInstrument.Surface
         {
             int id_int = Int32.Parse(id.Substring(1));
 
-            StackPanel keyboard = Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Children[id_int] as StackPanel;
+            StackPanel keyboard = Rack.DMIBox.KirollMainWindow.canvasKiroll.Children[id_int] as StackPanel;
             return keyboard;
         }
 
@@ -256,7 +256,7 @@ namespace MyInstrument.Surface
         {
             int id_int = Int32.Parse(id.Substring(1));
 
-            StackPanel keyboard = Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Children[id_int] as StackPanel;
+            StackPanel keyboard = Rack.DMIBox.KirollMainWindow.canvasKiroll.Children[id_int] as StackPanel;
 
             foreach (Button key in keyboard.Children)
             {
@@ -281,7 +281,7 @@ namespace MyInstrument.Surface
         {
             int id_int = Int32.Parse(id.Substring(1));
 
-            StackPanel keyboard = Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Children[id_int] as StackPanel;
+            StackPanel keyboard = Rack.DMIBox.KirollMainWindow.canvasKiroll.Children[id_int] as StackPanel;
 
             foreach (Button key in keyboard.Children)
             {
@@ -303,11 +303,11 @@ namespace MyInstrument.Surface
         // Updating the key opcaity of a specific keyboard
         public static void UpdateOpacity()
         {
-            foreach (StackPanel keyboard in Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Children)
+            foreach (StackPanel keyboard in Rack.DMIBox.KirollMainWindow.canvasKiroll.Children)
             {
                 foreach (Button key in keyboard.Children)
                 {
-                    if (Rack.DMIBox.MyInstrumentMainWindow.MyInstrumentSettingsOpened)
+                    if (Rack.DMIBox.KirollMainWindow.KirollSettingsOpened)
                     {
                         if (key.Opacity == 1)
                         {

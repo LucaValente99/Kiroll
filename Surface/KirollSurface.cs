@@ -1,12 +1,12 @@
-﻿using MyInstrument.DMIbox;
+﻿using Kiroll.DMIbox;
 using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace MyInstrument.Surface
+namespace Kiroll.Surface
 {
-    public class MyInstrumentSurface
+    public class KirollSurface
     {
         #region Class attributes
         // Used to keep track of lastKeyboardPlayed. It is updated when keyboard is played
@@ -14,7 +14,7 @@ namespace MyInstrument.Surface
         private string lastKeyboardPlayed = "";
         public string LastKeyboardPlayed { get => lastKeyboardPlayed; set => lastKeyboardPlayed = value; } 
 
-        // Used to keep track of lastKeyboardSelected. It is updated for every note selection (SelectNote on MyInstrumentButton).
+        // Used to keep track of lastKeyboardSelected. It is updated for every note selection (SelectNote on KirollButton).
         // It helps to manage the movement of keyboards on screen
         private string lastKeyboardSelected = "";
         public string LastKeyboardSelected { get => lastKeyboardSelected; set => lastKeyboardSelected = value; }
@@ -38,7 +38,7 @@ namespace MyInstrument.Surface
         private double horizontalDistance;
 
         #endregion
-        public MyInstrumentSurface(Canvas canvas)
+        public KirollSurface(Canvas canvas)
         {
             this.canvas = canvas;
         }
@@ -52,7 +52,7 @@ namespace MyInstrument.Surface
             // at screen. So the movement seems smooth and infinite.
             for (int i = 0; i < 16; i++)
             {
-                MyInstrumentKeyboard instrumentKeyboard = new MyInstrumentKeyboard();
+                KirollKeyboard instrumentKeyboard = new KirollKeyboard();
                 musicKeyboards.Add(instrumentKeyboard.MusicKeyboard);
             }
 
@@ -88,7 +88,7 @@ namespace MyInstrument.Surface
                 horizontalDistance += Rack.UserSettings.KeyHorizontalDistance;
             }
 
-            MyInstrumentKeyboard.UpdateOpacity();
+            KirollKeyboard.UpdateOpacity();
         }
 
         // Cleaning the canvas and resetting variables
@@ -100,7 +100,7 @@ namespace MyInstrument.Surface
             }
 
             verticalDistance = Rack.UserSettings.KeyVerticaDistance;
-            Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Width = Rack.UserSettings.CanvasWidth;
+            Rack.DMIBox.KirollMainWindow.canvasKiroll.Width = Rack.UserSettings.CanvasWidth;
             lastKeyboardMoved = "";
             lastKeyboardPlayed = "";
             lastKeyboardSelected = "";
@@ -109,7 +109,7 @@ namespace MyInstrument.Surface
             Rack.DMIBox.CheckedNote = null;
 
             // This needs to make checkPlayability works on DMIbox (keyboardID == (lastKeyboardPlayed + 1) % 16)
-            MyInstrumentKeyboard.ID = 0;
+            KirollKeyboard.ID = 0;
 
             musicKeyboards.Clear();
         }
@@ -193,7 +193,7 @@ namespace MyInstrument.Surface
                 firstTime = true;
             }
             else {
-                Rack.DMIBox.MyInstrumentMainWindow.canvasMyInstrument.Width += Rack.UserSettings.KeyHorizontalDistance;
+                Rack.DMIBox.KirollMainWindow.canvasKiroll.Width += Rack.UserSettings.KeyHorizontalDistance;
             }
 
             double distance = Rack.UserSettings.KeyHorizontalDistance;
@@ -205,9 +205,9 @@ namespace MyInstrument.Surface
                     if (lastKeyboardSelected == "8"){
 
                         // In this first case, the first keyboard, the "_0" one, will be moved after the last one, so the "_15" one.
-                        Canvas.SetLeft(MyInstrumentKeyboard.GetKeyboard("_0"), MyInstrumentKeyboard.GetPosition(musicKeyboards[15].Name).X + distance);
+                        Canvas.SetLeft(KirollKeyboard.GetKeyboard("_0"), KirollKeyboard.GetPosition(musicKeyboards[15].Name).X + distance);
                         lastKeyboardMoved = "0";
-                        MyInstrumentKeyboard.ResetColors("_0");
+                        KirollKeyboard.ResetColors("_0");
                         afterEighthKeyboard = true;
                     }                                     
                 }
@@ -221,9 +221,9 @@ namespace MyInstrument.Surface
                         lastKS = 16 + lastKS; // Es: if keyboard n° 5 is played -> 5 - 8 = -3, 16 - 3 = 13 is the keyboard to move.
                     }                    
 
-                    Canvas.SetLeft(MyInstrumentKeyboard.GetKeyboard("_" + lastKS.ToString()), MyInstrumentKeyboard.GetPosition("_" + lastKeyboardMoved).X + distance);
+                    Canvas.SetLeft(KirollKeyboard.GetKeyboard("_" + lastKS.ToString()), KirollKeyboard.GetPosition("_" + lastKeyboardMoved).X + distance);
                     lastKeyboardMoved = lastKS.ToString();
-                    MyInstrumentKeyboard.ResetColors("_" + lastKeyboardMoved);
+                    KirollKeyboard.ResetColors("_" + lastKeyboardMoved);
                 }               
             }
         }

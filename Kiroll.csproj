@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{32B8450B-A336-467D-B4A0-C22AF3BF79A1}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>MyInstrument</RootNamespace>
-    <AssemblyName>MyInstrument</AssemblyName>
+    <RootNamespace>Kiroll</RootNamespace>
+    <AssemblyName>Kiroll</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -37,7 +37,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>MyInstrument.App</StartupObject>
+    <StartupObject>Kiroll.App</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>
@@ -185,13 +185,13 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Surface\AutoScroller.cs" />
-    <Compile Include="Surface\MyInstrumentButtons.cs" />
-    <Compile Include="Surface\MyInstrumentKeyboard.cs" />
-    <Compile Include="Surface\MyInstrumentSurface.cs" />
+    <Compile Include="Surface\KirollButtons.cs" />
+    <Compile Include="Surface\KirollKeyboard.cs" />
+    <Compile Include="Surface\KirollSurface.cs" />
     <Compile Include="Surface\UserSettings\DefaultUserSettings.cs" />
     <Compile Include="Surface\UserSettings\IUserSettings.cs" />
-    <Compile Include="DMIbox\MyInstrumentDMIBox.cs" />
-    <Compile Include="DMIbox\MyInstrumentSetup.cs" />
+    <Compile Include="DMIbox\KirollDMIBox.cs" />
+    <Compile Include="DMIbox\KirollSetup.cs" />
     <Compile Include="DMIbox\Rack.cs" />
     <Compile Include="DMIbox\SwitchableSelectors.cs" />
     <Compile Include="Libraries\MicroLibrary.cs" />

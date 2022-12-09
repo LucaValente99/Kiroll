@@ -1,7 +1,7 @@
 ﻿using NeeqDMIs.NithSensors;
 using System.Globalization;
 
-namespace MyInstrument.DMIbox.SensorBehaviors
+namespace Kiroll.DMIbox.SensorBehaviors
 {
     public class NBactivateButton : INithSensorBehavior
     {
@@ -16,7 +16,7 @@ namespace MyInstrument.DMIbox.SensorBehaviors
 
         public void HandleData(NithSensorData val)
         {
-            if (Rack.UserSettings.MyInstrumentControlMode == _MyInstrumentControlModes.Breath)
+            if (Rack.UserSettings.KirollControlMode == _KirollControlModes.Breath)
             {
                 float b = 0;
 
@@ -35,10 +35,10 @@ namespace MyInstrument.DMIbox.SensorBehaviors
                 {
                     if (b > onThresh)
                     {
-                        if (!Rack.DMIBox.MyInstrumentMainWindow.Click && letClickAgain)
+                        if (!Rack.DMIBox.KirollMainWindow.Click && letClickAgain)
                         {
                             letClickAgain = false;
-                            Rack.DMIBox.MyInstrumentMainWindow.Click = true;
+                            Rack.DMIBox.KirollMainWindow.Click = true;
                         }
                     }
                     else

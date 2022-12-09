@@ -1,9 +1,8 @@
-﻿<Window x:Class="MyInstrument.MainWindow"
+﻿<Window x:Class="Kiroll.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MyInstrument"
         Title="MainWindow"
         Width="1920"
         Height="1080"
@@ -406,7 +405,7 @@
         </StackPanel>
         <!--#endregion End Top Bar (Row 0)-->
 
-        <!--#region MyInstrument (Row 1)-->
+        <!--#region Kiroll (Row 1)-->
         <Border Grid.Row="1" VerticalAlignment="Stretch" 
                 HorizontalAlignment="Stretch" Margin="5,0,5,5" 
                 Width="auto" Height="auto" BorderThickness="3" 
@@ -419,13 +418,13 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="12*" />
                 </Grid.RowDefinitions>
-                <ScrollViewer x:Name="scrlMyInstrument" 
+                <ScrollViewer x:Name="scrlKiroll" 
                                         Width="Auto" Height="Auto" Grid.Row="0"
                                         HorizontalScrollBarVisibility="Hidden" 
                                         VerticalScrollBarVisibility="Hidden" Grid.ColumnSpan="2">
 
                     <!--Canvas allows to place elements by coordinates-->
-                    <Canvas x:Name="canvasMyInstrument" VerticalAlignment="Stretch" 
+                    <Canvas x:Name="canvasKiroll" VerticalAlignment="Stretch" 
                                     HorizontalAlignment="Stretch" Margin="0,0,0,0"
                                     Width="1520" Height="783">
                         <Canvas.Background>
@@ -436,7 +435,7 @@
             </Grid>
         </Border>
 
-        <!-- #region MyInstrument's Setting_1 Window-->
+        <!-- #region Kiroll's Setting_1 Window-->
         <Border Name="WindowInstrumentSettings_1" 
             Grid.Row="1"
             HorizontalAlignment="Left"
@@ -914,9 +913,9 @@
             </Grid>
 
         </Border>
-        <!-- #endregion MyInstrument's Setting_1 Window-->
+        <!-- #endregion Kiroll's Setting_1 Window-->
 
-        <!-- #region MyInstrument's Setting_2 Window-->
+        <!-- #region Kiroll's Setting_2 Window-->
         <Border Name="WindowInstrumentSettings_2" 
             Grid.Row="1"
             HorizontalAlignment="Right"
@@ -1435,9 +1434,9 @@
 
             </Grid>
         </Border>
-        <!-- #endregion MyInstrument's Setting_2 Window-->
+        <!-- #endregion Kiroll's Setting_2 Window-->
 
-        <!--#endregion MyInstrument (Row 1)-->
+        <!--#endregion Kiroll (Row 1)-->
 
     </Grid>
 </Window>
