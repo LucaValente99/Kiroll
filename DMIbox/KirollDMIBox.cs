@@ -143,7 +143,7 @@ namespace Kiroll.DMIbox
 
         // Playing the selected note
         public void PlaySelectedNote()
-        {
+        {         
             if (MidiModule.IsMidiOk() && checkedNote!= null && // check for MIDI channel and if a valid note is selected
                 Rack.UserSettings.KirollControlMode != _KirollControlModes.NaN && // check for control mode set
                 !KirollMainWindow.KirollSettingsOpened) // check for settings, if they are open instrument won't play
@@ -197,7 +197,7 @@ namespace Kiroll.DMIbox
         {   
             if (MidiModule.IsMidiOk()) // check for MIDI channel
             {                
-                if (isPlaying == true) // See SelectNote -> VariosCheck in KirollButtons for more info on isPlaying
+                if (isPlaying == true) // See SelectNote -> VariousCheck in KirollButtons for more info on isPlaying
                 {
                     MidiModule.StopNote((int)selectedNote);
                     isPlaying = false;
