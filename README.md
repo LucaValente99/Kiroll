@@ -27,7 +27,4 @@ written specifically to make it faster and easier to develop accessible digital 
 from interaction channels on the musician's face (e.g., eyes, mouth...). 
 Below the link to the GitHub repository: https://github.com/Neeqstock/NeeqDMIs.
 - Kiroll does not contain an internal synthesizer; in fact, it represents a MIDI interface. It will therefore be necessary to create an internal MIDI loop on the PC to be exploited as a synthesizer or alternatively you can use an external hardware synthesizer connected to the PC sound card via a MIDI cable.
-Again, please refer to a guide: https://neeqstock.github.io/vst_guide/
-
-
-Translated with www.DeepL.com/Translator (free version)
+Please refer to the following guide: https://neeqstock.github.io/vst_guide/
