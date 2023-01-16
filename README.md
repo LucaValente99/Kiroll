@@ -1,31 +1,33 @@
 <h1>Kiroll</h1>
 
-Kiroll (il cui nome significa “Keyboards Infinite Roll”, tradotto “Rotolo Infinito di Tastiere”)
-è uno strumento musicale digitale accessibile monofonico il cui controllo è basato sull’utilizzo degli occhi e della bocca. 
-L’obiettivo quindi si è focalizzato sul fornire la totale controllabilità dello strumento tramite questi due canali di interazione 
-per un utilizzo dello stesso in totale autonomia, anche in presenza di gravi limiti motori (es. tetraplegia).
+Kiroll (whose name means "Keyboards Infinite Roll")
+is a monophonic accessible digital musical instrument whose control is based on the use of the eyes and mouth. 
+The focus then was on providing total controllability of the instrument through these two channels of interaction 
+for full autonomous use of the same, even in the presence of severe motor limitations (e.g., quadriplegia).
 
-Lo strumento è stato sviluppato come progetto di tesi in conclusione del percorso di studi triennale in 'Informatica Musicale'.
+The instrument was developed as a thesis project at the conclusion of the three-year course of study in 'Musical Informatics'.
 
-<h2>Hardware necessario</h2>
+<h2>Hardware needed</h2>
 
-- Tobii Eye Tracker 5, eye tracker con il quale è stato testato e sviluppato lo strumento (https://gaming.tobii.com/product/eye-tracker-5).
-- Sensore a fiato, costruibile seguendo le istruzioni al link seguente: https://neeqstock.notion.site/NithSensors-56ab43db493a423f9e8823af04fa9c46.
+- Tobii Eye Tracker 5, eye tracker with which the instrument was tested and developed (https://gaming.tobii.com/product/eye-tracker-5).
+- Breath sensor, buildable by following the instructions at the following link: https://neeqstock.notion.site/NithSensors-56ab43db493a423f9e8823af04fa9c46.
 
-  Il link rimanda al sito del PhD Davanzo Nicola che mi ha seguito e aiutato durante lo sviluppo del progetto, in particolare 
-  alla sezione dedicata a diversi sensori da lui realizzati, tra cui il sensore a fiato utilizzato in Kiroll (indicata con NithBS nel sito).
-  Sul sito sarà possibile inoltre accedere a diverese informazioni, relative agli strumenti da lui sviluppati.
+  The link refers to the website of PhD Davanzo Nicola who followed and helped me during the development of the project, in particular 
+  to the section devoted to several sensors he made, including the breath sensor used in Kiroll (denoted NithBS on the site).
+  On the site it will also be possible to access various information relating to the instruments developed by Nicola.
 
-Anche in assenza dell'hardware elencato sarà possibile avviare l'applicativo sfruttando il cursore del mouse, in sostituzione al puntamento visivo, 
-per la selezione delle note, e la barra spaziatrice, in alternativa al sensore a fiato, per farle suonare.
+Even in the absence of the listed hardware, it will be possible to start the application using the mouse cursor, in place of visual pointing, 
+for selecting notes, and the space bar, as an alternative to the breath sensor, for playing them.
 
-<h2>Software necessario:</h2>
+<h2>Software required:</h2>
 
 - Microsoft .NET Framework Runtime.
-- Kiroll dipende da una libreria sviluppata ancora una volta da Davanzo Nicola, denominata NeeqDMIs, 
-scritta appositamente per rendere pià veloce ed agevole lo sviluppo di strumenti digitali accessibili a partire 
-da canali di interazione sul volto del musicista (es. occhi, bocca...). 
-Di seguito il link al repository GitHub: https://github.com/Neeqstock/NeeqDMIs.
-- Kiroll non contiene un sintetizzatore interno, rappresenta infatti un'interfaccia MIDI. Sarà quindi necessario creare un loop MIDI interno al PC da sfruttare 
-come sintetizzatore o in alternativa è possibile utilizzare un sintetizzatore hardware esterno connesso alla scheda audio del PC tramite un cavo MIDI.
-Anche in questo caso si rimanda ad una giuda: https://neeqstock.github.io/vst_guide/
+- Kiroll depends on a library developed once again by Davanzo Nicola, called NeeqDMIs, 
+written specifically to make it faster and easier to develop accessible digital tools
+from interaction channels on the musician's face (e.g., eyes, mouth...). 
+Below the link to the GitHub repository: https://github.com/Neeqstock/NeeqDMIs.
+- Kiroll does not contain an internal synthesizer; in fact, it represents a MIDI interface. It will therefore be necessary to create an internal MIDI loop on the PC to be exploited as a synthesizer or alternatively you can use an external hardware synthesizer connected to the PC sound card via a MIDI cable.
+Again, please refer to a guide: https://neeqstock.github.io/vst_guide/
+
+
+Translated with www.DeepL.com/Translator (free version)
