@@ -83,8 +83,16 @@ namespace Kiroll.Surface
                 canvas.Children.Add(musicKeyboards[i]);
                 
                 // Drawing the keyboard on screen
-                Canvas.SetLeft(musicKeyboards[i], 75 + horizontalDistance); 
-                Canvas.SetTop(musicKeyboards[i], (canvas.Height - musicKeyboards[i].Height) / 2);
+                if (Rack.UserSettings.Orientation == Orientation.Vertical)
+                {
+                    Canvas.SetLeft(musicKeyboards[i], 75 + horizontalDistance);
+                    Canvas.SetTop(musicKeyboards[i], (canvas.Height - musicKeyboards[i].Height) / 2);           
+                }
+                else
+                {
+                    Canvas.SetLeft(musicKeyboards[i], (canvas.Width - musicKeyboards[i].Width) / 2);
+                    Canvas.SetTop(musicKeyboards[i], 50 + horizontalDistance);
+                }
                 horizontalDistance += Rack.UserSettings.KeyHorizontalDistance;
             }
 
@@ -131,48 +139,96 @@ namespace Kiroll.Surface
 
             foreach (StackPanel instrumentKeyboard in musicKeyboards)
             {
-                #region Changing Keyboards Height
-                // If the last vertical distance set is greater than the new one, my keyboards should decreas in height. 
-                // So instrumentKeyboard.Height is added up to a negative number.
-                // After updating the height of keyboard, it is placed at center of canvas.
-
-                if (verticalDistance > distance)
+                if (Rack.UserSettings.Orientation == Orientation.Vertical)
                 {
-                    instrumentKeyboard.Height += addVerticalDistance - verticalDistance;
-                    Rack.UserSettings.KeyboardHeight = instrumentKeyboard.Height;
-                    Canvas.SetTop(instrumentKeyboard, (canvas.Height - instrumentKeyboard.Height) / 2);
+                    #region Changing Keyboards Height
+                    // If the last vertical distance set is greater than the new one, my keyboards should decreas in height. 
+                    // So instrumentKeyboard.Height is added up to a negative number.
+                    // After updating the height of keyboard, it is placed at center of canvas.
 
-                }
-                else if (verticalDistance < distance) // same logic but in reverse (so keyboard height will be increased) 
-                {
-                    instrumentKeyboard.Height -= verticalDistance - addVerticalDistance;
-                    Rack.UserSettings.KeyboardHeight = instrumentKeyboard.Height;
-                    Canvas.SetTop(instrumentKeyboard, (canvas.Height - instrumentKeyboard.Height) / 2);
-                }
-                else 
-                {
-                    instrumentKeyboard.Height = Rack.UserSettings.KeyboardHeight + addVerticalDistance;
-                    Canvas.SetTop(instrumentKeyboard, (canvas.Height - instrumentKeyboard.Height) / 2);
-                }
-                #endregion
-
-                #region Changing Distance Between Keys
-                int i = 0;
-
-                // For each key (except for the last one) in keyboards the bottom margin will change.
-                foreach (Button key in instrumentKeyboard.Children)
-                {
-                    if (i != 6 && addVerticalDistance == distance * 6)
+                    if (verticalDistance > distance)
                     {
-                        key.Margin = new Thickness(0, 0, 0, Rack.UserSettings.KeyVerticaDistance);
+                        instrumentKeyboard.Height += addVerticalDistance - verticalDistance;
+                        Rack.UserSettings.KeyboardHeight = instrumentKeyboard.Height;
+                        Canvas.SetTop(instrumentKeyboard, (canvas.Height - instrumentKeyboard.Height) / 2);
+
                     }
-                    else if (i != 11 && addVerticalDistance == distance * 11)
+                    else if (verticalDistance < distance) // same logic but in reverse (so keyboard height will be increased) 
                     {
-                        key.Margin = new Thickness(0, 0, 0, Rack.UserSettings.KeyVerticaDistance);
+                        instrumentKeyboard.Height -= verticalDistance - addVerticalDistance;
+                        Rack.UserSettings.KeyboardHeight = instrumentKeyboard.Height;
+                        Canvas.SetTop(instrumentKeyboard, (canvas.Height - instrumentKeyboard.Height) / 2);
                     }
-                    i++;
+                    else
+                    {
+                        instrumentKeyboard.Height = Rack.UserSettings.KeyboardHeight + addVerticalDistance;
+                        Canvas.SetTop(instrumentKeyboard, (canvas.Height - instrumentKeyboard.Height) / 2);
+                    }
+                    #endregion
+
+                    #region Changing Distance Between Keys
+                    int i = 0;
+
+                    // For each key (except for the last one) in keyboards the bottom margin will change.
+                    foreach (Button key in instrumentKeyboard.Children)
+                    {
+                        if (i != 6 && addVerticalDistance == distance * 6)
+                        {
+                            key.Margin = new Thickness(0, 0, 0, Rack.UserSettings.KeyVerticaDistance);
+                        }
+                        else if (i != 11 && addVerticalDistance == distance * 11)
+                        {
+                            key.Margin = new Thickness(0, 0, 0, Rack.UserSettings.KeyVerticaDistance);
+                        }
+                        i++;
+                    }
+                    #endregion
                 }
-                #endregion
+                else
+                {
+                    #region Changing Keyboards Width
+                    // If the last vertical distance set is greater than the new one, my keyboards should decreas in height. 
+                    // So instrumentKeyboard.Height is added up to a negative number.
+                    // After updating the height of keyboard, it is placed at center of canvas.
+                    if (verticalDistance > distance)
+                    {
+                        instrumentKeyboard.Width += addVerticalDistance - verticalDistance;
+                        Rack.UserSettings.KeyboardHeight = instrumentKeyboard.Width;
+                        Canvas.SetLeft(instrumentKeyboard, (canvas.Width - instrumentKeyboard.Width) / 2);
+
+                    }
+                    else if (verticalDistance < distance) // same logic but in reverse (so keyboard height will be increased) 
+                    {
+                        instrumentKeyboard.Width -= verticalDistance - addVerticalDistance;
+                        Rack.UserSettings.KeyboardHeight = instrumentKeyboard.Width;
+                        Canvas.SetLeft(instrumentKeyboard, (canvas.Width - instrumentKeyboard.Width) / 2);
+                    }
+                    else
+                    {
+                        instrumentKeyboard.Width = Rack.UserSettings.KeyboardHeight + addVerticalDistance;
+                        Canvas.SetLeft(instrumentKeyboard, (canvas.Width - instrumentKeyboard.Width) / 2);
+                    }
+                    #endregion
+
+                    #region Changing Distance Between Keys
+                    int i = 0;
+
+                    // For each key (except for the last one) in keyboards the bottom margin will change.
+                    foreach (Button key in instrumentKeyboard.Children)
+                    {
+                        if (i != 6 && addVerticalDistance == distance * 6)
+                        {
+                            key.Margin = new Thickness(0, 0, Rack.UserSettings.KeyVerticaDistance, 0);
+                        }
+                        else if (i != 11 && addVerticalDistance == distance * 11)
+                        {
+                            key.Margin = new Thickness(0, 0, Rack.UserSettings.KeyVerticaDistance, 0);
+                        }
+                        i++;
+                    }
+                    #endregion
+                }
+
             }
             verticalDistance = addVerticalDistance;
         }
@@ -193,8 +249,15 @@ namespace Kiroll.Surface
                 firstTime = true;
             }
             else {
-                Rack.DMIBox.KirollMainWindow.canvasKiroll.Width += Rack.UserSettings.KeyHorizontalDistance;
-            }
+                if (Rack.UserSettings.Orientation == Orientation.Vertical)
+                {
+                    Rack.DMIBox.KirollMainWindow.canvasKiroll.Width += Rack.UserSettings.KeyHorizontalDistance;
+                }
+                else
+                {
+                    Rack.DMIBox.KirollMainWindow.canvasKiroll.Height += Rack.UserSettings.KeyHorizontalDistance;
+                }
+            }           
 
             double distance = Rack.UserSettings.KeyHorizontalDistance;
 
@@ -205,7 +268,15 @@ namespace Kiroll.Surface
                     if (lastKeyboardSelected == "8"){
 
                         // In this first case, the first keyboard, the "_0" one, will be moved after the last one, so the "_15" one.
-                        Canvas.SetLeft(KirollKeyboard.GetKeyboard("_0"), KirollKeyboard.GetPosition(musicKeyboards[15].Name).X + distance);
+                        if (Rack.UserSettings.Orientation == Orientation.Vertical)
+                        {
+                            Canvas.SetLeft(KirollKeyboard.GetKeyboard("_0"), KirollKeyboard.GetPosition(musicKeyboards[15].Name).X + distance);
+                        }
+                        else
+                        {
+                            Canvas.SetTop(KirollKeyboard.GetKeyboard("_0"), KirollKeyboard.GetPosition(musicKeyboards[15].Name).Y + distance);
+                        }
+
                         lastKeyboardMoved = "0";
                         KirollKeyboard.ResetColors("_0");
                         afterEighthKeyboard = true;
@@ -219,9 +290,16 @@ namespace Kiroll.Surface
                     if (lastKS < 0)
                     {
                         lastKS = 16 + lastKS; // Es: if keyboard n° 5 is played -> 5 - 8 = -3, 16 - 3 = 13 is the keyboard to move.
-                    }                    
+                    }
 
-                    Canvas.SetLeft(KirollKeyboard.GetKeyboard("_" + lastKS.ToString()), KirollKeyboard.GetPosition("_" + lastKeyboardMoved).X + distance);
+                    if (Rack.UserSettings.Orientation == Orientation.Vertical)
+                    {
+                        Canvas.SetLeft(KirollKeyboard.GetKeyboard("_" + lastKS.ToString()), KirollKeyboard.GetPosition("_" + lastKeyboardMoved).X + distance);
+                    }
+                    else
+                    {
+                        Canvas.SetTop(KirollKeyboard.GetKeyboard("_" + lastKS.ToString()), KirollKeyboard.GetPosition("_" + lastKeyboardMoved).Y + distance);
+                    }
                     lastKeyboardMoved = lastKS.ToString();
                     KirollKeyboard.ResetColors("_" + lastKeyboardMoved);
                 }               

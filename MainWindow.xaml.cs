@@ -402,7 +402,12 @@ namespace Kiroll
                 if (Rack.UserSettings.KeyName == _KeyName.On)
                 {
                     btnCtrlKeyName.Background = ActiveBrush;
-                }         
+                }      
+                
+                if(Rack.UserSettings.Orientation == Orientation.Horizontal)
+                {
+                    btnRotation.Background = ActiveBrush;
+                }
 
                 // Enabling various settings
                 txtScale.Text = Rack.UserSettings.ScaleName;
@@ -439,6 +444,7 @@ namespace Kiroll
                 txtMetronome.Text = "";
                 btnMetronome.Background = buttonBackground;
                 btnCtrlKeyName.Background = buttonBackground;
+                btnRotation.Background = buttonBackground;
 
                 // Disabling various settings, metronome and blinkKeyboards behave
                 txtScale.Text = "";
@@ -497,6 +503,7 @@ namespace Kiroll
 
         private void btnCtrlEye_Click(object sender, RoutedEventArgs e)
         {
+            //Rack.DMIBox.TobiiModule.LastEyePositionData != null
             if (KirollStarted)
             {
                 if (!btnEyeOn)
@@ -516,6 +523,56 @@ namespace Kiroll
                     Rack.DMIBox.TobiiModule.MouseEmulator.CursorVisible = true;
 
                     btnCtrlEye.Background = DisableBrush;
+                }
+            }
+        }
+        private void btnRotation_Click(object sender, RoutedEventArgs e)
+        {
+            if (KirollStarted)
+            {
+                KirollSetup KirollSetup = new KirollSetup(this);
+                if (Rack.UserSettings.Orientation == Orientation.Vertical)
+                {
+                    Rack.UserSettings.Orientation = Orientation.Horizontal;
+                    btnRotation.Background = ActiveBrush;
+                    Rack.DMIBox.AutoScroller.ScrollCenter = new Point(scrlKiroll.ActualWidth / 2, scrlKiroll.ActualHeight / 2); // scrollViewer.ActualWidth / 2
+                    Rack.DMIBox.AutoScroller.ProportionalVertical = 125;
+
+                    //Switching vertical and horizontal distance selector label names
+                    LblVerticalDistance.Content = "Keys Horizontal Distance";
+                    LblVerticalDistance.Margin = new Thickness(0,0,0,0);
+                    LblHorizontalDistance.Content = "Keys Vertical Distance";
+                    LblHorizontalDistance.Margin = new Thickness(0, 0, 5, 0);
+
+
+                    Rack.UserSettings.KeyVerticaDistance = 30;
+                    txtVerticalDistance.Text = Rack.UserSettings.KeyVerticaDistance.ToString();
+                    Rack.UserSettings.KeyHorizontalDistance = 300;
+                    txtHorizontalDistance.Text = Rack.UserSettings.KeyHorizontalDistance.ToString();
+
+                    Rack.DMIBox.KirollSurface.DrawOnCanvas();
+                    
+                }
+                else
+                {
+                    Rack.UserSettings.Orientation = Orientation.Vertical;
+                    btnRotation.Background = buttonBackground;
+                    Rack.DMIBox.AutoScroller.ScrollCenter = new Point(200, scrlKiroll.ActualHeight / 2 + 100); // scrollViewer.ActualWidth / 2
+                    Rack.DMIBox.AutoScroller.ProportionalVertical = Rack.DMIBox.AutoScroller.ProportionalHorizontal - 225;
+
+                    //Switching vertical and horizontal distance selector label names
+                    LblVerticalDistance.Content = "Keys Vertical Distance";
+                    LblVerticalDistance.Margin = new Thickness(0, 0, 5, 0);
+                    LblHorizontalDistance.Content = "Keys Horizontal Distance";
+                    LblHorizontalDistance.Margin = new Thickness(0, 0, 0, 0);
+
+                    Rack.UserSettings.KeyVerticaDistance = 20;
+                    txtVerticalDistance.Text = Rack.UserSettings.KeyVerticaDistance.ToString();
+                    Rack.UserSettings.KeyHorizontalDistance = 300;
+                    txtHorizontalDistance.Text = Rack.UserSettings.KeyHorizontalDistance.ToString();
+
+                    Rack.DMIBox.KirollSurface.DrawOnCanvas();             
+
                 }
             }
         }
@@ -738,6 +795,14 @@ namespace Kiroll
 
                     btnSharpNotes.Background = ActiveBrush;
                     Rack.UserSettings.SharpNotesMode = _SharpNotesModes.On;
+
+                    // Avoiding that scale exits the canvas 
+                    if (Rack.UserSettings.KeyVerticaDistance > 30)
+                    {
+                        Rack.UserSettings.KeyVerticaDistance = 30;
+                        txtVerticalDistance.Text = Rack.UserSettings.KeyVerticaDistance.ToString();
+                    }
+
                     Rack.DMIBox.KirollSurface.DrawOnCanvas();
                 }
                 else
@@ -954,12 +1019,25 @@ namespace Kiroll
 
         // Setting vertical distance between keys in keyboards
         private void btnVerticalDistanceMinus_Click(object sender, RoutedEventArgs e)
-        {
+        {           
             if (KirollStarted)
             {
-                if (Rack.UserSettings.KeyVerticaDistance >= 5)
+                int min;
+                int value;
+                if (Rack.UserSettings.Orientation == Orientation.Vertical)
                 {
-                    Rack.UserSettings.KeyVerticaDistance -= 5;
+                    min = 5;
+                    value = 5;
+                }
+                else
+                {
+                    min = 10;
+                    value = 10;
+                }
+
+                if (Rack.UserSettings.KeyVerticaDistance >= min)
+                {
+                    Rack.UserSettings.KeyVerticaDistance -= value;
                     txtVerticalDistance.Text = Rack.UserSettings.KeyVerticaDistance.ToString();
                     Rack.DMIBox.KirollSurface.DrawOnCanvas();
                 }
@@ -970,9 +1048,29 @@ namespace Kiroll
         {
             if (KirollStarted)
             {
-                if (Rack.UserSettings.KeyVerticaDistance <= 25)
+                int max;
+                int value;
+                if (Rack.UserSettings.Orientation == Orientation.Vertical)
                 {
-                    Rack.UserSettings.KeyVerticaDistance += 5;
+                    max = 25;
+                    value = 5;
+                }
+                else
+                {
+                    if (Rack.UserSettings.SharpNotesMode == _SharpNotesModes.On)
+                    {
+                        max = 20;
+                    }
+                    else
+                    {
+                        max = 50;
+                    }
+                    value = 10;
+                }
+
+                if (Rack.UserSettings.KeyVerticaDistance <= max)
+                {
+                    Rack.UserSettings.KeyVerticaDistance += value;
                     txtVerticalDistance.Text = Rack.UserSettings.KeyVerticaDistance.ToString();
                     Rack.DMIBox.KirollSurface.DrawOnCanvas();
                 }
@@ -983,7 +1081,7 @@ namespace Kiroll
         private void btnHorizontalDistanceMinus_Click(object sender, RoutedEventArgs e)
         {
             if (KirollStarted)
-            {
+            {           
                 if (Rack.UserSettings.KeyHorizontalDistance > 200)
                 {
                     Rack.UserSettings.KeyHorizontalDistance -= 100;
@@ -997,9 +1095,22 @@ namespace Kiroll
         {
             if (KirollStarted)
             {
-                if (Rack.UserSettings.KeyHorizontalDistance < 600)
+                int max;
+                int value;
+                if (Rack.UserSettings.Orientation == Orientation.Vertical)
                 {
-                    Rack.UserSettings.KeyHorizontalDistance += 100;
+                    max = 600;
+                    value = 100;
+                }
+                else
+                {
+                    max = 400;
+                    value = 100;
+                }
+
+                if (Rack.UserSettings.KeyHorizontalDistance < max)
+                {
+                    Rack.UserSettings.KeyHorizontalDistance += value;
                     txtHorizontalDistance.Text = Rack.UserSettings.KeyHorizontalDistance.ToString();
                     Rack.DMIBox.KirollSurface.DrawOnCanvas();
                 }
@@ -1009,7 +1120,7 @@ namespace Kiroll
         #endregion Instrument Settings 2
 
         #endregion Instrument (Row1)                        
-
+       
     }
 
 }

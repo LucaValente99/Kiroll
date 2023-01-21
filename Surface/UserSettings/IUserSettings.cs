@@ -1,5 +1,5 @@
 ﻿using Kiroll.DMIbox;
-
+using System.Windows.Controls;
 
 namespace Kiroll.Surface.UserSettings
 {
@@ -28,6 +28,9 @@ namespace Kiroll.Surface.UserSettings
 
         // Metronome settings
         double BPMmetronome { get; set; }
+
+        // Orientation default settings
+        Orientation Orientation { get; set; }
 
         // SwitchableSelectors settings
         _KirollControlModes KirollControlMode { get; set; }

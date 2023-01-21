@@ -81,23 +81,43 @@ namespace Kiroll.Surface
         public KirollKeyboard() : base()
         {
             musicKeyboard = new StackPanel();
-            musicKeyboard.Orientation = Orientation.Vertical;
             musicKeyboard.Background = Brushes.Transparent;
+            musicKeyboard.Orientation = Rack.UserSettings.Orientation;
             musicKeyboard.Width = 150; //170
             musicKeyboard.Name = "_" + id.ToString();
 
             // Managing keyboards and canvas height depdening on sharp notes presence
             if (Rack.UserSettings.SharpNotesMode == _SharpNotesModes.On)
             {
-                Rack.UserSettings.KeyboardHeight = 1011; //1200
-                musicKeyboard.Height = Rack.UserSettings.KeyboardHeight;
-                Rack.DMIBox.KirollMainWindow.canvasKiroll.Height = 1338; //1588
+                if (musicKeyboard.Orientation == Orientation.Vertical)
+                {
+                    Rack.UserSettings.KeyboardHeight = 1011; //1200
+                    musicKeyboard.Height = Rack.UserSettings.KeyboardHeight;
+                    Rack.DMIBox.KirollMainWindow.canvasKiroll.Height = 1338; //1588
+                }
+                else
+                {
+                    Rack.UserSettings.KeyboardHeight = 95 * 12;
+                    musicKeyboard.Width = Rack.UserSettings.KeyboardHeight;
+                    Rack.DMIBox.KirollMainWindow.canvasKiroll.Height = 783; //927
+                }
             }
             else
             {
-                Rack.UserSettings.KeyboardHeight = 590; //700
-                musicKeyboard.Height = Rack.UserSettings.KeyboardHeight;
-                Rack.DMIBox.KirollMainWindow.canvasKiroll.Height = 783; //927
+                if (musicKeyboard.Orientation == Orientation.Vertical)
+                {
+                    Rack.UserSettings.KeyboardHeight = 590; //700
+                    musicKeyboard.Height = Rack.UserSettings.KeyboardHeight;
+                    Rack.DMIBox.KirollMainWindow.canvasKiroll.Height = 783; //927
+                }
+                else
+                {
+                    Rack.UserSettings.KeyboardHeight = 95 * 7;
+                    musicKeyboard.Width = Rack.UserSettings.KeyboardHeight;
+                    Rack.DMIBox.KirollMainWindow.canvasKiroll.Height = 783; //927
+
+                }
+                
             }          
             
             FillStackPanel();
@@ -137,21 +157,35 @@ namespace Kiroll.Surface
                 deviation_min_arm = deviationMin_arm[noteList[0].ToStandardString()];
                 deviation_min_mel = deviationMin_mel[noteList[0].ToStandardString()];
 
-                for (int i = 6; i >= 0; i--)
-                {                    
+                int start;
+                int end;
+                if (Rack.UserSettings.Orientation == Orientation.Vertical)
+                {
+                    start = 6;
+                    end = 0;
+                }
+                else
+                {
+                    start = 0;
+                    end = -6;
+                }
+
+                for (int i = start; i >= end; i--)
+                {
+                    int index = Math.Abs(i);
                     // Taking right color from the list dependign on key
-                    SolidColorBrush brush = new SolidColorBrush(KeysColorCode[noteList[i].ToStandardString()]);
+                    SolidColorBrush brush = new SolidColorBrush(KeysColorCode[noteList[index].ToStandardString()]);
 
                     if (ComboCode == "maj")
                     {
-                        if (i >= 7 - deviation_maj) // If True the key will have the higher octave
+                        if (index >= 7 - deviation_maj) // If True the key will have the higher octave
                         {
-                            KirollButtons toolKey = new KirollButtons(noteList[i].ToString(), int.Parse(ComboOctave) + 1, brush, id);
+                            KirollButtons toolKey = new KirollButtons(noteList[index].ToString(), int.Parse(ComboOctave) + 1, brush, id);
                             toolKeys.Add(toolKey.ToolKey);
                         }
                         else
                         {
-                            KirollButtons toolKey = new KirollButtons(noteList[i].ToString(), int.Parse(ComboOctave), brush, id);
+                            KirollButtons toolKey = new KirollButtons(noteList[index].ToString(), int.Parse(ComboOctave), brush, id);
                             toolKeys.Add(toolKey.ToolKey);
                         }
 
@@ -159,42 +193,42 @@ namespace Kiroll.Surface
 
                     if (ComboCode == "min") 
                     {
-                        if (i >= 7 - deviation_min_nat) // If True the key will have the higher octave
+                        if (index >= 7 - deviation_min_nat) // If True the key will have the higher octave
                         {
-                            KirollButtons toolKey = new KirollButtons(noteList[i].ToString(), int.Parse(ComboOctave) + 1, brush, id);
+                            KirollButtons toolKey = new KirollButtons(noteList[index].ToString(), int.Parse(ComboOctave) + 1, brush, id);
                             toolKeys.Add(toolKey.ToolKey);
                         }
                         else
                         {
-                            KirollButtons toolKey = new KirollButtons(noteList[i].ToString(), int.Parse(ComboOctave), brush, id);
+                            KirollButtons toolKey = new KirollButtons(noteList[index].ToString(), int.Parse(ComboOctave), brush, id);
                             toolKeys.Add(toolKey.ToolKey);
                         }
                     }
 
                     if (ComboCode == "min_arm")
                     {
-                        if (i >= 7 - deviation_min_arm) // If True the key will have the higher octave
+                        if (index >= 7 - deviation_min_arm) // If True the key will have the higher octave
                         {
-                            KirollButtons toolKey = new KirollButtons(noteList[i].ToString(), int.Parse(ComboOctave) + 1, brush, id);
+                            KirollButtons toolKey = new KirollButtons(noteList[index].ToString(), int.Parse(ComboOctave) + 1, brush, id);
                             toolKeys.Add(toolKey.ToolKey);
                         }
                         else
                         {
-                            KirollButtons toolKey = new KirollButtons(noteList[i].ToString(), int.Parse(ComboOctave), brush, id);
+                            KirollButtons toolKey = new KirollButtons(noteList[index].ToString(), int.Parse(ComboOctave), brush, id);
                             toolKeys.Add(toolKey.ToolKey);
                         }
                     }
 
                     if (ComboCode == "min_mel")
                     {
-                        if (i >= 7 - deviation_min_mel) // If True the key will have the higher octave
+                        if (index >= 7 - deviation_min_mel) // If True the key will have the higher octave
                         {
-                            KirollButtons toolKey = new KirollButtons(noteList[i].ToString(), int.Parse(ComboOctave) + 1, brush, id);
+                            KirollButtons toolKey = new KirollButtons(noteList[index].ToString(), int.Parse(ComboOctave) + 1, brush, id);
                             toolKeys.Add(toolKey.ToolKey);
                         }
                         else
                         {
-                            KirollButtons toolKey = new KirollButtons(noteList[i].ToString(), int.Parse(ComboOctave), brush, id);
+                            KirollButtons toolKey = new KirollButtons(noteList[index].ToString(), int.Parse(ComboOctave), brush, id);
                             toolKeys.Add(toolKey.ToolKey);
                         }
                     }
@@ -206,18 +240,32 @@ namespace Kiroll.Surface
                 noteList = scale.NotesInScale;
                 deviation_chrom_12 = deviationChrom[noteList[0].ToStandardString()];
 
-                for (int i = 11; i >= 0; i--)
+                int start;
+                int end;
+                if (Rack.UserSettings.Orientation == Orientation.Vertical)
                 {
-                    SolidColorBrush brush = new SolidColorBrush(KeysColorCode[noteList[i].ToStandardString()]);
+                    start = 11;
+                    end = 0;
+                }
+                else
+                {
+                    start = 0;
+                    end = -11;
+                }
 
-                    if (i >= 12 - deviation_chrom_12) // If True the key will have the higher octave
+                for (int i = start; i >= end; i--)
+                {
+                    int index = Math.Abs(i);
+                    SolidColorBrush brush = new SolidColorBrush(KeysColorCode[noteList[index].ToStandardString()]);
+
+                    if (index >= 12 - deviation_chrom_12) // If True the key will have the higher octave
                     {
-                        KirollButtons toolKey = new KirollButtons(noteList[i].ToString(), int.Parse(ComboOctave) + 1, brush, id);
+                        KirollButtons toolKey = new KirollButtons(noteList[index].ToString(), int.Parse(ComboOctave) + 1, brush, id);
                         toolKeys.Add(toolKey.ToolKey);
                     }
                     else
                     {
-                        KirollButtons toolKey = new KirollButtons(noteList[i].ToString(), int.Parse(ComboOctave), brush, id);
+                        KirollButtons toolKey = new KirollButtons(noteList[index].ToString(), int.Parse(ComboOctave), brush, id);
                         toolKeys.Add(toolKey.ToolKey);
                     }                  
                 }

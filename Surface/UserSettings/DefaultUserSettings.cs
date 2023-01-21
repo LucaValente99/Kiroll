@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using Kiroll.DMIbox;
 
 namespace Kiroll.Surface.UserSettings
@@ -32,6 +33,9 @@ namespace Kiroll.Surface.UserSettings
 
         // Metronome default settings
         public double BPMmetronome { get; set; } = 90.0;
+
+        // Orientation default settings
+        public Orientation Orientation { get; set; } = Orientation.Vertical;
 
         // SwitchableSelectors default settings
         public _KirollControlModes KirollControlMode { get; set; } = _KirollControlModes.NaN;

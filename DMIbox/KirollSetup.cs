@@ -8,6 +8,7 @@ using NeeqDMIs.Keyboard;
 using NeeqDMIs.MIDI;
 using NeeqDMIs.NithSensors;
 using RawInputProcessor;
+using System.Windows.Controls;
 using System.Windows.Interop;
 using Tobii.Interaction.Framework;
 
@@ -48,7 +49,7 @@ namespace Kiroll.DMIbox
                 Rack.DMIBox.TobiiModule.BlinkBehaviors.Add(new TBactivateButton());
 
                 Rack.DMIBox.SensorReader.SensorBehaviors.Add(new NBbreath(20, 28, 1.5f)); // 15 20 1.5f
-                Rack.DMIBox.SensorReader.SensorBehaviors.Add(new NBactivateButton(28)); 
+                Rack.DMIBox.SensorReader.SensorBehaviors.Add(new NBactivateButton(28));
 
                 // SURFACE INIT
                 Rack.DMIBox.AutoScroller = new AutoScroller(Rack.DMIBox.KirollMainWindow.scrlKiroll, 0, 300, new PointFilterMAExpDecaying(0.1f)); // OLD was 100, 0.1f
@@ -56,7 +57,7 @@ namespace Kiroll.DMIbox
 
                 firstTime = false;
             }
-            
+
             Rack.DMIBox.KirollSurface.DrawOnCanvas();
         }
     }

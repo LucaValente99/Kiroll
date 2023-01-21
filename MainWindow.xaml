@@ -192,9 +192,9 @@
 
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="350" />
-                        <ColumnDefinition Width="350" />
-                        <ColumnDefinition Width="350" />
+                        <ColumnDefinition Width="375" />
+                        <ColumnDefinition Width="375" />
+                        <ColumnDefinition Width="375" />
                     </Grid.ColumnDefinitions>
 
                     <!--Exit and Start buttons-->
@@ -239,6 +239,7 @@
                             FontSize="28"
                             Foreground="White">Start</Label>
                         <!--End Start button-->
+                      
                     </StackPanel>
 
                     <Border Style="{StaticResource SeparatorStyleVertical}"
@@ -301,12 +302,38 @@
 
                         <!--End Eye Buttons-->
 
+                        <!--Rotation Button-->
+                        <Button Style="{DynamicResource RoundButton}"                      
+                            Name="btnRotation"
+                            Width="45"
+                            Height="45"
+                            Margin ="5,0,0,0"
+                            VerticalAlignment="Stretch"
+                            BorderBrush="Black"
+                            BorderThickness="3"
+                            Click="btnRotation_Click"
+                            MouseEnter="eyeGazeHandler">
+                            <Button.Background>
+                                <ImageBrush x:Name="btnRotationImage"
+                                ImageSource="Images/Backgrounds/Buttons.jpeg"
+                                Stretch="None"
+                                TileMode="Tile" />
+                            </Button.Background>
+                            <Image Source="Images/Icons/Rotation.png"
+                                Margin="0,0,0,0"
+                                Width="30"
+                                Height="auto" 
+                                VerticalAlignment="Center"/>
+                        </Button>
+
+                        <!--End Rotation Buttons-->
+
                         <!--Key Name-->
                         <Button Style="{DynamicResource RoundButton}"                      
                             Name="btnCtrlKeyName"
                             Width="45"
                             Height="45"
-                            Margin ="15,0,0,0"
+                            Margin ="5,0,0,0"
                             VerticalAlignment="Stretch"
                             BorderBrush="Black"
                             BorderThickness="3"
@@ -424,7 +451,7 @@
                                         VerticalScrollBarVisibility="Hidden" Grid.ColumnSpan="2">
 
                     <!--Canvas allows to place elements by coordinates-->
-                    <Canvas x:Name="canvasKiroll" VerticalAlignment="Stretch" 
+                    <Canvas x:Name="canvasKiroll" VerticalAlignment="Stretch"
                                     HorizontalAlignment="Stretch" Margin="0,0,0,0"
                                     Width="1520" Height="783">
                         <Canvas.Background>
@@ -1280,6 +1307,7 @@
                 <!-- Key Vertical Distance-->
                 <StackPanel Grid.Row="5" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Label
+                            Name="LblVerticalDistance"
                             Grid.Row="0"
                             Grid.Column="1"
                             Margin="0,0,0,0"
@@ -1287,7 +1315,7 @@
                             FontWeight="Bold"
                             FontSize="20"
                             HorizontalAlignment="Center"
-                            Foreground="White">"Keys vertical distance"</Label>
+                            Foreground="White">Keys vertical distance</Label>
 
                     <StackPanel Margin="0,0,0,0" Orientation="Horizontal" HorizontalAlignment="Center">
 
@@ -1360,6 +1388,7 @@
                 <!-- Keys Horizontal Distance-->
                 <StackPanel Grid.Row="6" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Center">
                     <Label
+                            Name="LblHorizontalDistance"
                             Grid.Row="0"
                             Grid.Column="1"
                             Margin="0,0,0,0"
@@ -1367,7 +1396,7 @@
                             FontWeight="Bold"
                             FontSize="20"
                             HorizontalAlignment="Center"
-                            Foreground="White">"Keys horizontal distance"</Label>
+                            Foreground="White">Keys horizontal distance</Label>
 
                     <StackPanel Margin="0,0,0,0" Orientation="Horizontal" HorizontalAlignment="Center">
 

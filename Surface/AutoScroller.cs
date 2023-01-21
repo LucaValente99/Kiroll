@@ -1,4 +1,5 @@
-﻿using NeeqDMIs.Eyetracking.PointFilters;
+﻿using Kiroll.DMIbox;
+using NeeqDMIs.Eyetracking.PointFilters;
 using System;
 using System.Drawing;
 using System.Windows.Controls;
@@ -12,10 +13,14 @@ namespace Kiroll.Surface
         private ScrollViewer scrollViewer;
         private int radiusThreshold;
         private int proportionalVertical;
+        public int ProportionalVertical { get => proportionalVertical; set => proportionalVertical = value; }
         private int proportionalHorizontal;
+        public int ProportionalHorizontal { get => proportionalHorizontal; set => proportionalHorizontal = value; }
+
         private IPointFilter filter;
 
         private System.Windows.Point scrollCenter;
+        public System.Windows.Point ScrollCenter { get => scrollCenter; set => scrollCenter = value; }
         private System.Windows.Point basePosition;
 
         private DispatcherTimer samplerTimer = new DispatcherTimer(DispatcherPriority.Render);
@@ -28,36 +33,49 @@ namespace Kiroll.Surface
         {
             this.radiusThreshold = radiusThreshold;
             this.filter = filter;
-            this.scrollViewer = scrollViewer;
-            this.proportionalHorizontal = proportional;
-            this.proportionalVertical = proportional - 225;
+            this.scrollViewer = scrollViewer;                
 
             // Setting scrollviewer dimensions
             lastSampledPoint = new Point();
-            basePosition = scrollViewer.PointToScreen(new System.Windows.Point(0, 0));
+            proportionalHorizontal = proportional;
+            proportionalVertical = proportional - 225;
+            basePosition = scrollViewer.PointToScreen(new System.Windows.Point(0, 0));                        
             scrollCenter = new System.Windows.Point(200, scrollViewer.ActualHeight / 2 + 100); // scrollViewer.ActualWidth / 2
-
+            
             // Setting sampling timer
             samplerTimer.Interval = TimeSpan.FromMilliseconds(15);//1000; //1;
             samplerTimer.Tick += ListenMouse;
             samplerTimer.Start();
 
         }
-        private void ListenMouse(object sender, EventArgs e)
+        protected void ListenMouse(object sender, EventArgs e)
         {           
-            if (GetMousePos().X > scrollCenter.X) // +15 to avoid a small mistake that causes the keyboard to go back
+            if (Rack.UserSettings.Orientation == Orientation.Vertical)
             {
+                if (GetMousePos().X > scrollCenter.X)
+                {
+                    lastSampledPoint.X = GetMousePos().X - (int)basePosition.X;
+                }
+
+                lastSampledPoint.Y = GetMousePos().Y - (int)basePosition.Y;
+            }
+            else
+            {
+                if (GetMousePos().Y > scrollCenter.Y + 80)
+                {
+                    lastSampledPoint.Y = GetMousePos().Y - (int)basePosition.Y;
+                }
+
                 lastSampledPoint.X = GetMousePos().X - (int)basePosition.X;
             }
-               
-            lastSampledPoint.Y = GetMousePos().Y - (int)basePosition.Y;
+            
 
             filter.Push(lastSampledPoint);
             lastMean = filter.GetOutput();               
 
             Scroll();
         }
-        private void Scroll()
+        protected void Scroll()
         {
             Xdifference = (scrollCenter.X - lastMean.X);
             Ydifference = (scrollCenter.Y - lastMean.Y);
@@ -67,11 +85,11 @@ namespace Kiroll.Surface
                 scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - Math.Pow((Ydifference / proportionalVertical), 2) * Math.Sign(Ydifference));
             }
         }
-        private Point GetMousePos()
+        protected Point GetMousePos()
         {
             temp = scrollViewer.PointToScreen(Mouse.GetPosition(scrollViewer));
             return new Point((int)temp.X, (int)temp.Y);
         }
-        private System.Windows.Point temp = new System.Windows.Point();
+        protected System.Windows.Point temp = new System.Windows.Point();
     }
 }

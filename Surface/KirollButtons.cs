@@ -40,8 +40,17 @@ namespace Kiroll.Surface
             // Playable key
             toolKey = new Button();
             toolKey.Name = key;
-            toolKey.Width = 150; //170
-            toolKey.Height = 84.2; //100
+            if (Rack.UserSettings.Orientation == Orientation.Vertical)
+            {
+                toolKey.Width = 150; //170
+                toolKey.Height = 84.2; //100
+            }
+            else
+            {
+                toolKey.Height = 130; 
+                toolKey.Width = 95; 
+            }
+            
             toolKey.Background = brush;        
 
             if (Rack.UserSettings.KeyName == _KeyName.On)
@@ -56,10 +65,18 @@ namespace Kiroll.Surface
             }
             else
             {
-                toolKey.Style = (Style)FindResource("OverButtonDot");
+                if (Rack.UserSettings.Orientation == Orientation.Vertical)
+                {
+                    toolKey.Style = (Style)FindResource("OverButtonDot");
+                }
+                else
+                {
+                    toolKey.Style = (Style)FindResource("OverButtonHorizontalDot");
+                }
+                
                 toolKey.Content = ".";
 
-                // Button content
+                // Button content               
                 toolKey.Foreground = Brushes.Black;
                 toolKey.FontSize = 40;
                 toolKey.FontWeight = FontWeights.Bold;

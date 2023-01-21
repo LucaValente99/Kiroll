@@ -280,6 +280,9 @@
     <Resource Include="Images\Icons\KeyName.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Images\Icons\Rotation.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Content Include="Libraries\EyeXFramework.dll" />
     <Content Include="Libraries\NeeqDMIs.dll" />
     <Content Include="Libraries\NeeqDMIs.pdb" />
