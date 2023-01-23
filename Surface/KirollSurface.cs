@@ -249,13 +249,14 @@ namespace Kiroll.Surface
                 firstTime = true;
             }
             else {
-                if (Rack.UserSettings.Orientation == Orientation.Vertical)
+                switch (Rack.UserSettings.Orientation)
                 {
-                    Rack.DMIBox.KirollMainWindow.canvasKiroll.Width += Rack.UserSettings.KeyHorizontalDistance;
-                }
-                else
-                {
-                    Rack.DMIBox.KirollMainWindow.canvasKiroll.Height += Rack.UserSettings.KeyHorizontalDistance;
+                    case Orientation.Vertical:
+                        Rack.DMIBox.KirollMainWindow.canvasKiroll.Width += Rack.UserSettings.KeyHorizontalDistance;
+                        break;
+                    case Orientation.Horizontal:
+                        Rack.DMIBox.KirollMainWindow.canvasKiroll.Height += Rack.UserSettings.KeyHorizontalDistance;
+                        break;
                 }
             }           
 
@@ -265,16 +266,17 @@ namespace Kiroll.Surface
             {
                 if (!afterEighthKeyboard)
                 {
-                    if (lastKeyboardSelected == "8"){
-
+                    if (lastKeyboardSelected == "8")
+                    {
                         // In this first case, the first keyboard, the "_0" one, will be moved after the last one, so the "_15" one.
-                        if (Rack.UserSettings.Orientation == Orientation.Vertical)
+                        switch (Rack.UserSettings.Orientation)
                         {
-                            Canvas.SetLeft(KirollKeyboard.GetKeyboard("_0"), KirollKeyboard.GetPosition(musicKeyboards[15].Name).X + distance);
-                        }
-                        else
-                        {
-                            Canvas.SetTop(KirollKeyboard.GetKeyboard("_0"), KirollKeyboard.GetPosition(musicKeyboards[15].Name).Y + distance);
+                            case Orientation.Vertical:
+                                Canvas.SetLeft(KirollKeyboard.GetKeyboard("_0"), KirollKeyboard.GetPosition(musicKeyboards[15].Name).X + distance);
+                                break;
+                            case Orientation.Horizontal:
+                                Canvas.SetTop(KirollKeyboard.GetKeyboard("_0"), KirollKeyboard.GetPosition(musicKeyboards[15].Name).Y + distance);
+                                break;
                         }
 
                         lastKeyboardMoved = "0";
@@ -292,14 +294,16 @@ namespace Kiroll.Surface
                         lastKS = 16 + lastKS; // Es: if keyboard n° 5 is played -> 5 - 8 = -3, 16 - 3 = 13 is the keyboard to move.
                     }
 
-                    if (Rack.UserSettings.Orientation == Orientation.Vertical)
+                    switch (Rack.UserSettings.Orientation)
                     {
-                        Canvas.SetLeft(KirollKeyboard.GetKeyboard("_" + lastKS.ToString()), KirollKeyboard.GetPosition("_" + lastKeyboardMoved).X + distance);
+                        case Orientation.Vertical:
+                            Canvas.SetLeft(KirollKeyboard.GetKeyboard("_" + lastKS.ToString()), KirollKeyboard.GetPosition("_" + lastKeyboardMoved).X + distance);
+                            break;
+                        case Orientation.Horizontal:
+                            Canvas.SetTop(KirollKeyboard.GetKeyboard("_" + lastKS.ToString()), KirollKeyboard.GetPosition("_" + lastKeyboardMoved).Y + distance);
+                            break;
                     }
-                    else
-                    {
-                        Canvas.SetTop(KirollKeyboard.GetKeyboard("_" + lastKS.ToString()), KirollKeyboard.GetPosition("_" + lastKeyboardMoved).Y + distance);
-                    }
+
                     lastKeyboardMoved = lastKS.ToString();
                     KirollKeyboard.ResetColors("_" + lastKeyboardMoved);
                 }               
