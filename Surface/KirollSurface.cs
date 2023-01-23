@@ -35,7 +35,7 @@ namespace Kiroll.Surface
 
         // These vars helps to manage methods to change distances between keyboards and keys
         private double verticalDistance = 0;
-        private double horizontalDistance;
+        private double hvDistance; // It tracks horizontal or vertical keyboards distance depending on the kiroll interface orientation
 
         #endregion
         public KirollSurface(Canvas canvas)
@@ -76,7 +76,7 @@ namespace Kiroll.Surface
                 SetVerticalDistance(Rack.UserSettings.KeyVerticaDistance);
             }
 
-            horizontalDistance = 0;
+            hvDistance = 0;
 
             for (int i = 0; i < musicKeyboards.Count; i++)
             {
@@ -85,15 +85,15 @@ namespace Kiroll.Surface
                 // Drawing the keyboard on screen
                 if (Rack.UserSettings.Orientation == Orientation.Vertical)
                 {
-                    Canvas.SetLeft(musicKeyboards[i], 75 + horizontalDistance);
+                    Canvas.SetLeft(musicKeyboards[i], 75 + hvDistance);
                     Canvas.SetTop(musicKeyboards[i], (canvas.Height - musicKeyboards[i].Height) / 2);           
                 }
                 else
                 {
                     Canvas.SetLeft(musicKeyboards[i], (canvas.Width - musicKeyboards[i].Width) / 2);
-                    Canvas.SetTop(musicKeyboards[i], 50 + horizontalDistance);
+                    Canvas.SetTop(musicKeyboards[i], 25 + hvDistance);
                 }
-                horizontalDistance += Rack.UserSettings.KeyHorizontalDistance;
+                hvDistance += Rack.UserSettings.KeyHorizontalDistance;
             }
 
             KirollKeyboard.UpdateOpacity();
