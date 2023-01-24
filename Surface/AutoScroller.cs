@@ -49,24 +49,27 @@ namespace Kiroll.Surface
 
         }
         protected void ListenMouse(object sender, EventArgs e)
-        {           
+        {
+            int X = GetMousePos().X;
+            int Y = GetMousePos().Y;
+
             if (Rack.UserSettings.Orientation == Orientation.Vertical)
             {
-                if (GetMousePos().X > scrollCenter.X)
+                if (X > scrollCenter.X)
                 {
-                    lastSampledPoint.X = GetMousePos().X - (int)basePosition.X;
+                    lastSampledPoint.X = X - (int)basePosition.X;
                 }
 
-                lastSampledPoint.Y = GetMousePos().Y - (int)basePosition.Y;
+                lastSampledPoint.Y = Y - (int)basePosition.Y;
             }
             else
             {
-                if (GetMousePos().Y > scrollCenter.Y + 80)
+                if (Y > scrollCenter.Y + 80)
                 {
-                    lastSampledPoint.Y = GetMousePos().Y - (int)basePosition.Y;
+                    lastSampledPoint.Y = Y - (int)basePosition.Y;
                 }
 
-                lastSampledPoint.X = GetMousePos().X - (int)basePosition.X;
+                lastSampledPoint.X = X - (int)basePosition.X;
             }
             
 
